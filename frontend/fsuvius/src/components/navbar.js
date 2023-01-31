@@ -10,9 +10,8 @@ function Navbar() {
             <Link to="/">Home</Link>
         </div>
         <div className="inline_button">
-            <Link to="/create">Create Account</Link>
+            <Link to="/about">About</Link>
         </div>
-        
       </div>
     );
   }

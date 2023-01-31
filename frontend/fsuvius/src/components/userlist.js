@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import FsuviusMap from '../FsuviusMap.js';
+import UserEditor from './usereditor.js';
 
 class UserList extends Component {
     constructor(props) {
@@ -13,6 +14,23 @@ class UserList extends Component {
         this.setState({users: body});
     }
 
+    render() {
+        const {users} = this.state;
+        return (
+            <>
+                {users.map(user =>
+                    <div key={user.id}>
+                        <UserEditor
+                            newID = {user.id}
+                            newName = {user.name}
+                            newBalance = {user.balance}
+                        />
+                    </div>
+                )}
+            </>
+        )
+    }
+    /*
     render() {
         const {users} = this.state;
         return (
@@ -36,5 +54,6 @@ class UserList extends Component {
             </div>
         )
     }
+    */
 }
 export default UserList;

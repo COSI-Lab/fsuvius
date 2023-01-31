@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import EntryList from '../components/userlist';
+import UserList from '../components/userlist';
+import UserCreator from '../components/usercreator';
 
 class Home extends Component {
   constructor(props) {
@@ -11,8 +12,9 @@ class Home extends Component {
           <div className="spacer"></div>
             <div className="content_outer box">
               <div className="content_inner">
-              <h1>Home</h1>
-              <EntryList />
+              <h3>1 FSU = 0.75 USD</h3>
+              <UserList />
+              <UserCreator />
             </div>
           </div>
         </>

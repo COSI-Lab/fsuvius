@@ -9,19 +9,17 @@ import java.util.Random;
  */
 public class User implements Serializable {
 
-    private long id;
+    private String id;
     private String name;
     private float balance;
-    private String url;
 
     /**
      * Constructs a User with the name "" and a balance of 0.
      */
     public User() {
-        this.id = new Random().nextLong();
+        this.id = "" + new Random().nextLong();
         this.name = "";
         this.balance = 0.0F;
-        this.url = "/users/" + id;
     }
 
     /**
@@ -29,10 +27,9 @@ public class User implements Serializable {
      * @param name The User's name
      */
     public User(String name) {
-        this.id = new Random().nextLong();
+        this.id = "" + new Random().nextLong();
         this.name = name;
         this.balance = 0.0F;
-        this.url = "/users/" + id;
     }
 
     /**
@@ -41,17 +38,16 @@ public class User implements Serializable {
      * @param balance The User's balance
      */
     public User(String name, float balance) {
-        this.id = new Random().nextLong();
+        this.id = "" + new Random().nextLong();
         this.name = name;
         this.balance = balance;
-        this.url = "/users/" + id;
     }
 
     /**
      * Returns this User's ID.
      * @return This User's ID
      */
-    public Long getID() {
+    public String getID() {
         return this.id;
     }
 
@@ -71,16 +67,12 @@ public class User implements Serializable {
         return this.balance;
     }
 
-    public String getURL() {
-        return this.url;
-    }
     /**
      * Sets this User's ID.
      * @param id this User's ID
      */
-    public void setID(Long id) {
+    public void setID(String id) {
         this.id = id;
-        this.url = "/users/" + id;
     }
 
     /**
@@ -97,10 +89,6 @@ public class User implements Serializable {
      */
     public void setBalance(float balance) {
         this.balance = balance;
-    }
-
-    public void setURL(String url) {
-        this.url = url;
     }
 
     @Override
@@ -120,7 +108,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + this.id + ", name='" + this.name + "', balance=" +
-                this.balance + ", url='" + this.url + "'}";
+        return "User{" + "id='" + this.id + "', name='" + this.name + "', balance=" +
+                this.balance + "}";
     }
 }

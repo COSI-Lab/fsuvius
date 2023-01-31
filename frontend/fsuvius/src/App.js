@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/navbar';
-import Create from './pages/create';
+import About from './pages/about';
 import Home from './pages/home';
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/create" element={<Create />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </div>

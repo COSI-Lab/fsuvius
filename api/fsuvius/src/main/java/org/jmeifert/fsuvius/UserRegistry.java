@@ -10,8 +10,7 @@ public class UserRegistry {
     public UserRegistry() {
         users = loadUsersFromFile();
         if(users.size() < 1) { // if no users could be loaded
-            users.add(new User("TestUser1", 0.0F));
-            users.add(new User("TestUser2", 1.0F));
+            users.add(new User("Test User", 0.0F));
             saveUsersToFile(users);
         }
     }
@@ -58,7 +57,7 @@ public class UserRegistry {
         return Collections.list(users.elements());
     }
 
-    public User getUser(Long id) {
+    public User getUser(String id) {
         users = loadUsersFromFile();
         for(User i : users) {
             if(i.getID().equals(id)) {
@@ -68,14 +67,15 @@ public class UserRegistry {
         return new User("INVALID",-1.0F);
     }
 
-    public User createUser(User user) {
+    public User createUser(String name) {
         users = loadUsersFromFile();
-        users.add(user);
+        User userToAdd = new User(name);
+        users.add(userToAdd);
         saveUsersToFile(users);
-        return user;
+        return userToAdd;
     }
 
-    public User editUser(Long id, User user) {
+    public User editUser(String id, User user) {
         users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
@@ -84,10 +84,11 @@ public class UserRegistry {
                 return user;
             }
         }
+        System.out.println("Not found");
         return new User("INVALID", -1.0F);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
