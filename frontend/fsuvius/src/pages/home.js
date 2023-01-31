@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import EchoForm from '../components/echoform';
-import EntryList from '../components/entrylist';
+import EntryList from '../components/userlist';
 
 class Home extends Component {
   constructor(props) {
@@ -12,7 +11,7 @@ class Home extends Component {
           <div className="spacer"></div>
             <div className="content_outer box">
               <div className="content_inner">
-              <p>Home</p>
+              <h1>Home</h1>
               <EntryList />
             </div>
           </div>

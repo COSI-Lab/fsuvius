@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EchoForm from '../components/echoform';
+import UserForm from '../components/userform';
 
 class Create extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ class Create extends Component {
                 <div className="content_outer box">
                 <div className="content_inner">
                 <p>Create Account</p>
-                <EchoForm />
+                <UserForm />
                 </div>
             </div>
             </>

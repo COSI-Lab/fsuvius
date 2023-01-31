@@ -2,8 +2,10 @@
 body {
   font-family: Verdana, Tahoma, sans-serif;
   font-size: 16px;
-  background-color: white;
-  color: black;
+  background-color: rgb(0,0,20);
+  color: white;
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
@@ -54,9 +56,9 @@ a {
 
 /* Box highlighting */
 .box {
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 5px;
-  box-shadow: 3px 3px black;
+  box-shadow: 3px 3px 5px rgba(255,255,255,0.5);
   padding: 4px;
 }
 
@@ -64,7 +66,7 @@ a {
 .content_outer {
   margin: 0 auto;
   padding: 4px;
-  max-width: 1000px;
+  max-width: 800px;
   
 }
 
@@ -101,12 +103,12 @@ a {
 }
 
 /* Inline menus and buttons */
-.inline_menu {
+.navbar {
   margin: 0px 0px;
   padding: 16px 16px;
   width: 100%;
   overflow: auto;
-  background: black;
+  background: #0b334e;
 }
 
 .inline_button {
@@ -122,14 +124,16 @@ a {
 input, button {
   margin: 0px 4px 0px 4px;
   padding: 4px 8px;
-  border: 1px solid black;
+  border: 1px solid white;
   background: none;
   font-family: inherit;
   font-size: inherit;
   border-radius: 5px;
+  color: inherit;
 }
+
 input:hover, button:hover {
-  box-shadow: 3px 3px black;
+  box-shadow: 2px 2px 5px rgba(255,255,255,0.5);
 }
 
 .inline_text {
@@ -140,7 +144,7 @@ input:hover, button:hover {
 }
 
 .inline_button:hover {
-  box-shadow: 3px 3px white;
+  box-shadow: 2px 2px 5px rgba(255,255,255,0.5);
 }
 
 .inline_spacer {
@@ -153,7 +157,7 @@ input:hover, button:hover {
 .divider {
   width: 100%;
   height: 1px;
-  background-color: black;
+  background-color: white;
   margin-top: 24px;
   margin-bottom: 20px;
 }
@@ -186,4 +190,17 @@ input:hover, button:hover {
 /* Logo image */
 .logo {
   margin: 16px 0;
+}
+
+table 
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 4px;
+  text-align: left;
+  border: 1px solid white;
+  font-weight: inherit;
 }
