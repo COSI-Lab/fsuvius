@@ -1,10 +1,8 @@
 package org.jmeifert.fsuvius;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false" )
 @RestController
 public class UserController {
     private UserRegistry userRegistry;
@@ -20,7 +18,6 @@ public class UserController {
 
     @PostMapping("/users")
     User newEntry(@RequestBody String name) {
-        System.out.println("CREATED USER");
         return userRegistry.createUser(name);
     }
 
