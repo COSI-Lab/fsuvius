@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UserList from '../components/userlist';
 import UserCreator from '../components/usercreator';
-import FsuviusLogo from '../fsuvius.png';
+import FsuviusLogo from './fsuvius.png';
 import FsuviusMap from '../FsuviusMap.js';
 
 class Home extends Component {
@@ -16,7 +16,9 @@ class Home extends Component {
           <div className="spacer"></div>
             <div className="content_outer box">
               <div className="content_inner">
-                <img src={FsuviusLogo} alt="Mount Fsuvius" width="100%"></img>
+                <div className="centered_container">
+                  <img src={FsuviusLogo} alt="Mount Fsuvius" width="100%"></img>
+                </div>
                 <h3>1 FSU = {FsuviusMap.EXCHANGE_RATE} USD</h3>
                 <UserList />
                 <UserCreator />

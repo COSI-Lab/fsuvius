@@ -116,31 +116,48 @@ a {
   padding: 4px 8px;
   border: 2px solid;
   border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  background: white;
+  background-color: #C0C0C0;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
   display: inline-block;
 }
 
-input, button {
+.inline_button:hover {
+  border-color: #000000;
+}
+
+input {
   margin: 4px 4px 4px 4px;
   padding: 4px 8px;
   border: 2px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  border-color:   #808080 #FFFFFF #FFFFFF #808080;
   background: white;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
 }
 
-input:hover, button:hover {
-  box-shadow: 2px 2px rgba(0,0,0,0.7);
+input:hover {
+  border-color: #000000;
 }
 
-.inline_button:hover {
-  box-shadow: 2px 2px rgba(0,0,0,0.7);
+button {
+  margin: 4px 4px 4px 4px;
+  padding: 4px 8px;
+  border: 2px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  background-color: #C0C0C0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
 }
+
+button:hover {
+  border-color: #000000;
+}
+
+
 
 .inline_text {
   margin: 0px 8px 0px 0px;
@@ -178,8 +195,7 @@ input:hover, button:hover {
 }
 
 .centered_container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
-  padding: 4px;
+  margin: 0 auto;
+  width: 75%;
+  padding: 0;
 }

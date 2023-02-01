@@ -27,7 +27,7 @@ class UserCreator extends React.Component {
   render() {
     return (
       <>
-        <input type="button" value="Create User" onClick={this.handleCreate}/>
+        <button onClick={this.handleCreate}>Create User</button>
       </>
     );
   }

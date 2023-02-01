@@ -96,10 +96,10 @@ class UserEditor extends Component {
                     <input type="text" value={this.state.name} onChange={this.handleNameChange} />
                     <input type="text" value={this.state.balance} onChange={this.handleBalanceChange} />
                 </label>
-                <input type="button" value="+" onClick={this.handlePlus}/>
-                <input type="button" value="-" onClick={this.handleMinus}/>
-                <input type="submit" value="Edit"/>
-                <input type="button" value="Remove" onClick={this.handleRemove}/>
+                <button onClick={this.handlePlus}>+1</button>
+                <button onClick={this.handleMinus}>-1</button>
+                <button type="submit">Edit</button>
+                <button onClick={this.handleRemove}>Remove</button>
             </form>
             </div>
             </>

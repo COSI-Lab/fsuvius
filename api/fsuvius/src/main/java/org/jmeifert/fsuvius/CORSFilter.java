@@ -12,10 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimpleCORSFilter implements Filter {
-
-
-    public SimpleCORSFilter() {
+public class CORSFilter implements Filter {
+    public CORSFilter() {
 
     }
 

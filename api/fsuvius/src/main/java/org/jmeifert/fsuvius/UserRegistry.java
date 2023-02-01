@@ -15,7 +15,7 @@ public class UserRegistry {
     public UserRegistry() {
         users = loadUsersFromFile();
         if(users.size() < 1) { // if no users could be loaded
-            users.add(new User("Test User", 0.0F));
+            users.add(new User("New User", 0.0F));
             saveUsersToFile(users);
         }
     }
@@ -86,7 +86,7 @@ public class UserRegistry {
                 return i;
             }
         }
-        return new User("INVALID",-1.0F);
+        return new User("Not Found",-1.0F);
     }
 
     /**
@@ -117,8 +117,7 @@ public class UserRegistry {
                 return user;
             }
         }
-        System.out.println("Not found");
-        return new User("INVALID", -1.0F);
+        return new User("Not Found", -1.0F);
     }
 
     /**
