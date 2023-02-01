@@ -9,4 +9,5 @@ Very much a work in progress. Expect functionality like avatars, bank totals, et
  - Hideous theming reminiscent of decades past
  
 [Source code](https://github.com/lavajuno/fsuvius)
+
 [Releases](https://github.com/lavajuno/fsuvius/releases)
