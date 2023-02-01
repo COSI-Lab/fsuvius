@@ -2,18 +2,30 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import '../App.css';
 
-function Navbar() {
+class Navbar extends React.Component {
+  /*
+  constructor() {
+    super();
+  }
+  */
+  render() {
     return (
       <div className="navbar">
         <div className="inline_text">Mount Fsuvius</div>
-        <div className="inline_button">
-            <Link to="/">Home</Link>
-        </div>
-        <div className="inline_button">
-            <Link to="/about">About</Link>
-        </div>
+        <Link to="/">
+          <div className="inline_button">
+              Home
+          </div>
+        </Link>
+        <Link to="/about">
+          <div className="inline_button">
+              About
+          </div>
+        </Link>
       </div>
     );
   }
+}
+
   
 export default Navbar;

@@ -3,8 +3,8 @@ import FsuviusMap from '../FsuviusMap.js';
 import UserEditor from './usereditor.js';
 
 class UserList extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {users: []}
     }
 

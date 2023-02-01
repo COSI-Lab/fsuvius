@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import FsuviusLogo from '../fsuvius.png';
 
 class About extends Component {
+    /*
     constructor() {
         super();
     }
+    */
     render() {
         return (
             <>

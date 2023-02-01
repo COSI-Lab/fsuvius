@@ -2,8 +2,8 @@ import React from "react";
 import FsuviusMap from "../FsuviusMap";
 
 class UserCreator extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {value: ''};
     this.handleCreate = this.handleCreate.bind(this);
   }
