@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import UserCreator from '../components/usercreator';
+import FsuviusLogo from '../fsuvius.png';
 
 class About extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
     }
     render() {
         return (
@@ -11,8 +11,8 @@ class About extends Component {
                 <div className="spacer"></div>
                 <div className="content_outer box">
                     <div className="content_inner">
-                        <h1>Mount Fsuvius</h1>
-                        <h3>Juno's Edition</h3>
+                        <img src={FsuviusLogo} alt="Mount Fsuvius" width="100%"></img>
+                        <p><a href="https://github.com/lavajuno/fsuvius">https://github.com/lavajuno/fsuvius</a></p>
                         <p>Version 0.0.0</p>
                     </div>
                 </div>
