@@ -199,3 +199,18 @@ button:hover {
   width: 75%;
   padding: 0;
 }
+
+/* Marquee */
+@keyframes marquee_anim {
+  0% {transform: translateX(100%);}
+  100% {transform: translateX(-100%);}
+}
+.marquee_container {
+  width: 100%;
+  overflow: hidden;
+  margin: 4px 0px;
+  padding: 0;
+}
+.marquee {
+  animation: marquee_anim 10s linear infinite;
+}
