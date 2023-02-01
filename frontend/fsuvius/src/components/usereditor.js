@@ -9,6 +9,8 @@ class UserEditor extends Component {
         this.handleBalanceChange = this.handleBalanceChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
+        this.handlePlus = this.handlePlus.bind(this);
+        this.handleMinus = this.handleMinus.bind(this);
       }
 
       handleNameChange(event) {
@@ -46,6 +48,34 @@ class UserEditor extends Component {
         }
       }
 
+      async handlePlus(event) {
+        const incrementedBalance = this.state.balance + 1
+        this.setState({balance: incrementedBalance});
+        event.preventDefault();
+        await fetch(FsuviusMap.API_URL + "/users/" + this.state.id, {
+            method: 'PUT',
+            headers: {
+                'Accept':'application/json',
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance + 1}),
+        });
+        window.location.reload();
+      }
+
+      async handleMinus(event) {
+        event.preventDefault();
+        await fetch(FsuviusMap.API_URL + "/users/" + this.state.id, {
+            method: 'PUT',
+            headers: {
+                'Accept':'application/json',
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance - 1}),
+        });
+        window.location.reload();
+      }
+
       render() {
         return (
             <>
@@ -55,6 +85,8 @@ class UserEditor extends Component {
                     <input type="text" value={this.state.name} onChange={this.handleNameChange} />
                     <input type="text" value={this.state.balance} onChange={this.handleBalanceChange} />
                 </label>
+                <input type="button" value="+" onClick={this.handlePlus}/>
+                <input type="button" value="-" onClick={this.handleMinus}/>
                 <input type="submit" value="Edit"/>
                 <input type="button" value="Remove" onClick={this.handleRemove}/>
             </form>
