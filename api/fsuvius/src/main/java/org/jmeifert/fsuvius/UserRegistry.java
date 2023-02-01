@@ -94,7 +94,7 @@ public class UserRegistry {
      * @param name Name of the user to be created
      * @return The user with the specified name
      */
-    public User createUser(String name) {
+    public synchronized User createUser(String name) {
         users = loadUsersFromFile();
         User userToAdd = new User(name);
         users.add(userToAdd);
@@ -108,7 +108,7 @@ public class UserRegistry {
      * @param user The user to replace with
      * @return The updated user
      */
-    public User editUser(String id, User user) {
+    public synchronized User editUser(String id, User user) {
         users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
@@ -125,7 +125,7 @@ public class UserRegistry {
      * Deletes a user.
      * @param id User ID to delete
      */
-    public void deleteUser(String id) {
+    public synchronized void deleteUser(String id) {
         users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
