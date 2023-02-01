@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import FsuviusMap from '../FsuviusMap.js';
 
+/* UserEditor is a single editable entry in the list of users. */
 class UserEditor extends Component {
     constructor({newID, newName, newBalance}) {
         super();
+        /* Initialize state */
         this.state={id: newID, name: newName, balance: newBalance}
+
+        /* Bind input handlers */
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleBalanceChange = this.handleBalanceChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -13,14 +17,17 @@ class UserEditor extends Component {
         this.handleMinus = this.handleMinus.bind(this);
       }
 
+      /* Update state when user changes name */
       handleNameChange(event) {
         this.setState({name: event.target.value});
       }
 
+      /* Update state when user changes balance */
       handleBalanceChange(event) {
         this.setState({balance: event.target.value});
       }
 
+      /* Update this user's account with this UserEditor's current state */
       async handleSubmit(event) {
         event.preventDefault();
         await fetch(FsuviusMap.API_URL + "/users/" + this.state.id, {
@@ -34,6 +41,7 @@ class UserEditor extends Component {
         window.location.reload();
       }
 
+      /* Remove this user's account */
       async handleRemove(event) {
         event.preventDefault();
         if(window.confirm("Are you sure you want to delete this user?")) {
@@ -48,6 +56,7 @@ class UserEditor extends Component {
         }
       }
 
+      /* Add 1 FSU to this user's account */
       async handlePlus(event) {
         const incrementedBalance = this.state.balance + 1
         this.setState({balance: incrementedBalance});
@@ -63,6 +72,7 @@ class UserEditor extends Component {
         window.location.reload();
       }
 
+      /* Remove 1 FSU from this user's account */
       async handleMinus(event) {
         event.preventDefault();
         await fetch(FsuviusMap.API_URL + "/users/" + this.state.id, {
@@ -76,6 +86,7 @@ class UserEditor extends Component {
         window.location.reload();
       }
 
+      /* Display */
       render() {
         return (
             <>
@@ -95,4 +106,5 @@ class UserEditor extends Component {
         );
       }
 }
+
 export default UserEditor;

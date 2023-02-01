@@ -2,18 +2,21 @@ import React, {Component} from 'react';
 import FsuviusMap from '../FsuviusMap.js';
 import UserEditor from './usereditor.js';
 
+/* UserList handles displaying a list of all stored users */
 class UserList extends Component {
     constructor() {
         super();
         this.state = {users: []}
     }
 
+    /* Fetch and display users upon mount */
     async componentDidMount() {
         const response = await fetch(FsuviusMap.API_URL + "/users");
         const body = await response.json();
         this.setState({users: body});
     }
 
+    /* Display */
     render() {
         const {users} = this.state;
         return (
@@ -30,30 +33,6 @@ class UserList extends Component {
             </>
         )
     }
-    /*
-    render() {
-        const {users} = this.state;
-        return (
-            <div>
-                <table>
-                    <tr>
-                        <th><b>ID</b></th>
-                        <th><b>Name</b></th>
-                        <th><b>Balance</b></th>
-                        <th><b>URL</b></th>
-                    </tr>
-                    {users.map(user =>
-                        <tr key={user.id}>
-                            <th>{user.id}</th>
-                            <th>{user.name}</th>
-                            <th>{user.balance}</th>
-                            <th>{user.url}</th>
-                        </tr>
-                    )}
-                </table>
-            </div>
-        )
-    }
-    */
 }
+
 export default UserList;

@@ -1,13 +1,15 @@
 import React from "react";
 import FsuviusMap from "../FsuviusMap";
 
+/* UserCreator handles creating new users */
 class UserCreator extends React.Component {
   constructor() {
     super();
-    this.state = {value: ''};
+    /* Bind input handlers */
     this.handleCreate = this.handleCreate.bind(this);
   }
 
+  /* Create a new user */
   async handleCreate(event) {
     event.preventDefault();
     await fetch(FsuviusMap.API_URL + "/users", {
@@ -21,6 +23,7 @@ class UserCreator extends React.Component {
     window.location.reload();
   }
 
+  /* Display */
   render() {
     return (
       <>
