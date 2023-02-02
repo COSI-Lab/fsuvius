@@ -101,7 +101,7 @@ class UserEditor extends Component {
             </label>
             <button onClick={this.handlePlus}>+1</button>
             <button onClick={this.handleMinus}>-1</button>
-            <button type="submit">Edit</button>
+            <button type="submit">Save</button>
             <button onClick={this.handleRemove}>Remove</button>
         </form>
         </div>
