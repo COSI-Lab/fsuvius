@@ -24,6 +24,9 @@ class Home extends Component {
                 <div className="centered_container">
                   <img src={FsuviusLogo} alt="Mount Fsuvius" width="100%"></img>
                 </div>
+                <p className="text_center"><i><b>The MUG Edition</b></i></p>
+                <div className="spacer"></div>
+                <p><i>Current exchange rate:</i></p>
                 <h3>1 FSU = {FsuviusMap.EXCHANGE_RATE} USD</h3>
                 <UserList />
                 <UserCreator />

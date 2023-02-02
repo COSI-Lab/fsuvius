@@ -67,13 +67,15 @@ class UserEditor extends Component {
                 'Accept':'application/json',
                 'Content-Type':'application/json',
             },
-            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance + 1}),
+            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: (this.state.balance += 1)}),
         });
-        window.location.reload();
+        //window.location.reload();
       }
 
       /* Remove 1 FSU from this user's account */
       async handleMinus(event) {
+        const incrementedBalance = this.state.balance - 1
+        this.setState({balance: incrementedBalance});
         event.preventDefault();
         await fetch(FsuviusMap.API_URL + "/users/" + this.state.id, {
             method: 'PUT',
@@ -81,9 +83,9 @@ class UserEditor extends Component {
                 'Accept':'application/json',
                 'Content-Type':'application/json',
             },
-            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance - 1}),
+            body: JSON.stringify({id: this.state.id, name: this.state.name, balance: (this.state.balance -= 1)}),
         });
-        window.location.reload();
+        //window.location.reload();
       }
 
       /* Display */

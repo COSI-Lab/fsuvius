@@ -2,7 +2,7 @@
 body {
   font-family: Verdana, Tahoma, sans-serif;
   font-size: 16px;
-  background-color: #54361e;
+  background-color: #53351d;
   color: black;
   padding: 0;
   margin: 0;
@@ -16,7 +16,7 @@ h1 {
 }
 
 h2 {
-  margin: 16px 0;
+  margin: 12px 0;
   padding: 0;
   font-family: Verdana, Tahoma, sans-serif;
   font-size: 32px;
@@ -24,20 +24,20 @@ h2 {
 
 h3 {
   font-family: Verdana, Tahoma, sans-serif;
-  margin: 16px 0;
+  margin: 8px 0;
   padding: 0;
   font-size: 24px;
 }
 
 h4 {
   font-family: Verdana, Tahoma, sans-serif;
-  margin: 16px 0;
+  margin: 8px 0;
   padding: 0;
   font-size: 12px;
 }
 
 p {
-  margin: 16px 0;
+  margin: 8px 0;
   padding: 0;
 }
 
@@ -50,8 +50,12 @@ a {
   text-decoration: underline;
 }
 
-.justify_right {
+.text_right {
   text-align: right;
+}
+
+.text_center {
+  text-align: center;
 }
 
 /* Box highlighting */
@@ -156,7 +160,6 @@ button {
 button:hover {
   border-color: #000000;
 }
-
 
 
 .inline_text {
