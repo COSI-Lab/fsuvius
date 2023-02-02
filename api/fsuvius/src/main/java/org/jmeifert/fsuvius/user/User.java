@@ -1,4 +1,4 @@
-package org.jmeifert.fsuvius;
+package org.jmeifert.fsuvius.user;
 
 import java.io.Serializable;
 import java.util.Objects;

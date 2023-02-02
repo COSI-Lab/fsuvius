@@ -40,6 +40,8 @@ class UserEditor extends Component {
             'Content-Type':'application/json',
         },
         body: JSON.stringify(this.state),
+    }).catch(error => {
+      window.alert(error);
     });
     window.location.reload();
   }
@@ -54,6 +56,8 @@ class UserEditor extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
+      }).catch(error => {
+          window.alert(error);
       });
       window.location.reload();
     }
@@ -71,6 +75,8 @@ class UserEditor extends Component {
             'Content-Type':'application/json',
         },
         body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance + 1}),
+    }).catch(error => {
+      window.alert(error);
     });
   }
 
@@ -86,6 +92,8 @@ class UserEditor extends Component {
             'Content-Type':'application/json',
         },
         body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance - 1}),
+    }).catch(error => {
+      window.alert(error);
     });
   }
 

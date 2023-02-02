@@ -13,7 +13,8 @@ class UserList extends Component {
 
     /* Fetch and display users upon mount */
     async componentDidMount() {
-        const response = await fetch(FsuviusMap.API_URL + "/users");
+        const response = await fetch(FsuviusMap.API_URL + "/users")
+                            .catch(error => {window.alert(error);});
         const body = await response.json();
         this.setState({users: body});
     }

@@ -21,6 +21,8 @@ class UserCreator extends React.Component {
             'Content-Type':'application/json',
         },
         body: "New User",
+    }).catch(error => {
+      window.alert(error);
     });
     window.location.reload();
   }
