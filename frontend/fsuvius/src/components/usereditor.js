@@ -72,7 +72,6 @@ class UserEditor extends Component {
         },
         body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance + 1}),
     });
-    //window.location.reload();
   }
 
   /* Remove 1 FSU from this user's account */
@@ -88,7 +87,6 @@ class UserEditor extends Component {
         },
         body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance - 1}),
     });
-    //window.location.reload();
   }
 
   /* Display */
