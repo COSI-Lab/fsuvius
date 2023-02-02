@@ -1,4 +1,4 @@
-package org.jmeifert.fsuvius;
+package org.jmeifert.fsuvius.security;
 import java.io.IOException;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
