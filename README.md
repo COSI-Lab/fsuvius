@@ -7,6 +7,8 @@ Very much a work in progress. Expect functionality like avatars, bank totals, et
  - Quick increment and decrement buttons
  - Changes automatically refresh
  - Hideous theming reminiscent of decades past
+ - The MUG Edition
+ - Marquee
  
 [Source code](https://github.com/lavajuno/fsuvius)
 
