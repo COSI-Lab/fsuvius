@@ -5,6 +5,9 @@ import Home from './pages/home';
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
+/* 
+  App just returns the navbar and the elements it points to.
+*/
 function App() {
   return (
     <div>

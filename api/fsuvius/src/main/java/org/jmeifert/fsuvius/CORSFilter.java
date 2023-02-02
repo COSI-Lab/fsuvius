@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * CORSFilter controls cross-origin requests to the API.
+ */
 @Component
 public class CORSFilter implements Filter {
     public CORSFilter() {

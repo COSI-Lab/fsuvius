@@ -4,6 +4,9 @@ import UserCreator from '../components/usercreator';
 import FsuviusLogo from './fsuvius.png';
 import FsuviusMap from '../FsuviusMap.js';
 
+/*
+  Home is the primary page with all entries.
+*/
 class Home extends Component {
   /*
   constructor() {

@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import FsuviusMap from '../FsuviusMap.js';
 import UserEditor from './usereditor.js';
 
-/* UserList handles displaying a list of all stored users */
+/* 
+    UserList handles displaying a list of all stored users.
+*/
 class UserList extends Component {
     constructor() {
         super();

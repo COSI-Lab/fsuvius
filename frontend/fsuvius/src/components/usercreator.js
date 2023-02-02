@@ -1,7 +1,9 @@
 import React from "react";
 import FsuviusMap from "../FsuviusMap";
 
-/* UserCreator handles creating new users */
+/* 
+  UserCreator handles creating new users
+*/
 class UserCreator extends React.Component {
   constructor() {
     super();

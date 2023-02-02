@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import FsuviusLogo from './fsuvius.png';
 
+/*
+    About contains the version information of the frontend
+*/
 class About extends Component {
     /*
     constructor() {
