@@ -70,7 +70,7 @@ class UserEditor extends Component {
             'Accept':'application/json',
             'Content-Type':'application/json',
         },
-        body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance = 1}),
+        body: JSON.stringify({id: this.state.id, name: this.state.name, balance: this.state.balance + 1}),
     });
     //window.location.reload();
   }
