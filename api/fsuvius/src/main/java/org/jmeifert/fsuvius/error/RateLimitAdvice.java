@@ -1,4 +1,4 @@
-package org.jmeifert.fsuvius.security;
+package org.jmeifert.fsuvius.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

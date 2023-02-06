@@ -6,7 +6,7 @@ import java.util.List;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
-import org.jmeifert.fsuvius.security.RateLimitException;
+import org.jmeifert.fsuvius.error.RateLimitException;
 import org.jmeifert.fsuvius.user.User;
 import org.jmeifert.fsuvius.user.UserRegistry;
 import org.springframework.web.bind.annotation.*;

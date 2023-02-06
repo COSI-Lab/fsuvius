@@ -1,4 +1,4 @@
-package org.jmeifert.fsuvius.security;
+package org.jmeifert.fsuvius.error;
 
 public class RateLimitException extends RuntimeException {
     public RateLimitException() {

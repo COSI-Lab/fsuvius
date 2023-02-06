@@ -1,7 +1,5 @@
 package org.jmeifert.fsuvius.user;
 
-import org.jmeifert.fsuvius.user.User;
-
 import java.io.*;
 import java.util.Collections;
 import java.util.List;

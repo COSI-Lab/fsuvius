@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.jmeifert.fsuvius.FsuviusMap;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,7 +27,11 @@ public class CORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        /*
+            Uncomment the below line to enable CORS requests from any origin
+            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+         */
+        response.setHeader("Access-Control-Allow-Origin", FsuviusMap.CORS_ALLOWED_ORIGINS);
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
