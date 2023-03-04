@@ -3,6 +3,7 @@ package org.jmeifert.fsuvius.user;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
+import java.lang.Integer;
 
 /**
  * User represents an account in the system with an ID, name, and balance.
@@ -17,7 +18,7 @@ public class User implements Serializable {
      * Constructs a User with the name "" and a balance of 0.
      */
     public User() {
-        this.id = "" + new Random().nextLong();
+        this.id = generateID();
         this.name = "";
         this.balance = 0.0F;
     }
@@ -27,8 +28,8 @@ public class User implements Serializable {
      * @param name The User's name
      */
     public User(String name) {
-        this.id = "" + new Random().nextLong();
-        this.name = name;
+        this.id = generateID();
+        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
         this.balance = 0.0F;
     }
 
@@ -38,8 +39,8 @@ public class User implements Serializable {
      * @param balance The User's balance
      */
     public User(String name, float balance) {
-        this.id = "" + new Random().nextLong();
-        this.name = name;
+        this.id = generateID();
+        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
         this.balance = balance;
     }
 
@@ -80,7 +81,7 @@ public class User implements Serializable {
      * @param name this User's name
      */
     public void setName(String name) {
-        this.name = name;
+        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
     }
 
     /**
@@ -90,6 +91,21 @@ public class User implements Serializable {
     public void setBalance(float balance) {
         this.balance = balance;
     }
+
+    /**
+     * Generates an ID.
+     * @return id The generated ID.
+     */
+    public String generateID() {
+        Random r = new Random();
+        StringBuilder sb = new StringBuilder();
+        sb.append("user");
+        for(int i = 0; i < 64; i++) {
+            sb.append(Integer.toHexString(r.nextInt(256)));
+        }
+        return sb.toString();
+    }
+
 
     @Override
     public boolean equals(Object other) {
