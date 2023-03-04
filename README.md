@@ -1,11 +1,12 @@
 # fsuvius
 #### COSI's Mount Fsuvius, now with even more ~~useless~~ functionality.
-Very much a work in progress. Expect functionality like avatars, bank totals, etc.
+Work in progress. Suggest features at meetings!
 ### Changes from the original:
  - Ability to delete users
- - Resistance to script injection
+ - Sanitization of inputs
  - Quick increment and decrement buttons
  - Changes automatically refresh
+ - Bank totals
  - Design language from this decade
  - The Sierra Mist Edition
 
