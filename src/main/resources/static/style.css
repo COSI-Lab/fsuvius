@@ -1,0 +1,126 @@
+/* ===== FONTS ===== */
+@font-face {
+    font-family: "Open Sans";
+    src: url("fonts/OpenSans-Medium.ttf");
+}
+
+/* ===== GENERAL ===== */
+body {
+    font-family: "Open Sans", Verdana, sans-serif;
+    font-size: 16px;
+    background-color: rgb(180, 205, 225);
+    color: black;
+    padding: 0;
+    margin: 0;
+    background-image: url("media/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+h1, h2, h3, p {
+    margin: 8px 0;
+}
+
+.spacer {
+    height: 20px;
+}
+
+.logo {
+    margin: 12px auto;
+    display: block;
+    width: 60%;
+    max-width: 400px;
+}
+
+button {
+    cursor: pointer;
+    font: inherit;
+    margin: 0px 0px;
+    padding: 6px 10px;
+    border: 1px solid black;
+    color: black;
+    background: none;
+    transition-duration: 200ms;
+}
+
+.inline_button {
+    cursor: pointer;
+    font: inherit;
+    display: inline-block;
+    margin: 8px 8px 0px 0px;
+    padding: 6px 10px;
+    border: 1px solid black;
+    color: black;
+    background: none;
+    transition-duration: 200ms;
+}
+
+button:hover {
+    background: black;
+    color: white;
+}
+
+.inline_button:hover {
+    background: black;
+    color: white;
+}
+
+.name_field {
+    font: inherit;
+    width: 250px;
+    margin: 8px 0;
+    border: 1px solid black;
+    padding: 6px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background: none;
+}
+
+.balance_field {
+    font: inherit;
+    width: 100px;
+    margin: 8px 0;
+    border: 1px solid black;
+    padding: 6px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background: none;
+}
+
+.content_container {
+    width: 800px;
+    padding: 24px;
+    margin: 100px auto;
+    background: rgba(255,255,255,0.7);
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+    padding: 8px;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 998;
+    background: rgba(40,45,60,0.7);
+    color: white;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.5);
+}
+
+.navbar_item {
+    display: inline-block;
+    margin: 4px 0px 4px 12px;
+    padding: 6px 10px;
+    color: white;
+    background: none;
+    border: 1px solid rgba(0,0,0,0);
+    transition-duration: 200ms;
+}
+
+.navbar_item:hover {
+    background: white;
+    color: black;
+    border: 1px solid white;
+}

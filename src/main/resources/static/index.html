@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mount Fsuvius</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="index.html"><div class="navbar_item">Home</div></a>
+            <a href="about.html"><div class="navbar_item">About</div></a>
+        </div>
+
+        <div class="content_container">
+            <h1>Mount Fsuvius</h1>
+            <p>The Sierra Mist Edition</p>
+
+            <div class="spacer"></div>
+
+            <div id="USER_LIST"></div>
+
+            <div class="spacer"></div>
+
+            <input class="name_field" id="CREATE_FIELD" placeholder="new user's name...">
+            <button onclick="handle_create()">Create User</button>
+        </div>
+    </body>
+
+    <script>
+        const USERS_URL = "api/v1/users"
+        const USER_URL = "api/v1/user/"
+
+        /* Handle creating a user */
+        function handle_create() {
+            console.log("Handling CREATE new user...");
+            let new_name = document.getElementById("CREATE_FIELD").value;
+            fetch(USERS_URL, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: new_name,
+            }).then(async response => {
+                if(!response.ok) {
+                    throw new Error("POST request failed!");
+                }
+                document.getElementById("CREATE_FIELD").value = "";
+                display_list();
+            })
+        }
+
+        /* Handle updating a user */
+        function handle_update(id) {
+            console.log(`Handling UPDATE for ID [${id}]`);
+            let name_field = document.getElementById(`FIELD_NAME_${id}`);
+            let balance_field = document.getElementById(`FIELD_BALANCE_${id}`);
+            let new_name = name_field.value;
+            let new_balance = balance_field.value;
+            let new_user = {
+                "id": `${id}`,
+                "name": `${new_name}`,
+                "balance": `${new_balance}`
+            }
+            console.log("[DEBUG] New user:");
+            console.log(new_user);
+
+            fetch((USER_URL + id), {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(new_user),
+            }).then(async response => {
+                if(!response.ok) {
+                    throw new Error("PUT request failed!");
+                }
+                const data = await response.json();
+                console.log("[DEBUG] Response:")
+                console.log(data);
+                name_field.value = data.name;
+                balance_field.value = data.balance;
+            }).catch(error => {
+                console.log(error);
+                window.alert(`Failed to update user ${id}.`);
+            });
+        }
+
+        /* Handle deleting a user */
+        function handle_remove(id) {
+            console.log(`Handling REMOVE for ID [${id}]`);
+            if(window.confirm("Are you sure you want to remove this user?")) {
+                fetch((USER_URL + id), {
+                    method: "DELETE",
+                }).then(async response => {
+                    if(!response.ok) {
+                        throw new Error("DELETE request failed!");
+                    }
+                    display_list();
+                }).catch(error => {
+                    console.log(error);
+                    window.alert(`Failed to delete user ${id}.`);
+                });
+            }
+        }
+
+        /* Handle +1 for single user */
+        function handle_plus(id) {
+            console.log(`Handling PLUS for ID [${id}]`);
+            let balance_field = document.getElementById(`FIELD_BALANCE_${id}`);
+            balance_field.value =  Number(balance_field.value) + 1.0;
+            handle_update(id);
+        }
+
+        /* Handle -1 for single user */
+        function handle_minus(id) {
+            console.log(`Handling MINUS for ID [${id}]`);
+            let balance_field = document.getElementById(`FIELD_BALANCE_${id}`);
+            balance_field.value = Number(balance_field.value) - 1.0;
+            handle_update(id);
+        }
+
+        /* Display list of all users */
+        function display_list() {
+            console.log("Handling DISPLAY users...")
+            fetch(USERS_URL, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+            }).then(async response => {
+                if(!response.ok) {
+                    throw new Error("PUT request failed!");
+                }
+                const data = await response.json();
+                console.log(data);
+                formatted_result = "";
+                for(let i in data) {
+                    let user = data[i];
+                    console.log(user);
+                    var user_HTML = `
+                    <div class="entry_container" id="USER_${user.id}">
+                        <input class="name_field" id="FIELD_NAME_${user.id}" value="${user.name}">
+                        <input class="balance_field" id="FIELD_BALANCE_${user.id}" value="${user.balance}">
+                        <button onclick="handle_plus('${user.id}')">+1</button>
+                        <button onclick="handle_minus('${user.id}')">-1</button>
+                        <button onclick="handle_update('${user.id}')">Update</button>
+                        <button onclick="handle_remove('${user.id}')">Remove</button>
+                    </div>
+                    `
+                    formatted_result += user_HTML;
+                }
+
+                document.getElementById("USER_LIST").innerHTML = formatted_result;
+            }).catch(error => {
+                document.getElementById("USER_LIST").innerHTML = "<p>Sorry, something went wrong with displaying the list of users. Check the console for more info.</p>";
+                console.log(error);
+            });
+        }
+
+        /* ===== On page load ===== */
+        display_list();
+    </script>
+</html>
