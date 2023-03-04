@@ -6,10 +6,9 @@ Very much a work in progress. Expect functionality like avatars, bank totals, et
  - Resistance to script injection
  - Quick increment and decrement buttons
  - Changes automatically refresh
- - Hideous theming reminiscent of decades past
- - The MUG Edition
- - Marquee
- 
+ - Design language from this decade
+ - The Sierra Mist Edition
+
 [Source code](https://github.com/lavajuno/fsuvius)
 
 [Releases](https://github.com/lavajuno/fsuvius/releases)
