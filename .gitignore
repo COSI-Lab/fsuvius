@@ -1,5 +1,6 @@
 users.dat
-out
+.idea/workspace.xml
+.idea/vcs.xml
 
 HELP.md
 target/
@@ -33,5 +34,3 @@ build/
 
 ### VS Code ###
 .vscode/
-.idea/workspace.xml
-.idea/vcs.xml
