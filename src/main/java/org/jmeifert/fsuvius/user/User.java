@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.lang.Integer;
 
+import org.jmeifert.fsuvius.util.StringTools;
+
 /**
  * User represents an account in the system with an ID, name, and balance.
  */
@@ -29,7 +31,7 @@ public class User implements Serializable {
      */
     public User(String name) {
         this.id = generateID();
-        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
+        this.name = StringTools.sanitizeLine(name);
         this.balance = 0.0F;
     }
 
@@ -40,7 +42,7 @@ public class User implements Serializable {
      */
     public User(String name, float balance) {
         this.id = generateID();
-        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
+        this.name = StringTools.sanitizeLine(name);
         this.balance = balance;
     }
 
@@ -81,7 +83,7 @@ public class User implements Serializable {
      * @param name this User's name
      */
     public void setName(String name) {
-        this.name = name.replaceAll("[^a-zA-Z0-9 ]", "");
+        this.name = StringTools.sanitizeLine(name);
     }
 
     /**
@@ -124,7 +126,11 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "id='" + this.id + "', name='" + this.name + "', balance=" +
-                this.balance + "}";
+        return String.format(
+          "{\n    \"id\" = \"%s\",\n    \"name\" = \"%s\",\n    \"balance\" = %f,\n}",
+                this.id,
+                this.name,
+                this.balance
+        );
     }
 }
