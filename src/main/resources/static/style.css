@@ -26,10 +26,9 @@ h1, h2, h3, p {
 }
 
 .logo {
-    margin: 12px auto;
-    display: block;
-    width: 60%;
-    max-width: 400px;
+    margin: 0;
+    max-width: 450px;
+    height: auto;
 }
 
 button {
@@ -123,4 +122,25 @@ button:hover {
     background: white;
     color: black;
     border: 1px solid white;
+}
+
+.name_label {
+    display: inline-block;
+    padding: 0px 6px;
+    margin: 0;
+    width: 250px;
+}
+
+.balance_label {
+    display: inline-block;
+    padding: 0px 6px;
+    margin: 0;
+    width: 100px;
+}
+
+.controls_label {
+    display: inline-block;
+    padding: 0px 6px;
+    margin: 0;
+    width: 100px;
 }

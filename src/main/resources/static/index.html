@@ -12,10 +12,14 @@
         </div>
 
         <div class="content_container">
-            <h1>Mount Fsuvius</h1>
-            <p>The Sierra Mist Edition</p>
+            <img class="logo" src="media/logo.png" alt="Mount Fsuvius">
+            <p><i>The Sierra Mist Edition</i></p>
 
             <div class="spacer"></div>
+
+            <h2 class="name_label">Name</h2>
+            <h2 class="balance_label">Balance</h2>
+            <h2 class="controls_label">Controls</h2>         
 
             <div id="USER_LIST"></div>
 
@@ -27,13 +31,17 @@
     </body>
 
     <script>
+        /* The URL for getting a list of users */
         const USERS_URL = "api/v1/users"
+
+        /* The URL prefix for performing operations on single users */
         const USER_URL = "api/v1/user/"
 
         /* Handle creating a user */
         function handle_create() {
             console.log("Handling CREATE new user...");
             let new_name = document.getElementById("CREATE_FIELD").value;
+            /* Send POST request to API */
             fetch(USERS_URL, {
                 method: "POST",
                 headers: {
@@ -42,12 +50,18 @@
                 },
                 body: new_name,
             }).then(async response => {
+                /* Handle HTTP errors */
                 if(!response.ok) {
                     throw new Error("POST request failed!");
                 }
+                /* Update user list */
                 document.getElementById("CREATE_FIELD").value = "";
                 display_list();
-            })
+            }).catch(error => {
+                /* Handle Javascript errors */
+                console.log(error);
+                window.alert("Failed to create user.");
+            });
         }
 
         /* Handle updating a user */
@@ -65,6 +79,7 @@
             console.log("[DEBUG] New user:");
             console.log(new_user);
 
+            /* Sent PUT request to API */
             fetch((USER_URL + id), {
                 method: "PUT",
                 headers: {
@@ -73,15 +88,18 @@
                 },
                 body: JSON.stringify(new_user),
             }).then(async response => {
+                /* Handle HTTP errors */
                 if(!response.ok) {
                     throw new Error("PUT request failed!");
                 }
+                /* Update fields on page */
                 const data = await response.json();
                 console.log("[DEBUG] Response:")
                 console.log(data);
                 name_field.value = data.name;
                 balance_field.value = data.balance;
             }).catch(error => {
+                /* Handle Javascript errors */
                 console.log(error);
                 window.alert(`Failed to update user ${id}.`);
             });
@@ -91,14 +109,18 @@
         function handle_remove(id) {
             console.log(`Handling REMOVE for ID [${id}]`);
             if(window.confirm("Are you sure you want to remove this user?")) {
+                /* Send DELETE request to API */
                 fetch((USER_URL + id), {
                     method: "DELETE",
                 }).then(async response => {
+                    /* Handle HTTP errors */
                     if(!response.ok) {
                         throw new Error("DELETE request failed!");
                     }
+                    /* Update page */
                     display_list();
                 }).catch(error => {
+                    /* Handle Javascript errors */
                     console.log(error);
                     window.alert(`Failed to delete user ${id}.`);
                 });
@@ -123,16 +145,19 @@
 
         /* Display list of all users */
         function display_list() {
-            console.log("Handling DISPLAY users...")
+            console.log("Handling DISPLAY users...");
+            /* Send GET request to API */
             fetch(USERS_URL, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
                 },
             }).then(async response => {
+                /* Handle HTTP errors */
                 if(!response.ok) {
                     throw new Error("PUT request failed!");
                 }
+                /* Format and display user list on page */
                 const data = await response.json();
                 console.log(data);
                 formatted_result = "";
@@ -151,9 +176,9 @@
                     `
                     formatted_result += user_HTML;
                 }
-
                 document.getElementById("USER_LIST").innerHTML = formatted_result;
             }).catch(error => {
+                /* Handle Javascript errors */
                 document.getElementById("USER_LIST").innerHTML = "<p>Sorry, something went wrong with displaying the list of users. Check the console for more info.</p>";
                 console.log(error);
             });
