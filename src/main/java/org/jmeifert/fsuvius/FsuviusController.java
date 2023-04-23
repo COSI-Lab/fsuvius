@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class FsuviusController {
-    private final int MAX_REQUESTS_BURST = 100;
+    private final int MAX_REQUESTS_PER_MINUTE = 3000;
     private final Bucket bucket;
     private UserRegistry userRegistry;
 
     FsuviusController() {
         userRegistry = new UserRegistry();
-        Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_BURST,
-                Refill.greedy(MAX_REQUESTS_BURST, Duration.ofSeconds(1)));
+        Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_PER_MINUTE,
+                Refill.greedy(MAX_REQUESTS_PER_MINUTE, Duration.ofMinutes(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
     }
 
-    @GetMapping("/api/v1/bank_balance")
+    @GetMapping("/api/bank_balance")
     float getBankBalance() {
         float bal = 0.0F;
         for(User i : userRegistry.getAll()) {
@@ -33,7 +33,7 @@ public class FsuviusController {
         return bal;
     }
 
-    @GetMapping("/api/v1/users")
+    @GetMapping("/api/users")
     List<User> all() {
         if(bucket.tryConsume(1)) {
             return userRegistry.getAll();
@@ -42,7 +42,7 @@ public class FsuviusController {
 
     }
 
-    @PostMapping("/api/v1/users")
+    @PostMapping("/api/users")
     User newEntry(@RequestBody String name) {
         if(bucket.tryConsume(1)) {
             return userRegistry.createUser(name);
@@ -51,7 +51,7 @@ public class FsuviusController {
 
     }
 
-    @GetMapping("/api/v1/user/{id}")
+    @GetMapping("/api/user/{id}")
     User one(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
             return userRegistry.getUser(id);
@@ -59,7 +59,7 @@ public class FsuviusController {
         throw new RateLimitException();
     }
 
-    @PutMapping("/api/v1/user/{id}")
+    @PutMapping("/api/user/{id}")
     User replaceEntry(@RequestBody User newUser, @PathVariable String id) {
         if(bucket.tryConsume(1)) {
             return userRegistry.editUser(id, newUser);
@@ -67,7 +67,7 @@ public class FsuviusController {
         throw new RateLimitException();
     }
 
-    @DeleteMapping("/api/v1/user/{id}")
+    @DeleteMapping("/api/user/{id}")
     void deleteEntry(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
             userRegistry.deleteUser(id);
