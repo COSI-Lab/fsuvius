@@ -1,5 +1,7 @@
 package org.jmeifert.fsuvius.user;
 
+import org.jmeifert.fsuvius.error.NotFoundException;
+
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,9 @@ public class UserRegistry {
     private final String STORE_FILE = "users.dat";
     private Vector<User> users;
 
+    /**
+     * Instantiates a UserRegistry.
+     */
     public UserRegistry() {
         users = loadUsersFromFile();
         if(users.size() < 1) { // if no users could be loaded
@@ -61,12 +66,11 @@ public class UserRegistry {
         } catch(IOException e) {
             System.err.println("UserRegistry: IOException upon writing " + STORE_FILE);
             System.err.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 
     /**
-     * Gets all users.
+     * Gets all registered users.
      * @return All users as a list
      */
     public List<User> getAll() {
@@ -86,7 +90,7 @@ public class UserRegistry {
                 return i;
             }
         }
-        return new User("Not Found",-1.0F);
+        throw new NotFoundException();
     }
 
     /**
@@ -117,7 +121,7 @@ public class UserRegistry {
                 return user;
             }
         }
-        return new User("Not Found", -1.0F);
+        throw new NotFoundException();
     }
 
     /**
@@ -130,7 +134,9 @@ public class UserRegistry {
             if(users.get(i).getID().equals(id)) {
                 users.remove(i);
                 saveUsersToFile(users);
+                return;
             }
         }
+        throw new NotFoundException();
     }
 }

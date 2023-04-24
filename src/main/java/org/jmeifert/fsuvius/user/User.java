@@ -1,19 +1,36 @@
 package org.jmeifert.fsuvius.user;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 import java.lang.Integer;
 
-import org.jmeifert.fsuvius.util.StringTools;
-
 /**
  * User represents an account in the system with an ID, name, and balance.
  */
 public class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6190001L;
 
+    /**
+     * Regex used to remove unsafe characters from strings
+     */
+    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ !.,?:;'#$%^*()/_+-]";
+
+    /**
+     * This User's unique ID
+     */
     private String id;
+
+    /**
+     * This User's name
+     */
     private String name;
+
+    /**
+     * This User's balance of FSU
+     */
     private float balance;
 
     /**
@@ -31,7 +48,7 @@ public class User implements Serializable {
      */
     public User(String name) {
         this.id = generateID();
-        this.name = StringTools.sanitizeLine(name);
+        this.name = name.replaceAll(SANITIZER_REGEX,"");
         this.balance = 0.0F;
     }
 
@@ -42,7 +59,7 @@ public class User implements Serializable {
      */
     public User(String name, float balance) {
         this.id = generateID();
-        this.name = StringTools.sanitizeLine(name);
+        this.name = name.replaceAll(SANITIZER_REGEX,"");
         this.balance = balance;
     }
 
@@ -75,16 +92,14 @@ public class User implements Serializable {
      * @param id this User's ID
      */
     public void setID(String id) {
-        this.id = id;
+        this.id = id.replaceAll(SANITIZER_REGEX,"");
     }
 
     /**
      * Sets this User's name.
      * @param name this User's name
      */
-    public void setName(String name) {
-        this.name = StringTools.sanitizeLine(name);
-    }
+    public void setName(String name) { this.name = name.replaceAll(SANITIZER_REGEX,""); }
 
     /**
      * Sets this User's balance.
@@ -108,7 +123,6 @@ public class User implements Serializable {
         return sb.toString();
     }
 
-
     @Override
     public boolean equals(Object other) {
         if(!(other instanceof User)) {
@@ -127,7 +141,13 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return String.format(
-          "{\n    \"id\" = \"%s\",\n    \"name\" = \"%s\",\n    \"balance\" = %f,\n}",
+                """
+                {
+                "id"="%s",
+                "name"="%s",
+                "balance"=%f
+                }
+                """,
                 this.id,
                 this.name,
                 this.balance
