@@ -29,7 +29,7 @@ public class UserRegistry {
      * Loads users from a file.
      * @return Users loaded from the file
      */
-    private Vector<User> loadUsersFromFile() {
+    private synchronized Vector<User> loadUsersFromFile() {
         try {
             FileInputStream f = new FileInputStream(STORE_FILE);
             ObjectInputStream o = new ObjectInputStream(f);
@@ -54,7 +54,7 @@ public class UserRegistry {
      * Saves users to a file.
      * @param users Users to save to the file
      */
-    private void saveUsersToFile(Vector<User> users) {
+    private synchronized void saveUsersToFile(Vector<User> users) {
         try {
             FileOutputStream f = new FileOutputStream(STORE_FILE);
             ObjectOutputStream o = new ObjectOutputStream(f);
@@ -73,7 +73,7 @@ public class UserRegistry {
      * Gets all registered users.
      * @return All users as a list
      */
-    public List<User> getAll() {
+    public synchronized List<User> getAll() {
         users = loadUsersFromFile();
         return Collections.list(users.elements());
     }
@@ -83,7 +83,7 @@ public class UserRegistry {
      * @param id User's ID
      * @return The user with the specified ID
      */
-    public User getUser(String id) {
+    public synchronized User getUser(String id) {
         users = loadUsersFromFile();
         for(User i : users) {
             if(i.getID().equals(id)) {
