@@ -39,8 +39,9 @@
 
         /* Handle creating a user */
         function handle_create() {
-            console.log("Handling CREATE new user...");
             let new_name = document.getElementById("CREATE_FIELD").value;
+            if(new_name.length < 1) { return; }
+            console.log("Handling CREATE new user...");
             fetch(USERS_URL, {
                 method: "POST",
                 headers: {

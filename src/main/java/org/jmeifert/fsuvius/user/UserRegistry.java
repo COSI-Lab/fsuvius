@@ -1,6 +1,7 @@
 package org.jmeifert.fsuvius.user;
 
 import org.jmeifert.fsuvius.error.NotFoundException;
+import org.jmeifert.fsuvius.util.Log;
 
 import java.io.*;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.Vector;
  * UserRegistry handles the storage and retrieval of users.
  */
 public class UserRegistry {
+    private final Log log;
     private final String STORE_FILE = "users.dat";
     private Vector<User> users;
 
@@ -18,11 +20,14 @@ public class UserRegistry {
      * Instantiates a UserRegistry.
      */
     public UserRegistry() {
+        log = new Log("UserRegistry");
+        log.print("Loading users into cache...");
         users = loadUsersFromFile();
         if(users.size() < 1) { // if no users could be loaded
             users.add(new User("New User", 0.0F));
             saveUsersToFile(users);
         }
+        log.print("Finished loading users into cache.");
     }
 
     /**
@@ -38,14 +43,14 @@ public class UserRegistry {
             f.close();
             return output;
         } catch(FileNotFoundException e) {
-            System.err.println("UserRegistry: FileNotFoundException upon reading " + STORE_FILE);
+            log.print(1, "UserRegistry: FileNotFoundException upon reading " + STORE_FILE);
             return new Vector<>();
         } catch(IOException e) {
-            System.err.println("UserRegistry: IOException upon reading " + STORE_FILE);
-            return new Vector<>();
+            log.print(2, "UserRegistry: IOException upon reading " + STORE_FILE);
+            throw new RuntimeException("Failed to read users!");
         } catch(ClassNotFoundException e) {
-            System.err.println("UserRegistry: ClassNotFoundException upon reading " + STORE_FILE);
-            return new Vector<>();
+            log.print(2, "UserRegistry: ClassNotFoundException upon reading " + STORE_FILE);
+            throw new RuntimeException("Failed to read users!");
         }
 
     }
@@ -56,16 +61,16 @@ public class UserRegistry {
      */
     private synchronized void saveUsersToFile(Vector<User> users) {
         try {
+            log.print("Syncing writes to " + STORE_FILE + "...");
             FileOutputStream f = new FileOutputStream(STORE_FILE);
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(users);
             o.close();
             f.close();
         } catch(FileNotFoundException e) {
-            System.err.println("UserRegistry: FileNotFoundException upon writing " + STORE_FILE);
+            log.print(1, "UserRegistry: FileNotFoundException upon writing " + STORE_FILE);
         } catch(IOException e) {
-            System.err.println("UserRegistry: IOException upon writing " + STORE_FILE);
-            System.err.println(e.getMessage());
+            log.print(1, "UserRegistry: IOException upon writing " + STORE_FILE);
         }
     }
 
@@ -84,7 +89,6 @@ public class UserRegistry {
      * @return The user with the specified ID
      */
     public synchronized User getUser(String id) {
-        users = loadUsersFromFile();
         for(User i : users) {
             if(i.getID().equals(id)) {
                 return i;
@@ -99,7 +103,6 @@ public class UserRegistry {
      * @return The user with the specified name
      */
     public synchronized User createUser(String name) {
-        users = loadUsersFromFile();
         User userToAdd = new User(name);
         users.add(userToAdd);
         saveUsersToFile(users);
@@ -113,7 +116,6 @@ public class UserRegistry {
      * @return The updated user
      */
     public synchronized User editUser(String id, User user) {
-        users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.set(i, user);
@@ -129,7 +131,6 @@ public class UserRegistry {
      * @param id User ID to delete
      */
     public synchronized void deleteUser(String id) {
-        users = loadUsersFromFile();
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.remove(i);

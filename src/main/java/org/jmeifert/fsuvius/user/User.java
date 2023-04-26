@@ -116,8 +116,7 @@ public class User implements Serializable {
     public String generateID() {
         Random r = new Random();
         StringBuilder sb = new StringBuilder();
-        sb.append("user");
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < 32; i++) {
             sb.append(Integer.toHexString(r.nextInt(256)));
         }
         return sb.toString();

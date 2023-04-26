@@ -9,6 +9,7 @@ import io.github.bucket4j.Refill;
 import org.jmeifert.fsuvius.error.RateLimitException;
 import org.jmeifert.fsuvius.user.User;
 import org.jmeifert.fsuvius.user.UserRegistry;
+import org.jmeifert.fsuvius.util.Log;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,18 +17,22 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 public class FsuviusController {
-    private final int MAX_REQUESTS_PER_MINUTE = 3000;
+    private final Log log;
+    private final int MAX_REQUESTS_PER_5S = 100;
     private final Bucket bucket;
     private UserRegistry userRegistry;
 
     /**
      * Instantiates a FsuviusController.
      */
-    FsuviusController() {
+    public FsuviusController() {
+        log = new Log("FsuviusController");
+        log.print("Starting up...");
         userRegistry = new UserRegistry();
-        Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_PER_MINUTE,
-                Refill.greedy(MAX_REQUESTS_PER_MINUTE, Duration.ofMinutes(1)));
+        Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_PER_5S,
+                Refill.greedy(MAX_REQUESTS_PER_5S, Duration.ofSeconds(5)));
         this.bucket = Bucket.builder().addLimit(limit).build();
+        log.print("Initialization complete. Welcome to Mount Fsuvius.");
     }
 
     /**
@@ -35,7 +40,7 @@ public class FsuviusController {
      * @return The total amount of FSU in the bank
      */
     @GetMapping("/api/bank_balance")
-    float getBankBalance() {
+    public float getBankBalance() {
         if(bucket.tryConsume(1)) {
             float bal = 0.0F;
             for(User i : userRegistry.getAll()) {
@@ -51,7 +56,7 @@ public class FsuviusController {
      * @return All Users
      */
     @GetMapping("/api/users")
-    List<User> getUsers() {
+    public List<User> getUsers() {
         if(bucket.tryConsume(1)) {
             return userRegistry.getAll();
         }
@@ -65,8 +70,9 @@ public class FsuviusController {
      * @return the new User
      */
     @PostMapping("/api/users")
-    User newUser(@RequestBody String name) {
+    public User newUser(@RequestBody String name) {
         if(bucket.tryConsume(1)) {
+            log.print("Handling request to create new user with name \"" + name + "\".");
             return userRegistry.createUser(name);
         }
         throw new RateLimitException();
@@ -79,7 +85,7 @@ public class FsuviusController {
      * @return The User with the specified ID
      */
     @GetMapping("/api/user/{id}")
-    User getUser(@PathVariable String id) {
+    public User getUser(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
             return userRegistry.getUser(id);
         }
@@ -93,8 +99,9 @@ public class FsuviusController {
      * @return
      */
     @PutMapping("/api/user/{id}")
-    User editUser(@RequestBody User newUser, @PathVariable String id) {
+    public User editUser(@RequestBody User newUser, @PathVariable String id) {
         if(bucket.tryConsume(1)) {
+            log.print("Handling request to edit user at ID \"" + id + "\".");
             return userRegistry.editUser(id, newUser);
         }
         throw new RateLimitException();
@@ -105,8 +112,9 @@ public class FsuviusController {
      * @param id The ID of the user to delete
      */
     @DeleteMapping("/api/user/{id}")
-    void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
+            log.print("Handling request to delete user at ID \"" + id + "\".");
             userRegistry.deleteUser(id);
         } else {
             throw new RateLimitException();
