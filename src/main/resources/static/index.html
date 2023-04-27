@@ -144,8 +144,8 @@
                     console.log(user);
                     var user_HTML = `
                     <div class="entry_container" id="USER_${user.id}">
-                        <input class="name_field" id="FIELD_NAME_${user.id}" value="${user.name}">
-                        <input class="balance_field" id="FIELD_BALANCE_${user.id}" value="${user.balance}">
+                        <input class="name_field" id="FIELD_NAME_${user.id}" value="${user.name}" maxlength="30">
+                        <input class="balance_field" id="FIELD_BALANCE_${user.id}" value="${user.balance}" maxlength="20">
                         <button onclick="handle_plus('${user.id}')">+1</button>
                         <button onclick="handle_minus('${user.id}')">-1</button>
                         <button onclick="handle_update('${user.id}')">Update</button>
