@@ -9,6 +9,10 @@ Work in progress. Suggest features at meetings!
  - Bank totals
  - Design language from this decade
  - The Sierra Mist Edition
+ 
+ ### Planned Features
+ - Profile icons
+ - Text effects
 
 [Source code](https://github.com/lavajuno/fsuvius)
 
