@@ -1,8 +1,10 @@
-#    ___                _
-#   | __|___ _  _ __ __(_) _  _  ___
-#   | _|(_-<| || |\ V /| || || |(_-<
-#   |_| /__/ \_,_| \_/ |_| \_,_|/__/
+#  ___                _
+# | __|___ _  _ __ __(_) _  _  ___
+# | _|(_-<| || |\ V /| || || |(_-<
+# |_| /__/ \_,_| \_/ |_| \_,_|/__/
 #
-# The Sierra Mist Edition * Version 0.1.0 * https://github.com/lavajuno/fsuvius
-# Spring Boot version ${spring-boot.version}
+# Mount Fsuvius - The Sierra Mist Edition
+# Application version ${application.version}.
+# Spring Boot version ${spring-boot.version}.
+# https://github.com/lavajuno/fsuvius
 #

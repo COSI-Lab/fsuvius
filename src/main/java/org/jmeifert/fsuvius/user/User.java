@@ -16,7 +16,7 @@ public class User implements Serializable {
     /**
      * Regex used to remove unsafe characters from strings
      */
-    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ !.,?:;'#$%^*()/_+-]";
+    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'#$%^*()/_+-]";
 
     /**
      * This User's unique ID

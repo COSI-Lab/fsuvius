@@ -95,8 +95,8 @@ public class FsuviusController {
     /**
      * Edits a User with the given parameters.
      * @param newUser New User parameters
-     * @param id ID of the user to edit
-     * @return
+     * @param id ID of the User to edit
+     * @return The edited User
      */
     @PutMapping("/api/user/{id}")
     public User editUser(@RequestBody User newUser, @PathVariable String id) {
