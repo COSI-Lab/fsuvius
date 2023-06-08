@@ -6,9 +6,10 @@ import java.util.List;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
+import org.jmeifert.fsuvius.data.DatabaseController;
+import org.jmeifert.fsuvius.error.NotFoundException;
 import org.jmeifert.fsuvius.error.RateLimitException;
 import org.jmeifert.fsuvius.user.User;
-import org.jmeifert.fsuvius.user.UserRegistry;
 import org.jmeifert.fsuvius.util.Log;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class FsuviusController {
     private final Log log;
-    private final int MAX_REQUESTS_PER_5S = 100;
+    private final int MAX_REQUESTS_PER_5S = 200;
     private final Bucket bucket;
-    private UserRegistry userRegistry;
+    private DatabaseController databaseController;
 
     /**
      * Instantiates a FsuviusController.
@@ -28,12 +29,14 @@ public class FsuviusController {
     public FsuviusController() {
         log = new Log("FsuviusController");
         log.print("Starting up...");
-        userRegistry = new UserRegistry();
+        databaseController = new DatabaseController();
         Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_PER_5S,
                 Refill.greedy(MAX_REQUESTS_PER_5S, Duration.ofSeconds(5)));
         this.bucket = Bucket.builder().addLimit(limit).build();
-        log.print("Initialization complete. Welcome to Mount Fsuvius.");
+        log.print("===== Init complete. Welcome to Mount Fsuvius. =====");
     }
+
+    /* ===== BANK TOTALS ===== */
 
     /**
      * Gets the total amount of FSU in the bank.
@@ -43,13 +46,15 @@ public class FsuviusController {
     public float getBankBalance() {
         if(bucket.tryConsume(1)) {
             float bal = 0.0F;
-            for(User i : userRegistry.getAll()) {
+            for(User i : databaseController.getUsers()) {
                 bal += i.getBalance();
             }
             return bal;
         }
         throw new RateLimitException();
     }
+
+    /* ===== USERS ===== */
 
     /**
      * Gets all registered Users.
@@ -58,10 +63,9 @@ public class FsuviusController {
     @GetMapping("/api/users")
     public List<User> getUsers() {
         if(bucket.tryConsume(1)) {
-            return userRegistry.getAll();
+            return databaseController.getUsers();
         }
         throw new RateLimitException();
-
     }
 
     /**
@@ -73,10 +77,9 @@ public class FsuviusController {
     public User newUser(@RequestBody String name) {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to create new user with name \"" + name + "\".");
-            return userRegistry.createUser(name);
+            return databaseController.createUser(name);
         }
         throw new RateLimitException();
-
     }
 
     /**
@@ -84,10 +87,10 @@ public class FsuviusController {
      * @param id The ID of the user to get
      * @return The User with the specified ID
      */
-    @GetMapping("/api/user/{id}")
+    @GetMapping("/api/users/{id}")
     public User getUser(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
-            return userRegistry.getUser(id);
+            return databaseController.getUser(id);
         }
         throw new RateLimitException();
     }
@@ -98,11 +101,11 @@ public class FsuviusController {
      * @param id ID of the User to edit
      * @return The edited User
      */
-    @PutMapping("/api/user/{id}")
+    @PutMapping("/api/users/{id}")
     public User editUser(@RequestBody User newUser, @PathVariable String id) {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to edit user at ID \"" + id + "\".");
-            return userRegistry.editUser(id, newUser);
+            return databaseController.editUser(id, newUser);
         }
         throw new RateLimitException();
     }
@@ -111,13 +114,48 @@ public class FsuviusController {
      * Deletes a User with the given ID.
      * @param id The ID of the user to delete
      */
-    @DeleteMapping("/api/user/{id}")
+    @DeleteMapping("/api/users/{id}")
     public void deleteUser(@PathVariable String id) {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to delete user at ID \"" + id + "\".");
-            userRegistry.deleteUser(id);
+            databaseController.deleteUser(id);
         } else {
             throw new RateLimitException();
         }
+    }
+
+    /* ===== PHOTOS ===== */
+
+    /**
+     * Gets a photo by ID.
+     * Will result in an HTTP 404 if the photo cannot be found.
+     * @param id ID of the photo to get
+     * @return The photo with the specified ID
+     */
+    @GetMapping(value = "api/photos/{id}")
+    public byte[] getPhoto(@PathVariable String id) {
+        if(bucket.tryConsume(1)) {
+            try {
+                return databaseController.readPhoto(id);
+            } catch(NotFoundException e) {
+                log.print(1, "Couldn't find photo " + id + " in database.");
+                throw new NotFoundException();
+            }
+        }
+        throw new RateLimitException();
+    }
+
+    /**
+     * Updates a photo by ID. Will create it if it does not already exist.
+     * @param item New content of the photo
+     * @param id ID of the photo to update
+     */
+    @PostMapping("api/photos/{id}")
+    public void putPhoto(@RequestBody String item, @PathVariable String id) {
+        if(bucket.tryConsume(1)) {
+            databaseController.writePhoto(item, id);
+            return;
+        }
+        throw new RateLimitException();
     }
 }

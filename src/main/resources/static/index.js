@@ -2,7 +2,10 @@
 const USERS_URL = "api/users"
 
 /* The URL prefix for performing operations on single users */
-const USER_URL = "api/user/"
+const USER_URL = "api/users/"
+
+/* The URL prefix for performing operations on single photos */
+const PHOTO_URL = "api/photos/"
 
 /* Handle creating a user */
 function handle_create() {
@@ -111,12 +114,10 @@ function display_list() {
             console.log(user);
             var user_HTML = `
             <div class="entry_container" id="USER_${user.id}">
-                <input class="name_field" id="FIELD_NAME_${user.id}" value="${user.name}" maxlength="30">
-                <input class="balance_field" id="FIELD_BALANCE_${user.id}" value="${user.balance}" maxlength="20">
-                <button onclick="handle_plus('${user.id}')">+1</button>
-                <button onclick="handle_minus('${user.id}')">-1</button>
-                <button onclick="handle_update('${user.id}')">Update</button>
-                <button onclick="handle_remove('${user.id}')">Remove</button>
+                <img class="user_photo" src="${PHOTO_URL}${user.id}">
+                <p class="user_name" id="USER_NAME_${user.id}>${user.name}</p>
+                <p class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</p>
+                <button onclick="handle_edit('${user.id}')">Edit</button>
             </div>
             `
             formatted_result += user_HTML;
