@@ -117,6 +117,8 @@ function display_list() {
                 <img class="user_photo" src="${PHOTO_URL}${user.id}">
                 <p class="user_name" id="USER_NAME_${user.id}>${user.name}</p>
                 <p class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</p>
+                <button onclick="handle_plus('${user.id}')">+1</button>
+                <button onclick="handle_minus('${user.id}')">-1</button>
                 <button onclick="handle_edit('${user.id}')">Edit</button>
             </div>
             `
