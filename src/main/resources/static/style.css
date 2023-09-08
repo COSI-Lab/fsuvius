@@ -35,19 +35,7 @@ button {
     cursor: pointer;
     font: inherit;
     margin: 0px 0px;
-    padding: 6px 10px;
-    border: 1px solid black;
-    color: black;
-    background: none;
-    transition-duration: 200ms;
-}
-
-.inline_button {
-    cursor: pointer;
-    font: inherit;
-    display: inline-block;
-    margin: 8px 8px 0px 0px;
-    padding: 6px 10px;
+    padding: 4px 8px;
     border: 1px solid black;
     color: black;
     background: none;
@@ -59,17 +47,12 @@ button:hover {
     color: white;
 }
 
-.inline_button:hover {
-    background: black;
-    color: white;
-}
-
 .name_field {
     font: inherit;
     width: 250px;
     margin: 8px 0;
     border: 1px solid black;
-    padding: 6px;
+    padding: 4px;
     overflow-x: scroll;
     overflow-y: hidden;
     background: none;
@@ -80,7 +63,7 @@ button:hover {
     width: 100px;
     margin: 8px 0;
     border: 1px solid black;
-    padding: 6px;
+    padding: 4px;
     overflow-x: scroll;
     overflow-y: hidden;
     background: none;
@@ -94,7 +77,7 @@ button:hover {
     box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 }
 
-/* ===== NAVBAR ===== */
+/* ===== Navbar ===== */
 
 .navbar {
     padding: 8px;
@@ -124,8 +107,61 @@ button:hover {
     border: 1px solid white;
 }
 
+/* ===== User preview cards ===== */
+
+.userpreview_container {
+    width: 100%;
+    margin: 0 0 24px 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 100px auto;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.userpreview_content {
+    height: 100px;
+    box-sizing: border-box;
+    padding: 0px 12px;
+}
+
+.userpreview_photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* ===== Toast messages ===== */
+
+#TOAST_MESSAGE {
+    font: inherit;
+    color: white;
+    visibility: hidden;
+    min-width: 200px;
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 12px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+#TOAST_MESSAGE.show { visibility: visible; }
+
+.user_balance {
+    display: inline-block;
+    padding-right: 10px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* ===== Labels ===== */
 .name_label {
-    font-size: 20px;
     display: inline-block;
     padding: 0px 12px 0px 0px;
     margin: 0;
@@ -133,17 +169,8 @@ button:hover {
 }
 
 .balance_label {
-    font-size: 20px;
     display: inline-block;
     padding: 0px 12px 0px 0px;
     margin: 0;
     width: 100px;
-}
-
-.controls_label {
-    font-size: 20px;
-    display: inline-block;
-    padding: 0px 12px 0px 0px;
-    margin: 0;
-    width: 200px;
 }
