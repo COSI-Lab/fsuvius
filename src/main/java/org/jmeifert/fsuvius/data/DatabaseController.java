@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import org.jmeifert.fsuvius.FsuviusMap;
 import org.jmeifert.fsuvius.error.NotFoundException;
 import org.jmeifert.fsuvius.util.Log;
 import org.jmeifert.fsuvius.user.User;
@@ -66,6 +67,7 @@ public class DatabaseController {
     public synchronized User createUser(String name) {
         User userToAdd = new User(name);
         users.add(userToAdd);
+        writePhoto(FsuviusMap.DEFAULT_PHOTO, userToAdd.getID());
         saveUsersToFile(users);
         return userToAdd;
     }
@@ -174,8 +176,11 @@ public class DatabaseController {
      */
     public synchronized void writePhoto(String item, String id) {
         try {
-            byte[] image = Base64.getDecoder().decode(item.split(",")[1]);
-            saveBytesToFile(image, "data/photos/"+id);
+            /* if user bypasses frontend upload size limit just don't do anything */
+            if(item.length() < FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) {
+                byte[] image = Base64.getDecoder().decode(item.split(",")[1]);
+                saveBytesToFile(image, "data/photos/"+id);
+            }
         } catch(RuntimeException e) {
             log.print(2, "Failed to write image.");
             throw new RuntimeException("Failed to write image.");

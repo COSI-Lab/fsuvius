@@ -6,6 +6,8 @@
     </head>
 
     <body>
+        <noscript><h1>You need to enable Javascript to use Mount Fsuvius!</h1></noscript>
+        
         <div class="navbar">
             <a href="index.html"><div class="navbar_item">Home</div></a>
             <a href="about.html"><div class="navbar_item">About</div></a>
@@ -17,10 +19,6 @@
 
             <div class="spacer"></div>
 
-            <div class="name_label">Name</div>
-            <div class="balance_label">Balance</div>
-            <div class="controls_label">Controls</div>
-
             <div id="USER_LIST"></div>
 
             <div class="spacer"></div>
@@ -28,6 +26,8 @@
             <input class="name_field" id="CREATE_FIELD" placeholder="new user's name...">
             <button onclick="handle_create()">Create User</button>
         </div>
+
+        <div id="TOAST_MESSAGE"></div>
     </body>
 
     <script src="index.js"></script>

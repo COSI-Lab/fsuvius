@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class FsuviusController {
     private final Log log;
-    private final int MAX_REQUESTS_PER_5S = 200;
+
     private final Bucket bucket;
     private DatabaseController databaseController;
 
@@ -30,8 +30,8 @@ public class FsuviusController {
         log = new Log("FsuviusController");
         log.print("Starting up...");
         databaseController = new DatabaseController();
-        Bandwidth limit= Bandwidth.classic(MAX_REQUESTS_PER_5S,
-                Refill.greedy(MAX_REQUESTS_PER_5S, Duration.ofSeconds(5)));
+        Bandwidth limit= Bandwidth.classic(FsuviusMap.MAX_REQUESTS_PER_SECOND,
+                Refill.greedy(FsuviusMap.MAX_REQUESTS_PER_SECOND, Duration.ofSeconds(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
         log.print("===== Init complete. Welcome to Mount Fsuvius. =====");
     }
