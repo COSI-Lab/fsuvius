@@ -2,6 +2,7 @@
 #### COSI's Mount Fsuvius, now with even more ~~useless~~ functionality.
 Work in progress. Suggest features at meetings!
 ### Changes from the original:
+ - Profile pictures!
  - Ability to delete users
  - Sanitization of inputs
  - Quick increment and decrement buttons
@@ -11,8 +12,9 @@ Work in progress. Suggest features at meetings!
  - The Sierra Mist Edition
  
  ### Planned Features
- - Profile icons
  - Text effects
+ - Ability to view (but not edit) outside of network
+ - Themes?
 
 [Source code](https://github.com/lavajuno/fsuvius)
 
