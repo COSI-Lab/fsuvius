@@ -49,16 +49,10 @@ public class Log {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX);
         sb.append(new Date());
-        switch(level) {
-            case 1:
-                sb.append(LOG_WARN);
-                break;
-            case 2:
-                sb.append(LOG_ERROR);
-                break;
-            default:
-                sb.append(LOG_OK);
-                break;
+        switch (level) {
+            case 1 -> sb.append(LOG_WARN);
+            case 2 -> sb.append(LOG_ERROR);
+            default -> sb.append(LOG_OK);
         }
         sb.append(className);
         sb.append(": ");
