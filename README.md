@@ -6,6 +6,7 @@ Work in progress. Suggest features at meetings!
  - Ability to delete users
  - Sanitization of inputs
  - Quick increment and decrement buttons
+ - Ability to view (but not edit) outside of network
  - Changes automatically refresh
  - Bank totals
  - Design language from this decade
@@ -13,7 +14,6 @@ Work in progress. Suggest features at meetings!
  
  ### Planned Features
  - Text effects
- - Ability to view (but not edit) outside of network
  - Themes?
 
 [Source code](https://github.com/lavajuno/fsuvius)
