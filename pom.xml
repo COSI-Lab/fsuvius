@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.jmeifert</groupId>
 	<artifactId>fsuvius</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0</version>
 	<name>fsuvius</name>
 	<description>Mount Fsuvius</description>
 	<properties>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>com.bucket4j</groupId>
 			<artifactId>bucket4j-core</artifactId>
-			<version>8.2.0</version>
+			<version>8.3.0</version>
 		</dependency>
 	</dependencies>
 
