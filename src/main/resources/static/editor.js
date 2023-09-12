@@ -38,7 +38,7 @@ function handle_display() {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         console.log("[DEBUG] Response:");
         console.log(data);
@@ -70,11 +70,15 @@ function handle_save() {
         },
         body: JSON.stringify(new_user),
     }).then(async response => {
-        if(!response.ok) { throw new Error("PUT request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         window.location.href="index.html";
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't save changes. See console for error details.");
+        if(error.message === "403") {
+            show_toast("Can't edit outside of the labs.");
+        } else {
+            show_toast("Couldn't save changes. See console for error details.");
+        }
     });
 }
 
@@ -86,11 +90,15 @@ function handle_delete() {
         fetch((USER_URL), {
             method: "DELETE",
         }).then(async response => {
-            if(!response.ok) { throw new Error("DELETE request failed!"); }
+            if(!response.ok) { throw new Error(response.status); }
             window.location.href="index.html";
         }).catch(error => {
             console.log(error);
-            show_toast("Couldn't delete user. See console for error details.");
+            if(error.message === "403") {
+                show_toast("Can't edit outside of the labs.");
+            } else {
+                show_toast("Couldn't delete user. See console for error details.");
+            }
         });
     }
 }
@@ -110,13 +118,17 @@ function handle_upload_photo(input) {
                 body: event.target.result,
             }).then(async response => {
                 if(!response.ok) {
-                    throw new Error("POST request failed!");
+                    if(!response.ok) { throw new Error(response.status); }
                 }
                 show_toast("Photo uploaded.");
                 document.getElementById("USER_PHOTO").src = event.target.result;
             }).catch(error => {
                 console.log(error);
-                show_toast("Something went wrong uploading your photo.");
+                if(error.message === "403") {
+                    show_toast("Can't edit outside of the labs.");
+                } else {
+                    show_toast("Something went wrong uploading your photo.");
+                }
             });
         });
         fr.readAsDataURL(input.files[0]);

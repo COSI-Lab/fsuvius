@@ -39,12 +39,16 @@ function handle_create() {
         },
         body: new_name,
     }).then(async response => {
-        if(!response.ok) { throw new Error("POST request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         document.getElementById("CREATE_FIELD").value = "";
         display_list();
     }).catch(error => {
         console.log(error);
-        show_toast("Failed to create user.");
+        if(error.message === "403") {
+            show_toast("Can't edit outside of the labs.");
+        } else {
+            show_toast("Failed to create user. See console for error details.");
+        }
     });
 }
 
@@ -70,7 +74,7 @@ function handle_balance_change(id, offset) {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         //console.log("[DEBUG] Response:");
         //console.log(data);
@@ -90,7 +94,8 @@ function handle_balance_change(id, offset) {
             },
             body: JSON.stringify(new_user),
         }).then(async response => {
-            if(!response.ok) { throw new Error("PUT request failed!"); }
+            console.log(response.status);
+            if(!response.ok) { throw new Error(response.status); }
             const data = await response.json();
             //console.log("[DEBUG] Response:");
             //console.log(data);
@@ -98,12 +103,16 @@ function handle_balance_change(id, offset) {
             show_toast("Changes saved.");
         }).catch(error => {
             console.log(error);
-            show_toast("Couldn't save changes. See console for error details.");
+            if(error.message === "403") {
+                show_toast("Can't edit outside of the labs.");
+            } else {
+                show_toast("Couldn't save changes. See console for error details.");
+            }
         });
 
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't save changes. See console for error details.");
+        show_toast("Couldn't get user parameters. See console for error details.");
     });
 }
 
@@ -116,7 +125,7 @@ function display_list() {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         //console.log("[DEBUG] Response:");
         //console.log(data);
