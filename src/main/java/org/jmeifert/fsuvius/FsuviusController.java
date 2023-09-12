@@ -78,7 +78,7 @@ public class FsuviusController {
      */
     @PostMapping("/api/users")
     public User newUser(@RequestBody String name, HttpServletRequest request) {
-        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
+        if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -110,7 +110,7 @@ public class FsuviusController {
     @PutMapping("/api/users/{id}")
     public User editUser(@RequestBody User newUser,
                          @PathVariable String id, HttpServletRequest request) {
-        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
+        if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -126,7 +126,7 @@ public class FsuviusController {
      */
     @DeleteMapping("/api/users/{id}")
     public void deleteUser(@PathVariable String id, HttpServletRequest request) {
-        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
+        if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -166,7 +166,7 @@ public class FsuviusController {
     @PostMapping("api/photos/{id}")
     public void putPhoto(@RequestBody String item,
                          @PathVariable String id, HttpServletRequest request) {
-        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
+        if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {

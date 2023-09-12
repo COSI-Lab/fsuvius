@@ -1,5 +1,6 @@
 package org.jmeifert.fsuvius.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.jmeifert.fsuvius.FsuviusMap;
 
 /**
@@ -8,13 +9,23 @@ import org.jmeifert.fsuvius.FsuviusMap;
 public class IPFilter {
     /**
      * Checks an address to see if it is included in the allow-list.
-     * @param ip The IP address to check
+     * @param request The request to check
      * @return True if the address is included in the allow-list.
      */
-    public static boolean checkAddress(String ip) {
-        for(String k : FsuviusMap.ALLOWED_ADDR_PREFIXES) {
-            if(ip.startsWith(k)) {
-                return true;
+    public static boolean checkAddress(HttpServletRequest request) {
+        String fwd_ip = request.getHeader("X-Forwarded-For");
+        String raw_ip = request.getRemoteAddr();
+        if(fwd_ip == null) {
+            for(String k : FsuviusMap.ALLOWED_ADDR_PREFIXES) {
+                if(raw_ip.startsWith(k)) {
+                    return true;
+                }
+            }
+        } else {
+            for(String k : FsuviusMap.ALLOWED_ADDR_PREFIXES) {
+                if(fwd_ip.startsWith(k)) {
+                    return true;
+                }
             }
         }
         return false;
