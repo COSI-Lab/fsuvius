@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ForbiddenAdvice {
     @ResponseBody
-    @ExceptionHandler(RateLimitException.class)
+    @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     String forbiddenHandler(ForbiddenException e) {
         return e.getMessage();

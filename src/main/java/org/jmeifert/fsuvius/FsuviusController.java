@@ -13,6 +13,7 @@ import org.jmeifert.fsuvius.error.ForbiddenException;
 import org.jmeifert.fsuvius.error.NotFoundException;
 import org.jmeifert.fsuvius.error.RateLimitException;
 import org.jmeifert.fsuvius.user.User;
+import org.jmeifert.fsuvius.util.IPFilter;
 import org.jmeifert.fsuvius.util.Log;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class FsuviusController {
     private final Log log;
-
     private final Bucket bucket;
-    private DatabaseController databaseController;
+    private final DatabaseController databaseController;
 
     /**
      * Instantiates a FsuviusController.
@@ -78,7 +78,7 @@ public class FsuviusController {
      */
     @PostMapping("/api/users")
     public User newUser(@RequestBody String name, HttpServletRequest request) {
-        if(!request.getRemoteAddr().startsWith(FsuviusMap.COSI_ADDR_PREFIX)) {
+        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -110,7 +110,7 @@ public class FsuviusController {
     @PutMapping("/api/users/{id}")
     public User editUser(@RequestBody User newUser,
                          @PathVariable String id, HttpServletRequest request) {
-        if(!request.getRemoteAddr().startsWith(FsuviusMap.COSI_ADDR_PREFIX)) {
+        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -126,7 +126,7 @@ public class FsuviusController {
      */
     @DeleteMapping("/api/users/{id}")
     public void deleteUser(@PathVariable String id, HttpServletRequest request) {
-        if(!request.getRemoteAddr().startsWith(FsuviusMap.COSI_ADDR_PREFIX)) {
+        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
@@ -166,7 +166,7 @@ public class FsuviusController {
     @PostMapping("api/photos/{id}")
     public void putPhoto(@RequestBody String item,
                          @PathVariable String id, HttpServletRequest request) {
-        if(!request.getRemoteAddr().startsWith(FsuviusMap.COSI_ADDR_PREFIX)) {
+        if(!IPFilter.checkAddress(request.getRemoteAddr())) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
