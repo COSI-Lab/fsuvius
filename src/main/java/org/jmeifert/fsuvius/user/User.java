@@ -10,13 +10,16 @@ import java.lang.Integer;
  * User represents an account in the system with an ID, name, and balance.
  */
 public class User implements Serializable {
+    /**
+     * Serial version ID to allow the same serialized list of users to work on different versions of Fsuvius.
+     */
     @Serial
     private static final long serialVersionUID = 6190001L;
 
     /**
      * Regex used to remove unsafe characters from strings
      */
-    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'#$%^*()/_+-]";
+    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'\"#$%^*()/_+-]";
 
     /**
      * This User's unique ID
