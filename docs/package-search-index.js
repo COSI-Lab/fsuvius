@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.jmeifert.fsuvius"},{"l":"org.jmeifert.fsuvius.error"},{"l":"org.jmeifert.fsuvius.user"},{"l":"org.jmeifert.fsuvius.util"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.jmeifert.fsuvius"},{"l":"org.jmeifert.fsuvius.data"},{"l":"org.jmeifert.fsuvius.error"},{"l":"org.jmeifert.fsuvius.user"},{"l":"org.jmeifert.fsuvius.util"}];updateSearchResults();
