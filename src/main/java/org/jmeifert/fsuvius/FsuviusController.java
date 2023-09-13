@@ -1,13 +1,12 @@
 package org.jmeifert.fsuvius;
 
-import java.awt.*;
 import java.time.Duration;
 import java.util.List;
-
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.jmeifert.fsuvius.data.DatabaseController;
 import org.jmeifert.fsuvius.error.ForbiddenException;
 import org.jmeifert.fsuvius.error.NotFoundException;
