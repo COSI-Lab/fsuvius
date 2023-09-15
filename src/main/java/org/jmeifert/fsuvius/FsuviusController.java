@@ -8,6 +8,7 @@ import io.github.bucket4j.Refill;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.jmeifert.fsuvius.data.DatabaseController;
+import org.jmeifert.fsuvius.error.BadRequestException;
 import org.jmeifert.fsuvius.error.ForbiddenException;
 import org.jmeifert.fsuvius.error.NotFoundException;
 import org.jmeifert.fsuvius.error.RateLimitException;
@@ -38,24 +39,6 @@ public class FsuviusController {
         log.print("===== Init complete. Welcome to Mount Fsuvius. =====");
     }
 
-    /* ===== BANK TOTALS ===== */
-
-    /**
-     * Gets the total amount of FSU in the bank.
-     * @return The total amount of FSU in the bank
-     */
-    @GetMapping("/api/bank_balance")
-    public float getBankBalance() {
-        if(bucket.tryConsume(1)) {
-            float bal = 0.0F;
-            for(User i : databaseController.getUsers()) {
-                bal += i.getBalance();
-            }
-            return bal;
-        }
-        throw new RateLimitException();
-    }
-
     /* ===== USERS ===== */
 
     /**
@@ -79,6 +62,9 @@ public class FsuviusController {
     public User newUser(@RequestBody String name, HttpServletRequest request) {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
+        }
+        if(name.replaceAll(FsuviusMap.SANITIZER_REGEX, "").isEmpty()) {
+            throw new BadRequestException(); // reject empty names
         }
         if(bucket.tryConsume(1)) {
             log.print("Handling request to create new user with name \"" + name + "\".");
@@ -111,6 +97,9 @@ public class FsuviusController {
                          @PathVariable String id, HttpServletRequest request) {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
+        }
+        if(newUser.getName().isEmpty()) {
+            throw new BadRequestException(); // reject requests for empty names
         }
         if(bucket.tryConsume(1)) {
             log.print("Handling request to edit user at ID \"" + id + "\".");
@@ -169,8 +158,29 @@ public class FsuviusController {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
+            if(item.length() > FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) { /* account for base64 and headers */
+                throw new BadRequestException(); /* refuse photos that are too large */
+            }
             databaseController.writePhoto(item, id);
             return;
+        }
+        throw new RateLimitException();
+    }
+
+    /* ===== OTHER USEFUL STUFF ===== */
+
+    /**
+     * Gets the total amount of FSU in the bank.
+     * @return The total amount of FSU in the bank
+     */
+    @GetMapping("/api/bank_balance")
+    public float getBankBalance() {
+        if(bucket.tryConsume(1)) {
+            float bal = 0.0F;
+            for(User i : databaseController.getUsers()) {
+                bal += i.getBalance();
+            }
+            return bal;
         }
         throw new RateLimitException();
     }

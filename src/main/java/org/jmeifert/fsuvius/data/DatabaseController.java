@@ -120,6 +120,7 @@ public class DatabaseController {
      * Loads users from a file.
      * @return Users loaded from the file
      */
+    @SuppressWarnings("unchecked")
     private synchronized Vector<User> loadUsersFromFile() {
         try {
             FileInputStream f = new FileInputStream(USERS_STORE_FILE);
@@ -176,11 +177,8 @@ public class DatabaseController {
      */
     public synchronized void writePhoto(String item, String id) {
         try {
-            /* if user bypasses frontend upload size limit just don't do anything */
-            if(item.length() < FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) {
-                byte[] image = Base64.getDecoder().decode(item.split(",")[1]);
-                saveBytesToFile(image, "data/photos/"+id);
-            }
+            byte[] image = Base64.getDecoder().decode(item.split(",")[1]);
+            saveBytesToFile(image, "data/photos/"+id);
         } catch(RuntimeException e) {
             log.print(2, "Failed to write image.");
             throw new RuntimeException("Failed to write image.");
