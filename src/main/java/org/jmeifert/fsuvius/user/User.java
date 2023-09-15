@@ -6,20 +6,18 @@ import java.util.Objects;
 import java.util.Random;
 import java.lang.Integer;
 
+import org.jmeifert.fsuvius.FsuviusMap;
+
 /**
  * User represents an account in the system with an ID, name, and balance.
  */
+@SuppressWarnings("unused")
 public class User implements Serializable {
     /**
      * Serial version ID to allow the same serialized list of users to work on different versions of Fsuvius.
      */
     @Serial
     private static final long serialVersionUID = 6190001L;
-
-    /**
-     * Regex used to remove unsafe characters from strings
-     */
-    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'\"#$%^*()/_+-]";
 
     /**
      * This User's unique ID
@@ -51,7 +49,7 @@ public class User implements Serializable {
      */
     public User(String name) {
         this.id = generateID();
-        this.name = name.replaceAll(SANITIZER_REGEX,"");
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = 0.0F;
     }
 
@@ -62,7 +60,7 @@ public class User implements Serializable {
      */
     public User(String name, float balance) {
         this.id = generateID();
-        this.name = name.replaceAll(SANITIZER_REGEX,"");
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
     }
 
@@ -95,14 +93,16 @@ public class User implements Serializable {
      * @param id this User's ID
      */
     public void setID(String id) {
-        this.id = id.replaceAll(SANITIZER_REGEX,"");
+        this.id = id.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
     }
 
     /**
      * Sets this User's name.
      * @param name this User's name
      */
-    public void setName(String name) { this.name = name.replaceAll(SANITIZER_REGEX,""); }
+    public void setName(String name) {
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+    }
 
     /**
      * Sets this User's balance.
