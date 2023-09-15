@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * FsuviusController defines and implements the program's API mappings.
  */
+@SuppressWarnings("unused")
 @RestController
 public class FsuviusController {
     private final Log log;

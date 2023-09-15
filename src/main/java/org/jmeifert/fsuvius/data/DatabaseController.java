@@ -50,7 +50,7 @@ public class DatabaseController {
      * @param id User's ID
      * @return The user with the specified ID
      */
-    public synchronized User getUser(String id) {
+    public synchronized User getUser(String id) throws NotFoundException {
         for(User i : users) {
             if(i.getID().equals(id)) {
                 return i;
@@ -78,7 +78,7 @@ public class DatabaseController {
      * @param user The user to replace with
      * @return The updated user
      */
-    public synchronized User editUser(String id, User user) {
+    public synchronized User editUser(String id, User user) throws NotFoundException {
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.set(i, user);
@@ -93,7 +93,7 @@ public class DatabaseController {
      * Deletes a user.
      * @param id User ID to delete
      */
-    public synchronized void deleteUser(String id) {
+    public synchronized void deleteUser(String id) throws NotFoundException {
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.remove(i);
@@ -201,12 +201,12 @@ public class DatabaseController {
      * @param STORE_FILE Filename to load bytes from
      * @return The loaded bytes
      */
-    private synchronized byte[] loadBytesFromFile(String STORE_FILE) {
+    private synchronized byte[] loadBytesFromFile(String STORE_FILE) throws NotFoundException {
         try {
             File f = new File(STORE_FILE);
             FileInputStream fis = new FileInputStream(f);
             byte[] fb = new byte[(int) f.length()];
-            fis.read(fb);
+            if(fis.read(fb) < 0) { throw new IOException(); }
             fis.close();
             return fb;
         } catch(FileNotFoundException e) {
