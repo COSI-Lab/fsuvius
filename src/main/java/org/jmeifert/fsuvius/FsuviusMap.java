@@ -9,7 +9,7 @@ public class FsuviusMap {
      * before refusing additional requests.
      * Recommended: 50
      */
-    public static final int MAX_REQUESTS_PER_SECOND = 50;
+    public static final int MAX_REQUESTS_PER_SECOND = 100;
 
     /**
      * These prefixes specify the addresses to allow edits from.
@@ -24,6 +24,11 @@ public class FsuviusMap {
      * Recommended: 1024 * 1024
      */
     public static final int MAX_PHOTO_SIZE = 1024 * 1024;
+
+    /**
+     * Regex used to remove unsafe characters from strings
+     */
+    public static final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'\"#$%^*()/_+-]";
 
     /**
      * The default photo for new users as base64.
