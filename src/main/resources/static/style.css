@@ -153,6 +153,8 @@ button:hover {
 
 #TOAST_MESSAGE.show { visibility: visible; }
 
+#TOAST_MESSAGE.error { background: rgba(125, 0, 0, 0.7)}
+
 .user_balance {
     display: inline-block;
     padding-right: 10px;
