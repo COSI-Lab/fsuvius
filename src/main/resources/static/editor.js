@@ -13,22 +13,6 @@ const USER_ID = params.get("id");
 /* Max photo upload size */
 const MAX_UPLOAD_SIZE = 1024 * 1024;
 
-/* Toast messages */
-var toast_timeout;
-
-function show_toast(message) {
-    clearTimeout(toast_timeout);
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.innerHTML = message;
-    td.className = "show";
-    toast_timeout = setTimeout(hide_toast, 3000);
-}
-
-function hide_toast() {
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.className = td.className.replace("show", "hide");
-}
-
 /* Update fields with this user's data (including photo) */
 function handle_display() {
     console.log(`Handling DISPLAY user ${USER_ID}`)
@@ -47,7 +31,7 @@ function handle_display() {
         document.getElementById("USER_PHOTO").src = PHOTO_URL;
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't fetch parameters. See console for error details.");
+        show_error("Couldn't fetch user. See console for error details.");
     });
 }
 
@@ -75,9 +59,11 @@ function handle_save() {
     }).catch(error => {
         console.log(error);
         if(error.message === "403") {
-            show_toast("Can't edit outside of the labs.");
+            show_error("Forbidden. (Can't edit outside of the labs)");
+        } else if(error.message === "400") {
+            show_error("Bad request. (Invalid name or balance)");
         } else {
-            show_toast("Couldn't save changes. See console for error details.");
+            show_error("Couldn't save changes. See console for error details.");
         }
     });
 }
@@ -95,9 +81,9 @@ function handle_delete() {
         }).catch(error => {
             console.log(error);
             if(error.message === "403") {
-                show_toast("Can't edit outside of the labs.");
+                show_error("Can't edit outside of the labs.");
             } else {
-                show_toast("Couldn't delete user. See console for error details.");
+                show_error("Couldn't delete user. See console for error details.");
             }
         });
     }
@@ -125,15 +111,15 @@ function handle_upload_photo(input) {
             }).catch(error => {
                 console.log(error);
                 if(error.message === "403") {
-                    show_toast("Can't edit outside of the labs.");
+                    show_error("Can't edit outside of the labs.");
                 } else {
-                    show_toast("Something went wrong uploading your photo.");
+                    show_error("Something went wrong uploading your photo.");
                 }
             });
         });
         fr.readAsDataURL(input.files[0]);
     } else {
-        show_toast("Your photo is too large!");
+        show_error("Your photo is too large!");
     }
 }
 
