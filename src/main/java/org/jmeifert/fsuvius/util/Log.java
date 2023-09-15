@@ -15,7 +15,7 @@ public class Log {
     private final String LOG_WARN = " [ WARN ] ";
     private final String LOG_ERROR = " [ERROR!] ";
 
-    private String className;
+    private final String className;
 
     /**
      * Instantiates a Log for this class
@@ -37,7 +37,7 @@ public class Log {
         sb.append(className);
         sb.append(": ");
         sb.append(entry);
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
     /**
@@ -57,6 +57,6 @@ public class Log {
         sb.append(className);
         sb.append(": ");
         sb.append(entry);
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 }
