@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * ForbiddenAdvice provides responses to forbidden requests.
  */
+@SuppressWarnings("unused")
 @ControllerAdvice
 public class ForbiddenAdvice {
     @ResponseBody

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * RateLimitAdvice provides responses to throttled requests.
  */
+@SuppressWarnings("unused")
 @ControllerAdvice
 public class RateLimitAdvice {
     @ResponseBody
