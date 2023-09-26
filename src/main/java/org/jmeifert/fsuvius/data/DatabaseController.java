@@ -206,7 +206,10 @@ public class DatabaseController {
             File f = new File(STORE_FILE);
             FileInputStream fis = new FileInputStream(f);
             byte[] fb = new byte[(int) f.length()];
-            if(fis.read(fb) < 0) { throw new IOException(); }
+            if(fis.read(fb) < 0) { 
+                fis.close();
+                throw new IOException(); 
+            }
             fis.close();
             return fb;
         } catch(FileNotFoundException e) {
