@@ -6,7 +6,7 @@
 
 [Releases](https://github.com/lavajuno/fsuvius/releases)
 
-[Documentation](jdoc/index.html)
+[Documentation](docs/jdoc/index.html)
 
 ### Changes from the original:
  - Profile pictures!
