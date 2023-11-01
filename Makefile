@@ -14,3 +14,6 @@ clean:
 
 attach:
 	docker container exec -it fsuvius /bin/bash
+
+initial-setup:
+	mkdir data
