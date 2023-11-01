@@ -4,10 +4,10 @@ build_jar:
 	mvn -f pom.xml clean install package
 
 build_container:
-	docker-compose build
+	docker compose build
 
 run:
-	docker-compose up --detach
+	docker compose up --detach
 
 clean:
 	docker image prune
