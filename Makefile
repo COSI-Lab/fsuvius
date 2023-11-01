@@ -11,3 +11,6 @@ run:
 
 clean:
 	docker image prune
+
+attach:
+	docker container exec -it fsuvius /bin/bash
