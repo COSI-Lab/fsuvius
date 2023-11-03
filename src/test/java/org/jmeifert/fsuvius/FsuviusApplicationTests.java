@@ -20,4 +20,6 @@ class FsuviusApplicationTests {
 
 		log.print("Test of FsuviusController completed.");
 	}
+
+	// TODO write proper tests
 }

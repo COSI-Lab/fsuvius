@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.*;
 import java.lang.Integer;
 
+import org.jmeifert.fsuvius.FsuviusMap;
+
 /**
  * User represents an account in the system with an ID, name, and balance.
  */
@@ -31,7 +33,7 @@ public class User {
      */
     public User(String name) {
         this.id = generateID();
-        this.name = name.replaceAll(SANITIZER_REGEX,"");
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = 0.0F;
     }
 
@@ -42,7 +44,7 @@ public class User {
      */
     public User(String name, float balance) {
         this.id = generateID();
-        this.name = name.replaceAll(SANITIZER_REGEX,"");
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
     }
 
@@ -92,14 +94,16 @@ public class User {
      * @param id this User's ID
      */
     public void setID(String id) {
-        this.id = id.replaceAll(SANITIZER_REGEX,"");
+        this.id = id.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
     }
 
     /**
      * Sets this User's name.
      * @param name this User's name
      */
-    public void setName(String name) { this.name = name.replaceAll(SANITIZER_REGEX,""); }
+    public void setName(String name) {
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+    }
 
     /**
      * Sets this User's balance.

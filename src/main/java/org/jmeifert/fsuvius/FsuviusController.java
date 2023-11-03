@@ -3,25 +3,29 @@ package org.jmeifert.fsuvius;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
-
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.jmeifert.fsuvius.data.DatabaseController;
+import org.jmeifert.fsuvius.error.BadRequestException;
+import org.jmeifert.fsuvius.error.ForbiddenException;
 import org.jmeifert.fsuvius.error.NotFoundException;
 import org.jmeifert.fsuvius.error.RateLimitException;
 import org.jmeifert.fsuvius.user.User;
+import org.jmeifert.fsuvius.util.IPFilter;
 import org.jmeifert.fsuvius.util.Log;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * FsuviusController defines and implements the program's API mappings.
  */
+@SuppressWarnings("unused")
 @RestController
 @SuppressWarnings("unused")
 public class FsuviusController {
     private final Log log;
-
     private final Bucket bucket;
     private final DatabaseController databaseController;
 
@@ -36,24 +40,6 @@ public class FsuviusController {
                 Refill.greedy(FsuviusMap.MAX_REQUESTS_PER_SECOND, Duration.ofSeconds(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
         log.print("=== Startup complete. Welcome to Mount Fsuvius. ===");
-    }
-
-    /* ===== BANK TOTALS ===== */
-
-    /**
-     * Gets the total amount of FSU in the bank.
-     * @return The total amount of FSU in the bank
-     */
-    @GetMapping("/api/bank_balance")
-    public float getBankBalance() {
-        if(bucket.tryConsume(1)) {
-            float bal = 0.0F;
-            for(User i : databaseController.getUsers()) {
-                bal += i.getBalance();
-            }
-            return bal;
-        }
-        throw new RateLimitException();
     }
 
     /* ===== USERS ===== */
@@ -76,7 +62,13 @@ public class FsuviusController {
      * @return the new User
      */
     @PostMapping("/api/users")
-    public User newUser(@RequestBody String name) throws IOException {
+    public User newUser(@RequestBody String name, HttpServletRequest request) throws IOException {
+        if(!IPFilter.checkAddress(request)) {
+            throw new ForbiddenException(); // reject requests from outside the labs
+        }
+        if(name.replaceAll(FsuviusMap.SANITIZER_REGEX, "").isEmpty()) {
+            throw new BadRequestException(); // reject empty names
+        }
         if(bucket.tryConsume(1)) {
             log.print("Handling request to create new user with name \"" + name + "\".");
             return databaseController.createUser(name);
@@ -104,7 +96,14 @@ public class FsuviusController {
      * @return The edited User
      */
     @PutMapping("/api/users/{id}")
-    public User editUser(@RequestBody User newUser, @PathVariable String id) throws IOException {
+    public User editUser(@RequestBody User newUser,
+                         @PathVariable String id, HttpServletRequest request) throws IOException {
+        if(!IPFilter.checkAddress(request)) {
+            throw new ForbiddenException(); // reject requests from outside the labs
+        }
+        if(newUser.getName().isEmpty()) {
+            throw new BadRequestException(); // reject requests for empty names
+        }
         if(bucket.tryConsume(1)) {
             log.print("Handling request to edit user at ID \"" + id + "\".");
             return databaseController.editUser(id, newUser);
@@ -117,7 +116,10 @@ public class FsuviusController {
      * @param id The ID of the user to delete
      */
     @DeleteMapping("/api/users/{id}")
-    public void deleteUser(@PathVariable String id) throws IOException {
+    public void deleteUser(@PathVariable String id, HttpServletRequest request) throws IOException {
+        if(!IPFilter.checkAddress(request)) {
+            throw new ForbiddenException(); // reject requests from outside the labs
+        }
         if(bucket.tryConsume(1)) {
             log.print("Handling request to delete user at ID \"" + id + "\".");
             databaseController.deleteUser(id);
@@ -129,7 +131,7 @@ public class FsuviusController {
     /* ===== PHOTOS ===== */
 
     /**
-     * Gets a photo by ID.
+     * Gets a photo by user ID.
      * Will result in an HTTP 404 if the photo cannot be found.
      * @param id ID of the photo to get
      * @return The photo with the specified ID
@@ -148,15 +150,40 @@ public class FsuviusController {
     }
 
     /**
-     * Updates a photo by ID. Will create it if it does not already exist.
+     * Updates a photo by user ID. Will create it if it does not already exist.
      * @param item New content of the photo
      * @param id ID of the photo to update
      */
     @PostMapping("api/photos/{id}")
-    public void putPhoto(@RequestBody String item, @PathVariable String id) throws IOException {
+    public void putPhoto(@RequestBody String item,
+                         @PathVariable String id, HttpServletRequest request) throws IOException {
+        if(!IPFilter.checkAddress(request)) {
+            throw new ForbiddenException(); // reject requests from outside the labs
+        }
         if(bucket.tryConsume(1)) {
+            if(item.length() > FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) { /* account for base64 and headers */
+                throw new BadRequestException(); /* refuse photos that are too large */
+            }
             databaseController.writePhoto(item, id);
             return;
+        }
+        throw new RateLimitException();
+    }
+
+    /* ===== OTHER USEFUL STUFF ===== */
+
+    /**
+     * Gets the total amount of FSU in the bank.
+     * @return The total amount of FSU in the bank
+     */
+    @GetMapping("/api/bank_balance")
+    public float getBankBalance() {
+        if(bucket.tryConsume(1)) {
+            float bal = 0.0F;
+            for(User i : databaseController.getUsers()) {
+                bal += i.getBalance();
+            }
+            return bal;
         }
         throw new RateLimitException();
     }

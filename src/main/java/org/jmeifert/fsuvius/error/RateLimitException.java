@@ -4,6 +4,7 @@ package org.jmeifert.fsuvius.error;
 /**
  * A RateLimitException is thrown when a client request is throttled.
  */
+@SuppressWarnings("unused")
 public class RateLimitException extends RuntimeException {
     /**
      * Throws a RateLimitException

@@ -13,22 +13,6 @@ const USER_ID = params.get("id");
 /* Max photo upload size */
 const MAX_UPLOAD_SIZE = 1024 * 1024;
 
-/* Toast messages */
-var toast_timeout;
-
-function show_toast(message) {
-    clearTimeout(toast_timeout);
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.innerHTML = message;
-    td.className = "show";
-    toast_timeout = setTimeout(hide_toast, 3000);
-}
-
-function hide_toast() {
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.className = td.className.replace("show", "hide");
-}
-
 /* Update fields with this user's data (including photo) */
 function handle_display() {
     console.log(`Handling DISPLAY user ${USER_ID}`)
@@ -38,7 +22,7 @@ function handle_display() {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         console.log("[DEBUG] Response:");
         console.log(data);
@@ -47,7 +31,7 @@ function handle_display() {
         document.getElementById("USER_PHOTO").src = PHOTO_URL;
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't fetch parameters. See console for error details.");
+        show_error("Couldn't fetch user. See console for error details.");
     });
 }
 
@@ -70,11 +54,17 @@ function handle_save() {
         },
         body: JSON.stringify(new_user),
     }).then(async response => {
-        if(!response.ok) { throw new Error("PUT request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         window.location.href="index.html";
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't save changes. See console for error details.");
+        if(error.message === "403") {
+            show_error("Forbidden. (Can't edit outside of the labs)");
+        } else if(error.message === "400") {
+            show_error("Bad request. (Invalid name or balance)");
+        } else {
+            show_error("Couldn't save changes. See console for error details.");
+        }
     });
 }
 
@@ -86,11 +76,15 @@ function handle_delete() {
         fetch((USER_URL), {
             method: "DELETE",
         }).then(async response => {
-            if(!response.ok) { throw new Error("DELETE request failed!"); }
+            if(!response.ok) { throw new Error(response.status); }
             window.location.href="index.html";
         }).catch(error => {
             console.log(error);
-            show_toast("Couldn't delete user. See console for error details.");
+            if(error.message === "403") {
+                show_error("Can't edit outside of the labs.");
+            } else {
+                show_error("Couldn't delete user. See console for error details.");
+            }
         });
     }
 }
@@ -110,18 +104,22 @@ function handle_upload_photo(input) {
                 body: event.target.result,
             }).then(async response => {
                 if(!response.ok) {
-                    throw new Error("POST request failed!");
+                    if(!response.ok) { throw new Error(response.status); }
                 }
                 show_toast("Photo uploaded.");
                 document.getElementById("USER_PHOTO").src = event.target.result;
             }).catch(error => {
                 console.log(error);
-                show_toast("Something went wrong uploading your photo.");
+                if(error.message === "403") {
+                    show_error("Can't edit outside of the labs.");
+                } else {
+                    show_error("Something went wrong uploading your photo.");
+                }
             });
         });
         fr.readAsDataURL(input.files[0]);
     } else {
-        show_toast("Your photo is too large!");
+        show_error("Your photo is too large!");
     }
 }
 

@@ -7,27 +7,11 @@ const USER_URL = "api/users/"
 /* URL prefix for performing operations on single photos */
 const PHOTO_URL = "api/photos/"
 
-/* Toast messages */
-var toast_timeout;
-
-function show_toast(message) {
-    clearTimeout(toast_timeout);
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.innerHTML = message;
-    td.className = "show";
-    toast_timeout = setTimeout(hide_toast, 3000);
-}
-
-function hide_toast() {
-    var td = document.getElementById("TOAST_MESSAGE");
-    td.className = td.className.replace("show", "hide");
-}
-
 /* Handle creating a user */
 function handle_create() {
     let new_name = document.getElementById("CREATE_FIELD").value;
     if(new_name.length < 1) {
-        show_toast("Please type a username to create.");
+        show_error("Please type a username to create.");
         return; 
     }
     console.log("Handling creation of new user...");
@@ -39,12 +23,19 @@ function handle_create() {
         },
         body: new_name,
     }).then(async response => {
-        if(!response.ok) { throw new Error("POST request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         document.getElementById("CREATE_FIELD").value = "";
         display_list();
+        show_toast("Created user.");
     }).catch(error => {
         console.log(error);
-        show_toast("Failed to create user.");
+        if(error.message === "403") {
+            show_error("Forbidden. (Can't edit outside of the labs)");
+        } else if(error.message === "400") {
+            show_error("Bad request. (Invalid name or balance)");
+        } else {
+            show_error("Failed to create user. See console for error details.");
+        }
     });
 }
 
@@ -62,7 +53,6 @@ function handle_minus(id) {
 function handle_balance_change(id, offset) {
     console.log(`Handling balance update for user ${id}`);
     show_toast("Saving your changes...");
-
     /* Get current user parameters */
     fetch(USER_URL + id, {
         method: "GET",
@@ -70,7 +60,7 @@ function handle_balance_change(id, offset) {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         //console.log("[DEBUG] Response:");
         //console.log(data);
@@ -90,7 +80,8 @@ function handle_balance_change(id, offset) {
             },
             body: JSON.stringify(new_user),
         }).then(async response => {
-            if(!response.ok) { throw new Error("PUT request failed!"); }
+            console.log(response.status);
+            if(!response.ok) { throw new Error(response.status); }
             const data = await response.json();
             //console.log("[DEBUG] Response:");
             //console.log(data);
@@ -98,25 +89,29 @@ function handle_balance_change(id, offset) {
             show_toast("Changes saved.");
         }).catch(error => {
             console.log(error);
-            show_toast("Couldn't save changes. See console for error details.");
+            if(error.message === "403") {
+                show_error("Can't edit outside of the labs.");
+            } else {
+                show_error("Couldn't save changes. See console for error details.");
+            }
         });
-
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't save changes. See console for error details.");
+        show_error("Couldn't get user parameters. See console for error details.");
     });
 }
 
 /* Display list of all users */
-function display_list() {
+function display_list(refresh=false) {
     console.log("Handling DISPLAY users...");
+    if(refresh) { show_toast("Refreshing list of users..."); }
     fetch(USERS_URL, {
         method: "GET",
         headers: {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error("GET request failed!"); }
+        if(!response.ok) { throw new Error(response.status); }
         const data = await response.json();
         //console.log("[DEBUG] Response:");
         //console.log(data);
@@ -139,9 +134,10 @@ function display_list() {
             formatted_result += user_HTML;
         }
         document.getElementById("USER_LIST").innerHTML = formatted_result;
+        if(refresh) { show_toast("Refreshed list of users."); }
     }).catch(error => {
         console.log(error);
-        show_toast("Couldn't display list of users. See console for error details.");
+        show_error("Couldn't display list of users. See console for error details.");
     });
 }
 
