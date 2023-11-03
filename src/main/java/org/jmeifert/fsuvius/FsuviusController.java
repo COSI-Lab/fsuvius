@@ -1,5 +1,6 @@
 package org.jmeifert.fsuvius;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -17,23 +18,24 @@ import org.springframework.web.bind.annotation.*;
  * FsuviusController defines and implements the program's API mappings.
  */
 @RestController
+@SuppressWarnings("unused")
 public class FsuviusController {
     private final Log log;
 
     private final Bucket bucket;
-    private DatabaseController databaseController;
+    private final DatabaseController databaseController;
 
     /**
      * Instantiates a FsuviusController.
      */
-    public FsuviusController() {
+    public FsuviusController() throws IOException {
         log = new Log("FsuviusController");
         log.print("Starting up...");
         databaseController = new DatabaseController();
         Bandwidth limit= Bandwidth.classic(FsuviusMap.MAX_REQUESTS_PER_SECOND,
                 Refill.greedy(FsuviusMap.MAX_REQUESTS_PER_SECOND, Duration.ofSeconds(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
-        log.print("===== Init complete. Welcome to Mount Fsuvius. =====");
+        log.print("=== Startup complete. Welcome to Mount Fsuvius. ===");
     }
 
     /* ===== BANK TOTALS ===== */
@@ -74,7 +76,7 @@ public class FsuviusController {
      * @return the new User
      */
     @PostMapping("/api/users")
-    public User newUser(@RequestBody String name) {
+    public User newUser(@RequestBody String name) throws IOException {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to create new user with name \"" + name + "\".");
             return databaseController.createUser(name);
@@ -102,7 +104,7 @@ public class FsuviusController {
      * @return The edited User
      */
     @PutMapping("/api/users/{id}")
-    public User editUser(@RequestBody User newUser, @PathVariable String id) {
+    public User editUser(@RequestBody User newUser, @PathVariable String id) throws IOException {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to edit user at ID \"" + id + "\".");
             return databaseController.editUser(id, newUser);
@@ -115,7 +117,7 @@ public class FsuviusController {
      * @param id The ID of the user to delete
      */
     @DeleteMapping("/api/users/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable String id) throws IOException {
         if(bucket.tryConsume(1)) {
             log.print("Handling request to delete user at ID \"" + id + "\".");
             databaseController.deleteUser(id);
@@ -133,7 +135,7 @@ public class FsuviusController {
      * @return The photo with the specified ID
      */
     @GetMapping(value = "api/photos/{id}")
-    public byte[] getPhoto(@PathVariable String id) {
+    public byte[] getPhoto(@PathVariable String id) throws IOException {
         if(bucket.tryConsume(1)) {
             try {
                 return databaseController.readPhoto(id);
@@ -151,7 +153,7 @@ public class FsuviusController {
      * @param id ID of the photo to update
      */
     @PostMapping("api/photos/{id}")
-    public void putPhoto(@RequestBody String item, @PathVariable String id) {
+    public void putPhoto(@RequestBody String item, @PathVariable String id) throws IOException {
         if(bucket.tryConsume(1)) {
             databaseController.writePhoto(item, id);
             return;

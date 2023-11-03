@@ -1,5 +1,6 @@
 package org.jmeifert.fsuvius.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -10,12 +11,13 @@ import java.util.Date;
  *  - 2: [ERROR!]
  */
 public class Log {
-    private final String PREFIX = "(FsuviusApplication) ";
-    private final String LOG_OK = " [  OK  ] ";
-    private final String LOG_WARN = " [ WARN ] ";
-    private final String LOG_ERROR = " [ERROR!] ";
+    private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String LOG_PREFIX = " (Fsuvius)";
+    private static final String LOG_INFO = " [ INFO ] ";
+    private static final String LOG_WARN = " [ WARN ] ";
+    private static final String LOG_ERROR = " [ ERROR ] ";
 
-    private String className;
+    private final String className;
 
     /**
      * Instantiates a Log for this class
@@ -26,37 +28,29 @@ public class Log {
     }
 
     /**
-     * Logs an event with severity 0
-     * @param entry Event to log
-     */
-    public void print(String entry) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX);
-        sb.append(new Date());
-        sb.append(LOG_OK);
-        sb.append(className);
-        sb.append(": ");
-        sb.append(entry);
-        System.out.println(sb.toString());
-    }
-
-    /**
      * Logs an event with a specified severity
-     * @param level Severity
-     * @param entry Event to log
+     * @param level Severity (0: INFO, 1: WARN, 2: ERROR)
+     * @param message Message to log
      */
-    public void print(int level, String entry) {
+    public void print(int level, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX);
-        sb.append(new Date());
+        sb.append(LOG_DATE_FORMAT.format(new Date()));
+        sb.append(LOG_PREFIX);
         switch (level) {
             case 1 -> sb.append(LOG_WARN);
             case 2 -> sb.append(LOG_ERROR);
-            default -> sb.append(LOG_OK);
+            default -> sb.append(LOG_INFO);
         }
         sb.append(className);
+        sb.append(" ".repeat(Math.max(0, 24 - className.length())));
         sb.append(": ");
-        sb.append(entry);
-        System.out.println(sb.toString());
+        sb.append(message);
+        System.out.println(sb);
     }
+
+    /**
+     * Logs an event with severity 0
+     * @param message Message to log
+     */
+    public void print(String message) { this.print(0, message); }
 }
