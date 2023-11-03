@@ -1,5 +1,6 @@
 package org.jmeifert.fsuvius;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import io.github.bucket4j.Bandwidth;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @SuppressWarnings("unused")
 @RestController
+@SuppressWarnings("unused")
 public class FsuviusController {
     private final Log log;
     private final Bucket bucket;
@@ -30,14 +32,14 @@ public class FsuviusController {
     /**
      * Instantiates a FsuviusController.
      */
-    public FsuviusController() {
+    public FsuviusController() throws IOException {
         log = new Log("FsuviusController");
         log.print("Starting up...");
         databaseController = new DatabaseController();
         Bandwidth limit= Bandwidth.classic(FsuviusMap.MAX_REQUESTS_PER_SECOND,
                 Refill.greedy(FsuviusMap.MAX_REQUESTS_PER_SECOND, Duration.ofSeconds(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
-        log.print("===== Init complete. Welcome to Mount Fsuvius. =====");
+        log.print("=== Startup complete. Welcome to Mount Fsuvius. ===");
     }
 
     /* ===== USERS ===== */
@@ -60,7 +62,7 @@ public class FsuviusController {
      * @return the new User
      */
     @PostMapping("/api/users")
-    public User newUser(@RequestBody String name, HttpServletRequest request) {
+    public User newUser(@RequestBody String name, HttpServletRequest request) throws IOException {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
@@ -95,7 +97,7 @@ public class FsuviusController {
      */
     @PutMapping("/api/users/{id}")
     public User editUser(@RequestBody User newUser,
-                         @PathVariable String id, HttpServletRequest request) {
+                         @PathVariable String id, HttpServletRequest request) throws IOException {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
@@ -114,7 +116,7 @@ public class FsuviusController {
      * @param id The ID of the user to delete
      */
     @DeleteMapping("/api/users/{id}")
-    public void deleteUser(@PathVariable String id, HttpServletRequest request) {
+    public void deleteUser(@PathVariable String id, HttpServletRequest request) throws IOException {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }
@@ -135,7 +137,7 @@ public class FsuviusController {
      * @return The photo with the specified ID
      */
     @GetMapping(value = "api/photos/{id}")
-    public byte[] getPhoto(@PathVariable String id) {
+    public byte[] getPhoto(@PathVariable String id) throws IOException {
         if(bucket.tryConsume(1)) {
             try {
                 return databaseController.readPhoto(id);
@@ -154,7 +156,7 @@ public class FsuviusController {
      */
     @PostMapping("api/photos/{id}")
     public void putPhoto(@RequestBody String item,
-                         @PathVariable String id, HttpServletRequest request) {
+                         @PathVariable String id, HttpServletRequest request) throws IOException {
         if(!IPFilter.checkAddress(request)) {
             throw new ForbiddenException(); // reject requests from outside the labs
         }

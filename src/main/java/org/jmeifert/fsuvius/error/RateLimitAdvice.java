@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @SuppressWarnings("unused")
 @ControllerAdvice
+@SuppressWarnings("unused")
 public class RateLimitAdvice {
     @ResponseBody
     @ExceptionHandler(RateLimitException.class)

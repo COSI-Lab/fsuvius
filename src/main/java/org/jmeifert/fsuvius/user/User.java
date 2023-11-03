@@ -1,9 +1,7 @@
 package org.jmeifert.fsuvius.user;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.Random;
+import java.io.IOException;
+import java.util.*;
 import java.lang.Integer;
 
 import org.jmeifert.fsuvius.FsuviusMap;
@@ -12,26 +10,12 @@ import org.jmeifert.fsuvius.FsuviusMap;
  * User represents an account in the system with an ID, name, and balance.
  */
 @SuppressWarnings("unused")
-public class User implements Serializable {
-    /**
-     * Serial version ID to allow the same serialized list of users to work on different versions of Fsuvius.
-     */
-    @Serial
-    private static final long serialVersionUID = 6190001L;
+public class User {
+    /* Regex used to remove unsafe characters from strings */
+    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'#$%^*()/_+-]";
 
-    /**
-     * This User's unique ID
-     */
     private String id;
-
-    /**
-     * This User's name
-     */
     private String name;
-
-    /**
-     * This User's balance of FSU
-     */
     private float balance;
 
     /**
@@ -62,6 +46,23 @@ public class User implements Serializable {
         this.id = generateID();
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
+    }
+
+    /**
+     * Constructs a User from a list of lines.
+     * @param lines Lines to read user parameters from
+     * @throws IOException If parameters are not valid
+     */
+    public User(List<String> lines) throws IOException {
+        try {
+            this.id = (lines.get(0).split("id=", 2)[1]);
+            this.name = (lines.get(1).split("name=", 2)[1]);
+            this.balance = (Float.parseFloat(lines.get(2).split("balance=", 2)[1]));
+        } catch(IndexOutOfBoundsException e) {
+            throw new IOException("Failed to read user. (Index out of bounds)");
+        } catch(NumberFormatException e) {
+            throw new IOException("Failed to read user. (NumberFormatException)");
+        }
     }
 
     /**
@@ -127,9 +128,7 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object other) {
-        if(!(other instanceof User)) {
-            return false;
-        }
+        if(!(other instanceof User)) { return false; }
         return Objects.equals(this.id, ((User) other).getID()) &&
                 Objects.equals(this.name, ((User) other).getName()) &&
                 Objects.equals(this.balance, ((User) other).getBalance());
@@ -142,17 +141,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format(
-                """
-                {
-                "id"="%s",
-                "name"="%s",
-                "balance"=%f
-                }
-                """,
-                this.id,
-                this.name,
-                this.balance
-        );
+        return String.format("id=%s\nname=%s\nbalance=%s\n\n", this.id, this.name, this.balance);
     }
 }
