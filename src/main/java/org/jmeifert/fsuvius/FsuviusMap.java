@@ -12,12 +12,12 @@ public class FsuviusMap {
     public static final int MAX_REQUESTS_PER_SECOND = 100;
 
     /**
-     * These prefixes specify the addresses to allow edits from.
+     * These prefixes specify the address ranges to allow edits from.
      * (ex. "123.123.123" allows 123.123.123.***, "123.1" allows 123.1**.***.***)
      * Any PUT/POST/DELETE/etc. requests from outside the specified range are rejected.
      * Recommended: {"128.153.144", "128.153.145", "127.0.0.1"}
      */
-    public static final String[] ALLOWED_ADDR_PREFIXES = {"128.153.144", "128.153.145", "127.0.0.1"};
+    public static final String[] ALLOWED_ADDR_PREFIXES = {"128.153.144", "128.153.145", "127"};
 
     /**
      * The maximum allowed size for photos (in bytes).

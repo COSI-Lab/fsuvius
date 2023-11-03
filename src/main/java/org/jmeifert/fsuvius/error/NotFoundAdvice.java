@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * NotFoundAdvice provides responses to requests that attempt to access content
  * that does not exist.
  */
-@SuppressWarnings("unused")
 @ControllerAdvice
 @SuppressWarnings("unused")
 public class NotFoundAdvice {

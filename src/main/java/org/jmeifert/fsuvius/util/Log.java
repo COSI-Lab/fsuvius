@@ -5,17 +5,19 @@ import java.util.Date;
 
 /**
  * Log provides simple functionality for logging events by class.
- * Log events can have one of three severity levels:
+ * Log events can have one of four severity levels:
  *  - 0: [  OK  ]
  *  - 1: [ WARN ]
- *  - 2: [ERROR!]
+ *  - 2: [ ERROR ]
+ *  - 3: [ FATAL ]
  */
 public class Log {
     private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String LOG_PREFIX = " (Fsuvius)";
-    private static final String LOG_INFO = " [ INFO ] ";
-    private static final String LOG_WARN = " [ WARN ] ";
-    private static final String LOG_ERROR = " [ ERROR ] ";
+    private static final String LOG_INFO = " \u001B[32m[ INFO ]\u001B[0m  ";
+    private static final String LOG_WARN = " \u001B[33m[ WARN ]\u001B[0m  ";
+    private static final String LOG_ERROR = " \u001B[31m[ ERROR ]\u001B[0m ";
+    private static final String LOG_FATAL = " \u001B[31m[ FATAL ]\u001B[0m ";
 
     private final String className;
 
@@ -39,6 +41,7 @@ public class Log {
         switch (level) {
             case 1 -> sb.append(LOG_WARN);
             case 2 -> sb.append(LOG_ERROR);
+            case 3 -> sb.append(LOG_FATAL);
             default -> sb.append(LOG_INFO);
         }
         sb.append(className);

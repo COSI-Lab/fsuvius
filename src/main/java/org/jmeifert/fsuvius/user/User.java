@@ -59,9 +59,9 @@ public class User {
             this.name = (lines.get(1).split("name=", 2)[1]);
             this.balance = (Float.parseFloat(lines.get(2).split("balance=", 2)[1]));
         } catch(IndexOutOfBoundsException e) {
-            throw new IOException("Failed to read user. (Index out of bounds)");
+            throw new IOException("Failed to read user (Bad syntax). Lines:\n" + Arrays.toString(lines.toArray()));
         } catch(NumberFormatException e) {
-            throw new IOException("Failed to read user. (NumberFormatException)");
+            throw new IOException("Failed to read user (Bad balance). Lines:\n" + Arrays.toString(lines.toArray()));
         }
     }
 

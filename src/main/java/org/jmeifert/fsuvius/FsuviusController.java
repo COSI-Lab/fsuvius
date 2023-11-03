@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * FsuviusController defines and implements the program's API mappings.
  */
-@SuppressWarnings("unused")
 @RestController
 @SuppressWarnings("unused")
 public class FsuviusController {
@@ -63,14 +62,15 @@ public class FsuviusController {
      */
     @PostMapping("/api/users")
     public User newUser(@RequestBody String name, HttpServletRequest request) throws IOException {
-        if(!IPFilter.checkAddress(request)) {
+        if(IPFilter.isFiltered(request)) {
+            log.print(1, "Create request from " + IPFilter.getAddress(request) + " filtered.");
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(name.replaceAll(FsuviusMap.SANITIZER_REGEX, "").isEmpty()) {
             throw new BadRequestException(); // reject empty names
         }
         if(bucket.tryConsume(1)) {
-            log.print("Handling request to create new user with name \"" + name + "\".");
+            log.print("Creating new user with name \"" + name + "\".");
             return databaseController.createUser(name);
         }
         throw new RateLimitException();
@@ -98,7 +98,8 @@ public class FsuviusController {
     @PutMapping("/api/users/{id}")
     public User editUser(@RequestBody User newUser,
                          @PathVariable String id, HttpServletRequest request) throws IOException {
-        if(!IPFilter.checkAddress(request)) {
+        if(IPFilter.isFiltered(request)) {
+            log.print(1, "Edit request from " + IPFilter.getAddress(request) + " filtered.");
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(newUser.getName().isEmpty()) {
@@ -117,11 +118,12 @@ public class FsuviusController {
      */
     @DeleteMapping("/api/users/{id}")
     public void deleteUser(@PathVariable String id, HttpServletRequest request) throws IOException {
-        if(!IPFilter.checkAddress(request)) {
+        if(IPFilter.isFiltered(request)) {
+            log.print(1, "Delete request from " + IPFilter.getAddress(request) + " filtered.");
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
-            log.print("Handling request to delete user at ID \"" + id + "\".");
+            log.print("Deleting user at ID \"" + id + "\".");
             databaseController.deleteUser(id);
         } else {
             throw new RateLimitException();
@@ -142,7 +144,7 @@ public class FsuviusController {
             try {
                 return databaseController.readPhoto(id);
             } catch(NotFoundException e) {
-                log.print(1, "Couldn't find photo " + id + " in database.");
+                log.print(1, "Photo for user " + id + " not found.");
                 throw new NotFoundException();
             }
         }
@@ -157,10 +159,12 @@ public class FsuviusController {
     @PostMapping("api/photos/{id}")
     public void putPhoto(@RequestBody String item,
                          @PathVariable String id, HttpServletRequest request) throws IOException {
-        if(!IPFilter.checkAddress(request)) {
+        if(IPFilter.isFiltered(request)) {
+            log.print(1, "Photo upload from " + IPFilter.getAddress(request) + " filtered.");
             throw new ForbiddenException(); // reject requests from outside the labs
         }
         if(bucket.tryConsume(1)) {
+            log.print("Setting photo for user " + id + ".");
             if(item.length() > FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) { /* account for base64 and headers */
                 throw new BadRequestException(); /* refuse photos that are too large */
             }
