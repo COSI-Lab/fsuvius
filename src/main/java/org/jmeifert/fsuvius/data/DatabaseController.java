@@ -145,9 +145,10 @@ public class DatabaseController {
      * @param users Users to save to the file
      */
     private synchronized void saveUsersToFile(Vector<User> users) throws IOException {
-        log.print("Syncing changes to \"" + USERS_STORE_FILE + "\"...");
-        PrintWriter file = new PrintWriter(new FileOutputStream(USERS_STORE_FILE), true);
+        log.print("Saving \"" + USERS_STORE_FILE + "\".");
+        PrintWriter file = new PrintWriter(new FileOutputStream(USERS_STORE_FILE));
         for(User i : users) { file.print(i); }
+        file.flush();
         file.close();
     }
 
@@ -210,7 +211,7 @@ public class DatabaseController {
      * @param filename Filename to save to
      */
     private synchronized void saveBytesToFile(byte[] item, String filename) throws IOException {
-        log.print("Syncing changes to \"" + filename + "\".");
+        log.print("Saving \"" + filename + "\".");
         FileOutputStream f = new FileOutputStream(filename);
         f.write(item);
         f.close();
