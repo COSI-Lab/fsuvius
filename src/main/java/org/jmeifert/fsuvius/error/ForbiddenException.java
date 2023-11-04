@@ -13,4 +13,7 @@ public class ForbiddenException extends RuntimeException {
     public ForbiddenException() {
         super("Forbidden.");
     }
+
+    @Override
+    public synchronized Throwable fillInStackTrace() { return this; }
 }

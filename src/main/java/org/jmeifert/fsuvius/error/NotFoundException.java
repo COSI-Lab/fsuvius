@@ -13,4 +13,7 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException() {
         super("Not found.");
     }
+    
+    @Override
+    public synchronized Throwable fillInStackTrace() { return this; }
 }
