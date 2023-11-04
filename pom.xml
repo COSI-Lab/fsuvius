@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.jmeifert</groupId>
 	<artifactId>fsuvius</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<name>fsuvius</name>
 	<description>Mount Fsuvius</description>
 	<properties>
