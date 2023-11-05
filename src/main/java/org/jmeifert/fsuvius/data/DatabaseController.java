@@ -16,22 +16,25 @@ import org.jmeifert.fsuvius.user.User;
  */
 public class DatabaseController {
     private final Log log;
-    private final String USERS_STORE_FILE = "data/users.dat";
+    private final String USERS_FILE;
+    private final String PHOTOS_DIR;
     private Vector<User> users;
 
     /**
      * Instantiates a UserRegistry.
      */
-    public DatabaseController() throws IOException {
-        log = new Log("DatabaseController");
+    public DatabaseController(String users_file, String photos_dir) throws IOException {
+        this.USERS_FILE = users_file;
+        this.PHOTOS_DIR = photos_dir;
+        this.log = new Log("DatabaseController");
         try {
-            Files.createDirectories(Paths.get("data/photos/"));
+            Files.createDirectories(Paths.get(PHOTOS_DIR));
         } catch(IOException e) {
             log.print(2, "Failed to ensure presence of data directories.");
         }
-        log.print("Loading users from disk...");
-        this.users = loadUsersFromFile();
-        log.print("Finished loading users from disk.");
+        log.print("Loading users...");
+        this.users = loadUsers();
+        log.print("Finished loading users.");
     }
 
     /**
@@ -65,7 +68,7 @@ public class DatabaseController {
         User userToAdd = new User(name);
         users.add(userToAdd);
         writePhoto(FsuviusMap.DEFAULT_PHOTO, userToAdd.getID());
-        saveUsersToFile(users);
+        saveUsers(users);
         return userToAdd;
     }
 
@@ -79,7 +82,7 @@ public class DatabaseController {
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.set(i, user);
-                saveUsersToFile(users);
+                saveUsers(users);
                 return user;
             }
         }
@@ -94,7 +97,7 @@ public class DatabaseController {
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getID().equals(id)) {
                 users.remove(i);
-                saveUsersToFile(users);
+                saveUsers(users);
                 deletePhoto(id);
                 return;
             }
@@ -108,7 +111,7 @@ public class DatabaseController {
     public synchronized void reset() throws IOException {
         log.print(1, "Resetting database.");
         users = new Vector<>();
-        saveUsersToFile(users);
+        saveUsers(users);
         cleanupPhotos();
         log.print("Database reset complete.");
     }
@@ -117,9 +120,9 @@ public class DatabaseController {
      * Loads users from a file.
      * @return Users loaded from the file
      */
-    private synchronized Vector<User> loadUsersFromFile() throws IOException {
+    private synchronized Vector<User> loadUsers() throws IOException {
         try {
-            Scanner file = new Scanner(new FileInputStream(USERS_STORE_FILE));
+            Scanner file = new Scanner(new FileInputStream(USERS_FILE));
             Vector<User> loaded_users = new Vector<>();
             Vector<String> line_buf = new Vector<>();
             String current_line;
@@ -135,7 +138,7 @@ public class DatabaseController {
             file.close();
             return loaded_users;
         } catch(FileNotFoundException e) {
-            log.print(1, "File \"" + USERS_STORE_FILE + "\" not found.");
+            log.print(1, "File \"" + USERS_FILE + "\" not found.");
             return new Vector<>();
         }
     }
@@ -144,9 +147,9 @@ public class DatabaseController {
      * Saves users to a file.
      * @param users Users to save to the file
      */
-    private synchronized void saveUsersToFile(Vector<User> users) throws IOException {
-        log.print("Saving \"" + USERS_STORE_FILE + "\".");
-        PrintWriter file = new PrintWriter(new FileOutputStream(USERS_STORE_FILE));
+    private synchronized void saveUsers(Vector<User> users) throws IOException {
+        log.print("Saving \"" + USERS_FILE + "\".");
+        PrintWriter file = new PrintWriter(new FileOutputStream(USERS_FILE));
         for(User i : users) { file.print(i); }
         file.flush();
         file.close();
@@ -158,7 +161,7 @@ public class DatabaseController {
      * @return The photo as bytes
      */
     public synchronized byte[] readPhoto(String id) throws IOException {
-        return loadBytesFromFile("data/photos/"+id);
+        return loadBytesFromFile(PHOTOS_DIR + id);
     }
 
     /**
@@ -170,7 +173,7 @@ public class DatabaseController {
         /* if user bypasses frontend upload size limit just don't do anything */
         if(item.length() < FsuviusMap.MAX_PHOTO_SIZE * 1.33 + 24) {
             byte[] image = Base64.getDecoder().decode(item.split(",")[1]);
-            saveBytesToFile(image, "data/photos/"+id);
+            saveBytesToFile(image, PHOTOS_DIR + id);
         }
     }
 
@@ -179,7 +182,7 @@ public class DatabaseController {
      * @param id The ID of the photo to delete
      */
     public synchronized void deletePhoto(String id) {
-        String filename = "data/photos/" + id;
+        String filename = PHOTOS_DIR + id;
         File f = new File(filename);
         if(f.delete()) { return; }
         log.print(2, "Could not delete file \"" + filename + "\".");
@@ -187,20 +190,20 @@ public class DatabaseController {
 
     /**
      * Loads bytes from a file.
-     * @param STORE_FILE Filename to load bytes from
+     * @param filename Filename to load bytes from
      * @return The loaded bytes
      */
 
-    private synchronized byte[] loadBytesFromFile(String STORE_FILE) throws IOException, NotFoundException {
+    private synchronized byte[] loadBytesFromFile(String filename) throws IOException, NotFoundException {
         try {
-            File f = new File(STORE_FILE);
+            File f = new File(filename);
             FileInputStream fis = new FileInputStream(f);
             byte[] fb = new byte[(int) f.length()];
             int ignored = fis.read(fb);
             fis.close();
             return fb;
         } catch(FileNotFoundException e) {
-            log.print(1, "File \"" + STORE_FILE + "\" not found.");
+            log.print(1, "File \"" + filename + "\" not found.");
             throw new NotFoundException();
         }
     }
@@ -224,7 +227,7 @@ public class DatabaseController {
         log.print(0, "Scanning photo database...");
         Vector<String> user_ids = new Vector<>();
         for(User i : users) { user_ids.add(i.getID()); }
-        File[] files = (new File("data/photos/")).listFiles();
+        File[] files = (new File(PHOTOS_DIR)).listFiles();
         if(files == null || files.length == 0) { return; }
         int n_photos = 0;
         for(File i : files) {

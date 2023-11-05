@@ -30,16 +30,28 @@ public class FsuviusController {
 
     /**
      * Instantiates a FsuviusController.
+     * @param test_mode Whether to use a different data directory to run tests without overwriting existing data
+     * @throws IOException if the database controller cannot start
      */
-    public FsuviusController() throws IOException {
+    public FsuviusController(boolean test_mode) throws IOException {
         log = new Log("FsuviusController");
         log.print("Starting up...");
-        databaseController = new DatabaseController();
+        if(test_mode) {
+            databaseController = new DatabaseController("test/users.dat", "test/photos/");
+        } else {
+            databaseController = new DatabaseController("data/users.dat", "data/photos/");
+        }
         Bandwidth limit= Bandwidth.classic(FsuviusMap.MAX_REQUESTS_PER_SECOND,
                 Refill.greedy(FsuviusMap.MAX_REQUESTS_PER_SECOND, Duration.ofSeconds(1)));
         this.bucket = Bucket.builder().addLimit(limit).build();
         log.print("=== Startup complete. Welcome to Mount Fsuvius. ===");
     }
+
+    /**
+     * Instantiates a FsuviusController.
+     * @throws IOException if the database controller cannot start
+     */
+    public FsuviusController() throws IOException { this(false); }
 
     /* ===== USERS ===== */
 
