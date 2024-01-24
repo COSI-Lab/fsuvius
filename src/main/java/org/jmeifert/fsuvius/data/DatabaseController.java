@@ -18,7 +18,7 @@ public class DatabaseController {
     private final Log log;
     private final String USERS_FILE;
     private final String PHOTOS_DIR;
-    private Vector<User> users;
+    private TreeMap<String, User> users;
 
     /**
      * Instantiates a UserRegistry.
@@ -34,6 +34,7 @@ public class DatabaseController {
         }
         log.print("Loading users...");
         this.users = loadUsers();
+        this.cleanupPhotos();
         log.print("Finished loading users.");
     }
 
@@ -41,23 +42,14 @@ public class DatabaseController {
      * Gets all users.
      * @return All users as a list
      */
-    public synchronized List<User> getUsers() {
-        return Collections.list(users.elements());
-    }
+    public synchronized Collection<User> getUsers() { return users.values(); }
 
     /**
      * Gets a single user by ID
      * @param id User's ID
      * @return The user with the specified ID
      */
-    public synchronized User getUser(String id) throws NotFoundException {
-        for(User i : users) {
-            if(i.getID().equals(id)) {
-                return i;
-            }
-        }
-        throw new NotFoundException();
-    }
+    public synchronized User getUser(String id) { return users.get(id); }
 
     /**
      * Creates a user with the specified name
@@ -66,7 +58,7 @@ public class DatabaseController {
      */
     public synchronized User createUser(String name) throws IOException {
         User userToAdd = new User(name);
-        users.add(userToAdd);
+        users.put(userToAdd.getID(), userToAdd);
         writePhoto(FsuviusMap.DEFAULT_PHOTO, userToAdd.getID());
         saveUsers(users);
         return userToAdd;
@@ -78,31 +70,19 @@ public class DatabaseController {
      * @param user The user to replace with
      * @return The updated user
      */
-    public synchronized User editUser(String id, User user) throws IOException, NotFoundException {
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getID().equals(id)) {
-                users.set(i, user);
-                saveUsers(users);
-                return user;
-            }
-        }
-        throw new NotFoundException();
+    public synchronized User editUser(String id, User user) throws IOException {
+        users.put(id, user);
+        saveUsers(users);
+        return user;
     }
 
     /**
      * Deletes a user.
      * @param id User ID to delete
      */
-    public synchronized void deleteUser(String id) throws IOException, NotFoundException {
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getID().equals(id)) {
-                users.remove(i);
-                saveUsers(users);
-                deletePhoto(id);
-                return;
-            }
-        }
-        throw new NotFoundException();
+    public synchronized void deleteUser(String id) throws IOException {
+        users.remove(id);
+        saveUsers(users);
     }
 
     /**
@@ -110,7 +90,7 @@ public class DatabaseController {
      */
     public synchronized void reset() throws IOException {
         log.print(1, "Resetting database.");
-        users = new Vector<>();
+        users = new TreeMap<>();
         saveUsers(users);
         cleanupPhotos();
         log.print("Database reset complete.");
@@ -120,16 +100,17 @@ public class DatabaseController {
      * Loads users from a file.
      * @return Users loaded from the file
      */
-    private synchronized Vector<User> loadUsers() throws IOException {
+    private synchronized TreeMap<String, User> loadUsers() throws IOException {
         try {
             Scanner file = new Scanner(new FileInputStream(USERS_FILE));
-            Vector<User> loaded_users = new Vector<>();
+            TreeMap<String, User> loaded_users = new TreeMap<>();
             Vector<String> line_buf = new Vector<>();
             String current_line;
             while(file.hasNextLine()) {
                 current_line = file.nextLine();
                 if(current_line.isBlank()) {
-                    loaded_users.add(new User(line_buf));
+                    User user = new User(line_buf);
+                    loaded_users.put(user.getID(), user);
                     line_buf.clear();
                 } else {
                     line_buf.add(current_line);
@@ -139,7 +120,7 @@ public class DatabaseController {
             return loaded_users;
         } catch(FileNotFoundException e) {
             log.print(1, "File \"" + USERS_FILE + "\" not found.");
-            return new Vector<>();
+            return new TreeMap<>();
         }
     }
 
@@ -147,10 +128,10 @@ public class DatabaseController {
      * Saves users to a file.
      * @param users Users to save to the file
      */
-    private synchronized void saveUsers(Vector<User> users) throws IOException {
+    private synchronized void saveUsers(TreeMap<String, User> users) throws IOException {
         log.print("Saving \"" + USERS_FILE + "\".");
         PrintWriter file = new PrintWriter(new FileOutputStream(USERS_FILE));
-        for(User i : users) { file.print(i); }
+        for(User i : users.values()) { file.print(i); }
         file.flush();
         file.close();
     }
@@ -225,30 +206,14 @@ public class DatabaseController {
      */
     private synchronized void cleanupPhotos() {
         log.print(0, "Scanning photo database...");
-        Vector<String> user_ids = new Vector<>();
-        for(User i : users) { user_ids.add(i.getID()); }
         File[] files = (new File(PHOTOS_DIR)).listFiles();
-        if(files == null || files.length == 0) { return; }
-        int n_photos = 0;
+        if(files == null) { return; }
         for(File i : files) {
-            if(i.isFile()) { n_photos++; }
-        }
-        if(n_photos <= user_ids.size()) { return; }
-        log.print(1, "Found unused photos.");
-        for(File i : files) { /* TODO fix O(n^2) algorithm */
             if(i.isFile()) {
-                boolean hasParentPhoto = false;
-                for(String j : user_ids) {
-                    if(i.getName().equals(j)) {
-                        hasParentPhoto = true;
-                        user_ids.remove(j);
-                        break;
-                    }
-                }
-                if(!hasParentPhoto) {
-                    log.print(0, "Deleting unused photo \"" + i.getName() + "\".");
+                if(users.get(i.getName()) == null) {
+                    log.print(0, "Cleaning up photo \"" + i.getName() + "\".");
                     if(!i.delete()) {
-                        log.print(1, "Failed to delete unused photo \"" + i.getName() + "\".");
+                        log.print(1, "Failed to clean up photo \"" + i.getName() + "\".");
                     }
                 }
             }

@@ -2,6 +2,7 @@ package org.jmeifert.fsuvius;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.List;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -60,7 +61,7 @@ public class FsuviusController {
      * @return All Users
      */
     @GetMapping("/api/users")
-    public List<User> getUsers() {
+    public Collection<User> getUsers() {
         if(bucket.tryConsume(1)) {
             return databaseController.getUsers();
         }
