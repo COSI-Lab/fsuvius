@@ -2,9 +2,15 @@ services:
   web:
     build: .
     container_name: fsuvius
+    restart: unless-stopped
     ports:
-      - "80:8080"
+      - "9039:8080"
     volumes:
       - type: bind
         source: ./data
         target: /fsuvius/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 500M
