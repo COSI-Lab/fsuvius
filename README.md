@@ -2,9 +2,9 @@
 
 #### The Great and Respectable Open Source Bank, now with a crisp, refreshing spin.
 
-[Source code](https://github.com/lavajuno/fsuvius)
+[Source code](https://github.com/COSI-Lab/fsuvius)
 
-[Releases](https://github.com/lavajuno/fsuvius/releases)
+[Releases](https://github.com/COSI-Lab/fsuvius/releases)
 
 [Documentation](docs/jdoc/index.html)
 
