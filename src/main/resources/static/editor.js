@@ -86,6 +86,8 @@ function handle_delete() {
                 show_error("Couldn't delete user. See console for error details.");
             }
         });
+    } else {
+        show_toast("Deletion cancelled.");
     }
 }
 
