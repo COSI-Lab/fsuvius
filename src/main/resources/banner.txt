@@ -6,5 +6,5 @@
 # Mount Fsuvius - The Sierra Mist Edition
 # Application version ${application.version}.
 # Spring Boot version ${spring-boot.version}.
-# https://github.com/lavajuno/fsuvius
+# https://github.com/COSI-Lab/fsuvius
 #
