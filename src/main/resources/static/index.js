@@ -111,34 +111,41 @@ function display_list(refresh=false) {
             "Accept": "application/json",
         },
     }).then(async response => {
-        if(!response.ok) { throw new Error(response.status); }
+        if(!response.ok) {
+            console.log(`Request for "${USERS_URL}"` + 
+                        ` failed with status ${response.status}`);
+            throw new Error(response.status);
+        }
         const data = await response.json();
         //console.log("[DEBUG] Response:");
         //console.log(data);
-        formatted_result = "";
+        user_list_html = "";
         for(let i in data) {
             let user = data[i];
-            console.log(user);
-            var user_HTML = `
-            <div class="userpreview_container" id="USER_${user.id}">
-                <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
-                <div class="userpreview_content">
-                    <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
-                    <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance} FSU</h3>
-                    <button onclick="handle_plus('${user.id}')">+1</button>
-                    <button onclick="handle_minus('${user.id}')">-1</button>
-                    <a href="editor.html?id=${user.id}"><button>Edit</button></a>
-                </div>
-            </div>
-            `
-            formatted_result += user_HTML;
+            user_list_html += getUserHTML(user);
         }
-        document.getElementById("USER_LIST").innerHTML = formatted_result;
+        document.getElementById("USER_LIST").innerHTML = user_list_html;
         if(refresh) { show_toast("Refreshed list of users."); }
     }).catch(error => {
         console.log(error);
         show_error("Couldn't display list of users. See console for error details.");
     });
+}
+
+/* Gets the HTML for a single user */
+function getUserHTML(user) {
+    return `
+    <div class="userpreview_container" id="USER_${user.id}">
+        <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
+        <div class="userpreview_content">
+            <h2 class="user_name">${user.name}</h2>
+            <h3 class="user_balance">${user.balance} FSU</h3>
+            <button onclick="handle_plus('${user.id}')">+1</button>
+            <button onclick="handle_minus('${user.id}')">-1</button>
+            <a href="editor.html?id=${user.id}"><button>Edit</button></a>
+        </div>
+    </div>
+    `
 }
 
 /* ===== On page load ===== */
