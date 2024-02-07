@@ -138,8 +138,8 @@ function getUserHTML(user) {
     <div class="userpreview_container" id="USER_${user.id}">
         <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
         <div class="userpreview_content">
-            <h2 class="user_name">${user.name}</h2>
-            <h3 class="user_balance">${user.balance} FSU</h3>
+            <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
+            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance} FSU</h3>
             <button onclick="handle_plus('${user.id}')">+1</button>
             <button onclick="handle_minus('${user.id}')">-1</button>
             <a href="editor.html?id=${user.id}"><button>Edit</button></a>
