@@ -4,7 +4,7 @@ services:
     container_name: fsuvius
     restart: unless-stopped
     expose:
-      - "80"
+      - 80
     networks:
       - web
     volumes:
