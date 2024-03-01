@@ -3,8 +3,10 @@ services:
     build: .
     container_name: fsuvius
     restart: unless-stopped
-    ports:
-      - "9039:8080"
+    expose:
+      - "80"
+    networks:
+      - web
     volumes:
       - type: bind
         source: ./data
@@ -14,3 +16,6 @@ services:
         limits:
           cpus: '1.0'
           memory: 500M
+networks:
+  web:
+    external: true
