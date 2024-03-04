@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    container_name: fsuvius
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - web
+    volumes:
+      - ./data:/home/fsuvius/fsuvius/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 500M
+
+networks:
+  web:
+    external: true
