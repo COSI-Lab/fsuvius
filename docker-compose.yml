@@ -4,18 +4,17 @@ services:
     container_name: fsuvius
     restart: unless-stopped
     expose:
-      - 80
+      - 8080
     networks:
       - web
     volumes:
-      - type: bind
-        source: ./data
-        target: /fsuvius/data
+      - ./data:/home/fsuvius/fsuvius/data
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 500M
+
 networks:
   web:
     external: true
