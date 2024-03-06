@@ -14,7 +14,6 @@ FROM eclipse-temurin:17
 EXPOSE 8080
 RUN groupadd --gid 1000 fsuvius
 RUN useradd --gid 1000 --uid 1000 --create-home --shell /bin/bash fsuvius
-RUN mkdir /home/fsuvius/fsuvius
 WORKDIR /home/fsuvius/fsuvius
 COPY --from=builder /fsuvius/target/fsuvius-*.jar ./fsuvius.jar
 RUN chown fsuvius fsuvius.jar
