@@ -1,20 +1,36 @@
 services:
-  web:
-    build: .
-    container_name: fsuvius
+  app:
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    container_name: fsuvius_app
     restart: unless-stopped
     expose:
-      - 8080
+      - 8000
     networks:
       - web
     volumes:
-      - ./data:/home/fsuvius/fsuvius/data
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 500M
+      - db:/home/fsuvius/db
+    environment:
+      - HOST=fsu.cosi.clarkson.edu
+      - SECRET_KEY=[_____CHANGEME_____]
+  
+  proxy:
+    build:
+      context: .
+      dockerfile: docker/proxy.Dockerfile
+    container_name: fsuvius_proxy
+    restart: unless-stopped
+    expose:
+      - 80
+    networks:
+      - web
+    depends_on:
+      - app
 
 networks:
   web:
     external: true
+
+volumes:
+  db: {}

@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Mount Fsuvius</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'fa/css/solid.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fa/css/fontawesome.min.css' %}">
+</head>
+<body>
+    <nav>
+        <span class="expand_button" onclick="base_toggle_nav()"><i class="fa-solid fa-bars"></i></span>
+        <a href="#" id="base_nav_home">Home</a>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
+</html>
