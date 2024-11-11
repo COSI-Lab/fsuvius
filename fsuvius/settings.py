@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j6wr2txkp@4&v_3@v=9b92_%m_1m6wp$31dj8-h-7)b$j2i^ud'
+SECRET_KEY = 'DEVELOPMENT-INSECURE-j6wr2txkp@4&v_3@v=9b92_%m_1m6wp$31dj8-h-7)b$j2i^ud'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -164,6 +164,6 @@ MEDIA_ROOT = "uploads/"
 
 # Application parameters
 
-VERSION = "0.0.0"
+VERSION = "DEVELOPMENT"
 
 TRANSACTION_HISTORY_DAYS = 90
