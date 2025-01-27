@@ -17,7 +17,7 @@ public class FsuviusMap {
      * Any PUT/POST/DELETE/etc. requests from outside the specified range are rejected.
      * Recommended: {"128.153.144", "128.153.145", "127.0.0.1"}
      */
-    public static final String[] ALLOWED_ADDR_PREFIXES = {"128.153.144", "128.153.145", "127"};
+    public static final String[] ALLOWED_ADDR_PREFIXES = {"128.153.144", "128.153.145", "127", "2605:6480:c051"};
 
     /**
      * The maximum allowed size for photos (in bytes).
