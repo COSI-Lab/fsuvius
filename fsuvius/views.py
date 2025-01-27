@@ -11,6 +11,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from fsuvius.models import User, Transaction
+from fsuvius.forms import UserForm
 
 _logger = logging.getLogger("fsuvius")
 
@@ -45,11 +46,15 @@ def create_user(request: HttpRequest):
 @require_http_methods(["GET", "POST"])
 def edit_user(request: HttpRequest, user_id: int):
     user = get_object_or_404(User, id=user_id)
-    match request.method:
-        case "GET":
-            pass
-        case "POST":
-            pass
+    if request.method == "GET":
+        form = UserForm()
+    else:
+        form = UserForm(request.POST)
+    context = {
+        "user": user,
+        "form": form,
+    }
+    return render(request, "fsuvius/user/edit.html", context)
 
 @require_http_methods(["GET", "POST"])
 def delete_user(request: HttpRequest, user_id: int):
