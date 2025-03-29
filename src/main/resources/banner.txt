@@ -3,7 +3,7 @@
 # | _|(_-<| || |\ V /| || || |(_-<
 # |_| /__/ \_,_| \_/ |_| \_,_|/__/
 #
-# Mount Fsuvius - The Sierra Mist Edition
+# Mount Fsuvius - The Mtn Dew Edition
 # Application version ${application.version}.
 # Spring Boot version ${spring-boot.version}.
 # https://github.com/COSI-Lab/fsuvius

@@ -6,10 +6,10 @@
 
 /* ===== GENERAL ===== */
 body {
-    font-family: "Open Sans", Verdana, sans-serif;
+    font-family: Comic Sans MS, "Open Sans", Verdana, sans-serif;
     font-size: 16px;
     background-color: rgb(180, 205, 225);
-    color: black;
+    color: #ff0;
     padding: 0;
     margin: 0;
     background-image: url("media/background.jpg");
@@ -36,33 +36,23 @@ button {
     font: inherit;
     margin: 0px 0px;
     padding: 4px 8px;
-    border: 1px solid black;
-    color: black;
+    border: 1px solid #ff0;
+    color: #ff0;
     background: none;
     transition-duration: 200ms;
 }
 
 button:hover {
-    background: black;
-    color: white;
+    background: #ff0;
+    color: #f0f;
 }
 
-.name_field {
+.name_field, .balance_field {
     font: inherit;
     width: 250px;
     margin: 8px 0;
-    border: 1px solid black;
-    padding: 4px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    background: none;
-}
-
-.balance_field {
-    font: inherit;
-    width: 100px;
-    margin: 8px 0;
-    border: 1px solid black;
+    border: 1px solid #ff0;
+    color: #ff0;
     padding: 4px;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -73,8 +63,8 @@ button:hover {
     width: 800px;
     padding: 24px;
     margin: 100px auto;
-    background: rgba(255,255,255,0.7);
-    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+    background: #f0f9;
+    box-shadow: 3px 3px 5px #ff07;
 }
 
 /* ===== Navbar ===== */
