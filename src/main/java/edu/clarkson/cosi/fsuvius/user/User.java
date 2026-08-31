@@ -3,6 +3,7 @@ package edu.clarkson.cosi.fsuvius.user;
 import java.io.IOException;
 import java.util.*;
 import java.lang.Integer;
+import java.lang.System;
 
 import edu.clarkson.cosi.fsuvius.FsuviusMap;
 
@@ -17,6 +18,7 @@ public class User {
     private String id;
     private String name;
     private float balance;
+    private int lastActive;
 
     /**
      * Constructs a User with the name "" and a balance of 0.
@@ -25,6 +27,7 @@ public class User {
         this.id = generateID();
         this.name = "";
         this.balance = 0.0F;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -35,6 +38,7 @@ public class User {
         this.id = generateID();
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = 0.0F;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -46,6 +50,7 @@ public class User {
         this.id = generateID();
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -62,6 +67,13 @@ public class User {
             throw new IOException("Failed to read user (Bad syntax). Lines:\n" + Arrays.toString(lines.toArray()));
         } catch(NumberFormatException e) {
             throw new IOException("Failed to read user (Bad balance). Lines:\n" + Arrays.toString(lines.toArray()));
+        }
+
+        // handle lastActive separately because it's a new schema
+        try {
+            this.lastActive = (lines.get(0).split("lastActive=", 2)[1]);
+        } catch(IndexOutOfBoundsException e) {
+            this.lastActive = System.currentTimeMillis();
         }
     }
 
@@ -141,6 +153,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("id=%s\nname=%s\nbalance=%s\n\n", this.id, this.name, this.balance);
+        return String.format("id=%s\nname=%s\nbalance=%s\nlastActive=%s\n\n", this.id, this.name, this.balance, this.lastActive);
     }
 }

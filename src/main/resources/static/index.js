@@ -134,8 +134,14 @@ function display_list(refresh=false) {
 
 /* Gets the HTML for a single user */
 function getUserHTML(user) {
+    const now = Date.now();
+    const lastActive = user.lastActive;
+
+    // user becomes invisible after 30 days
+    const visible = (now - lastActive) < 2.592e+9
+
     return `
-    <div class="userpreview_container" id="USER_${user.id}">
+    <div class="userpreview_container ${visible ? "" : "user_inactive"}" id="USER_${user.id}">
         <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
         <div class="userpreview_content">
             <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
