@@ -69,7 +69,7 @@ function handle_balance_change(id, offset) {
             "id": `${id}`,
             "name": `${data.name}`,
             "balance": `${new_balance}`,
-            "lastActive": `${data.lastActive}`
+            "lastActive": Date.now()
         }
 
         /* Put user with new parameters */
@@ -153,6 +153,12 @@ function getUserHTML(user) {
         </div>
     </div>
     `
+}
+
+function toggleInactiveUsers() {
+    const currentDisplay = getComputedStyle(document.documentElement).getPropertyValue('--display-inactive') == "grid";
+    document.documentElement.style.setProperty('--display-inactive', currentDisplay ? "none" : "grid" );
+    display_list();
 }
 
 /* ===== On page load ===== */

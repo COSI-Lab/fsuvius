@@ -73,7 +73,7 @@ public class User {
         try {
             this.lastActive = (Long.parseLong(lines.get(3).split("lastActive=", 2)[1]));
         } catch(IndexOutOfBoundsException e) {
-            this.lastActive = System.currentTimeMillis();
+            this.lastActive = 0;
             throw new IOException("User did not have lastActive property!");
         }
     }
@@ -106,7 +106,7 @@ public class User {
      * Returns this User's lastActive time.
      * @return this User's lastActive time
      */
-    public float getLastActive() {
+    public long getLastActive() {
         return this.lastActive;
     }
 
@@ -152,12 +152,13 @@ public class User {
         if(!(other instanceof User)) { return false; }
         return Objects.equals(this.id, ((User) other).getID()) &&
                 Objects.equals(this.name, ((User) other).getName()) &&
-                Objects.equals(this.balance, ((User) other).getBalance());
+                Objects.equals(this.balance, ((User) other).getBalance()) &&
+                Objects.equals(this.lastActive, ((User) other).getLastActive());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.balance);
+        return Objects.hash(this.id, this.name, this.balance, this.lastActive);
     }
 
     @Override

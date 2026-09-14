@@ -44,7 +44,8 @@ function handle_save() {
     let new_user = {
         "id": `${USER_ID}`,
         "name": `${new_name}`,
-        "balance": `${new_balance}`
+        "balance": `${new_balance}`,
+        "lastActive": Date.now()
     }
     fetch((USER_URL), {
         method: "PUT",
