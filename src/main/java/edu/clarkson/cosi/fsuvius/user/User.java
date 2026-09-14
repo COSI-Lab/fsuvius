@@ -3,6 +3,7 @@ package edu.clarkson.cosi.fsuvius.user;
 import java.io.IOException;
 import java.util.*;
 import java.lang.Integer;
+import java.lang.System;
 
 import edu.clarkson.cosi.fsuvius.FsuviusMap;
 
@@ -17,6 +18,7 @@ public class User {
     private String id;
     private String name;
     private float balance;
+    private long lastActive;
 
     /**
      * Constructs a User with the name "" and a balance of 0.
@@ -25,6 +27,7 @@ public class User {
         this.id = generateID();
         this.name = "";
         this.balance = 0.0F;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -35,6 +38,7 @@ public class User {
         this.id = generateID();
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = 0.0F;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -46,6 +50,7 @@ public class User {
         this.id = generateID();
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
+        this.lastActive = System.currentTimeMillis();
     }
 
     /**
@@ -62,6 +67,14 @@ public class User {
             throw new IOException("Failed to read user (Bad syntax). Lines:\n" + Arrays.toString(lines.toArray()));
         } catch(NumberFormatException e) {
             throw new IOException("Failed to read user (Bad balance). Lines:\n" + Arrays.toString(lines.toArray()));
+        }
+
+        // handle lastActive separately because it's a new schema
+        try {
+            this.lastActive = (Long.parseLong(lines.get(3).split("lastActive=", 2)[1]));
+        } catch(IndexOutOfBoundsException e) {
+            this.lastActive = 0;
+            throw new IOException("User did not have lastActive property!");
         }
     }
 
@@ -87,6 +100,14 @@ public class User {
      */
     public float getBalance() {
         return this.balance;
+    }
+
+    /**
+     * Returns this User's lastActive time.
+     * @return this User's lastActive time
+     */
+    public long getLastActive() {
+        return this.lastActive;
     }
 
     /**
@@ -131,16 +152,17 @@ public class User {
         if(!(other instanceof User)) { return false; }
         return Objects.equals(this.id, ((User) other).getID()) &&
                 Objects.equals(this.name, ((User) other).getName()) &&
-                Objects.equals(this.balance, ((User) other).getBalance());
+                Objects.equals(this.balance, ((User) other).getBalance()) &&
+                Objects.equals(this.lastActive, ((User) other).getLastActive());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.balance);
+        return Objects.hash(this.id, this.name, this.balance, this.lastActive);
     }
 
     @Override
     public String toString() {
-        return String.format("id=%s\nname=%s\nbalance=%s\n\n", this.id, this.name, this.balance);
+        return String.format("id=%s\nname=%s\nbalance=%s\nlastActive=%s\n\n", this.id, this.name, this.balance, this.lastActive);
     }
 }

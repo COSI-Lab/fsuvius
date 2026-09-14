@@ -7,13 +7,8 @@
 
     <body>
         <noscript><h1>You need to enable Javascript to use Mount Fsuvius!</h1></noscript>
-        
-        <div class="navbar">
-            <a href="index.html"><div class="navbar_item">Home</div></a>
-            <a href="about.html"><div class="navbar_item">About</div></a>
-        </div>
 
-        <div class="content_container">
+        <div class="content_container" style="margin-top: 50px;">
             <img class="logo" src="media/logo.png" alt="Mount Fsuvius">
             <p><i>The Sierra Mist Edition</i></p>
 
@@ -26,6 +21,9 @@
             <input class="name_field" id="CREATE_FIELD" placeholder="new user's name...">
             <button onclick="handle_create()">Create User</button>
             <button onclick="display_list(refresh=true)">Refresh List</button>
+            <button onclick="toggleInactiveUsers()">Toggle Hidden Users</button>
+            <button onclick="location.href='/about.html'" type="button">
+         About</button>
         </div>
 
         <div id="TOAST_MESSAGE"></div>
