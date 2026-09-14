@@ -17,6 +17,10 @@ body {
     background-attachment: fixed;
 }
 
+:root {
+    --display-inactive: none;
+}
+
 h1, h2, h3, p {
     margin: 8px 0;
 }
@@ -133,6 +137,10 @@ button:hover {
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
+}
+
+.user_inactive {
+    display: var(--display-inactive);
 }
 
 /* ===== Toast messages ===== */
