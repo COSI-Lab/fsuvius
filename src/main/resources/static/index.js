@@ -68,7 +68,8 @@ function handle_balance_change(id, offset) {
         let new_user = {
             "id": `${id}`,
             "name": `${data.name}`,
-            "balance": `${new_balance}`
+            "balance": `${new_balance}`,
+            "lastActive": `${data.lastActive}`
         }
 
         /* Put user with new parameters */

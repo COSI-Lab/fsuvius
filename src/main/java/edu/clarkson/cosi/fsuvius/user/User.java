@@ -18,7 +18,7 @@ public class User {
     private String id;
     private String name;
     private float balance;
-    private int lastActive;
+    private long lastActive;
 
     /**
      * Constructs a User with the name "" and a balance of 0.
@@ -71,9 +71,10 @@ public class User {
 
         // handle lastActive separately because it's a new schema
         try {
-            this.lastActive = (lines.get(0).split("lastActive=", 2)[1]);
+            this.lastActive = (Long.parseLong(lines.get(3).split("lastActive=", 2)[1]));
         } catch(IndexOutOfBoundsException e) {
             this.lastActive = System.currentTimeMillis();
+            throw new IOException("User did not have lastActive property!");
         }
     }
 
