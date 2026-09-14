@@ -103,6 +103,14 @@ public class User {
     }
 
     /**
+     * Returns this User's lastActive time.
+     * @return this User's lastActive time
+     */
+    public float getLastActive() {
+        return this.lastActive;
+    }
+
+    /**
      * Sets this User's ID.
      * @param id this User's ID
      */
