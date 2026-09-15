@@ -86,7 +86,7 @@ function handle_balance_change(id, offset) {
             const data = await response.json();
             //console.log("[DEBUG] Response:");
             //console.log(data);
-            document.getElementById(`USER_BALANCE_${id}`).innerHTML = `${data.balance} FSU`;
+            document.getElementById(`USER_BALANCE_${id}`).innerHTML = `${data.balance}`;
             show_toast("Changes saved.");
         }).catch(error => {
             console.log(error);
@@ -168,11 +168,15 @@ function toggleInactiveUsers() {
 function easyDeposit(id) {
     try {
         const depositDollars = prompt("Please enter a dollar ammount");
-        if (depositDollars == null) {
+        if (depositDollars == null || depositDollars == "") {
             show_toast("Balance not changed.");
+            return;
         }
         const depositFsu = parseFloat(depositDollars) / 0.75; // 1 FSU = 0.75 USD
-        if (depositFsu == NaN) throw "Bad Input";
+        if (depositFsu == NaN) {
+            show_toast("Balance not changed.");
+            return;
+        }
         handle_balance_change(id,depositFsu);
     }
     catch {
