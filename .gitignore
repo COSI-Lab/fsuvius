@@ -4,3 +4,6 @@ data/*
 # IDE Configuration
 .idea/*
 .vscode/*
+
+# Java things
+target/*
