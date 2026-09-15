@@ -74,9 +74,8 @@ button:hover {
 }
 
 .content_container {
-    width: 800px;
     padding: 24px;
-    margin: 100px auto;
+    margin: 50px;
     background: rgba(255,255,255,0.7);
     box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 }
@@ -112,6 +111,11 @@ button:hover {
 }
 
 /* ===== User preview cards ===== */
+
+#USER_LIST {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 
 .userpreview_container {
     width: 100%;
