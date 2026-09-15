@@ -147,7 +147,8 @@ function getUserHTML(user) {
         <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
         <div class="userpreview_content">
             <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
-            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance} FSU</h3>
+            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</h3>
+            <h3 class="user_currency">FSU</h3>
             <button onclick="handle_plus('${user.id}')">+1</button>
             <button onclick="handle_minus('${user.id}')">-1</button>
             <button onclick="easyDeposit('${user.id}')">+$</button>
@@ -175,5 +176,16 @@ function easyDeposit(id) {
     }
 }
 
+function loadNews() {
+    const content = localStorage.getItem("news");
+    document.getElementById("NEWS").value = content;
+}
+
+function storeNews() {
+    const content = document.getElementById("NEWS").value;
+    localStorage.setItem("news", content);
+}
+
 /* ===== On page load ===== */
 display_list();
+loadNews();

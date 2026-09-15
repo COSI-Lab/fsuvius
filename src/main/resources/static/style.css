@@ -80,6 +80,18 @@ button:hover {
     box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
 }
 
+#NEWS {
+    width: calc(100% - 400px); 
+    background: transparent; 
+    border: transparent; 
+    resize: none; 
+    text-align: right;
+    margin-left: 10px; 
+    overflow: clip; 
+    font-size: 16px; 
+    box-sizing: border-box;
+}
+
 /* ===== Navbar ===== */
 
 .navbar {
@@ -168,6 +180,17 @@ button:hover {
 #TOAST_MESSAGE.error { background: rgba(125, 0, 0, 0.7)}
 
 .user_balance {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: clip;
+    display: inline-block;
+    font-weight: bold;
+    font-style: italic;
+    padding-right: 5px;
+    max-width: 40%;
+}
+
+.user_currency {
     display: inline-block;
     padding-right: 10px;
     font-weight: bold;
