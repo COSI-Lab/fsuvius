@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"edu.clarkson.cosi.fsuvius"},{"l":"edu.clarkson.cosi.fsuvius.data"},{"l":"edu.clarkson.cosi.fsuvius.error"},{"l":"edu.clarkson.cosi.fsuvius.user"},{"l":"edu.clarkson.cosi.fsuvius.util"}];updateSearchResults();
