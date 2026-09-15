@@ -168,7 +168,11 @@ function toggleInactiveUsers() {
 function easyDeposit(id) {
     try {
         const depositDollars = prompt("Please enter a dollar ammount");
+        if (depositDollars == null) {
+            show_toast("Balance not changed.");
+        }
         const depositFsu = parseFloat(depositDollars) / 0.75; // 1 FSU = 0.75 USD
+        if (depositFsu == NaN) throw "Bad Input";
         handle_balance_change(id,depositFsu);
     }
     catch {
