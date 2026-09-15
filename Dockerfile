@@ -1,5 +1,5 @@
 # Build
-FROM eclipse-temurin:17 as builder
+FROM docker.io/eclipse-temurin:17 as builder
 RUN apt update && apt upgrade -y
 RUN apt install -y maven
 
@@ -9,7 +9,7 @@ COPY ./pom.xml pom.xml
 RUN mvn clean package
 
 # Run
-FROM eclipse-temurin:17
+FROM docker.io/eclipse-temurin:17
 EXPOSE 8080
 RUN groupadd --gid 9999 fsuvius
 RUN useradd --gid 9999 --uid 9999 --create-home --shell /bin/bash fsuvius
