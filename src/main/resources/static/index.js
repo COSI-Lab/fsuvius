@@ -117,7 +117,8 @@ function display_list(refresh=false) {
                         ` failed with status ${response.status}`);
             throw new Error(response.status);
         }
-        const data = await response.json();
+        let data = await response.json();
+        data.sort((a, b) => b.lastActive - a.lastActive);
         //console.log("[DEBUG] Response:");
         //console.log(data);
         user_list_html = "";
@@ -146,9 +147,11 @@ function getUserHTML(user) {
         <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
         <div class="userpreview_content">
             <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
-            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance} FSU</h3>
+            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</h3>
+            <h3 class="user_currency">FSU</h3>
             <button onclick="handle_plus('${user.id}')">+1</button>
             <button onclick="handle_minus('${user.id}')">-1</button>
+            <button onclick="easyDeposit('${user.id}')">+$</button>
             <a href="editor.html?id=${user.id}"><button>Edit</button></a>
         </div>
     </div>
@@ -158,8 +161,31 @@ function getUserHTML(user) {
 function toggleInactiveUsers() {
     const currentDisplay = getComputedStyle(document.documentElement).getPropertyValue('--display-inactive') == "grid";
     document.documentElement.style.setProperty('--display-inactive', currentDisplay ? "none" : "grid" );
+    document.getElementById("SHOW_HIDDEN").textContent= currentDisplay ? "Show Hidden Users" : "Hide Inactive Users";
     display_list();
+}
+
+function easyDeposit(id) {
+    try {
+        const depositDollars = prompt("Please enter a dollar ammount");
+        const depositFsu = parseFloat(depositDollars) / 0.75; // 1 FSU = 0.75 USD
+        handle_balance_change(id,depositFsu);
+    }
+    catch {
+        show_error("Something went wrong. Please try again.")
+    }
+}
+
+function loadNews() {
+    const content = localStorage.getItem("news");
+    document.getElementById("NEWS").value = content;
+}
+
+function storeNews() {
+    const content = document.getElementById("NEWS").value;
+    localStorage.setItem("news", content);
 }
 
 /* ===== On page load ===== */
 display_list();
+loadNews();
