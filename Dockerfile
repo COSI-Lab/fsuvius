@@ -8,8 +8,7 @@ COPY ./src ./src
 COPY ./pom.xml pom.xml
 RUN mvn clean package
 
-
-
+# Run
 FROM eclipse-temurin:17
 EXPOSE 8080
 RUN groupadd --gid 9999 fsuvius

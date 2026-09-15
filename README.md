@@ -2,11 +2,11 @@
 
 #### The Great and Respectable Open Source Bank, now with a crisp, refreshing spin.
 
-[Source code](https://github.com/COSI-Lab/fsuvius)
+[Source code](https://git.cosi.clarkson.edu/cosi-meta/fsuvius)
 
-[Releases](https://github.com/COSI-Lab/fsuvius/releases)
+[Releases](https://git.cosi.clarkson.edu/cosi-meta/fsuvius/-/releases)
 
-[Documentation](docs/jdoc/index.html)
+~~[Documentation]()~~ (Coming Soon)
 
 ### Changes from the original:
  - Profile pictures!
