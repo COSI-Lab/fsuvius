@@ -1,5 +1,7 @@
 /* The URL to get bank balance from */
 const BANK_BALANCE_URL = "api/bank_balance";
+/* The URL to get the version string from */
+const BANK_VERSION_URL = "api/version";
 
 /* Get and display bank balance */
 function display_bank_balance() {
@@ -24,5 +26,29 @@ function display_bank_balance() {
     });
 }
 
+/* Get and display version string */
+function display_version() {
+    console.log("Handling DISPLAY version...");
+    fetch(BANK_VERSION_URL, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+        },
+    }).then(async response => {
+        if(!response.ok) {
+            throw new Error("GET request failed!");
+        }
+        const data = await response.text();
+        console.log("[DEBUG] Processing user:");
+        console.log(data);
+        var bank_balance_HTML = `<p>Version ${data}</p>`
+        document.getElementById("VERSION").innerHTML = bank_balance_HTML;
+    }).catch(error => {
+        document.getElementById("VERSION").innerHTML = "<p>Unable to get version string.</p>";
+        console.log(error);
+    });
+}
+
 /* ===== On page load: ===== */
 display_bank_balance();
+display_version();

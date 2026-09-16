@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>edu.clarkson.cosi</groupId>
 	<artifactId>fsuvius</artifactId>
-	<version>0.6.1</version>
+	<version>0.7.3</version>
 	<name>fsuvius</name>
 	<description>Mount Fsuvius</description>
 	<properties>

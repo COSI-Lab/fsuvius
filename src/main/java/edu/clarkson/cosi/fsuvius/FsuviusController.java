@@ -204,4 +204,18 @@ public class FsuviusController {
         }
         throw new RateLimitException();
     }
+
+    /**
+     * Gets the current version.
+     * @return The current version
+     */
+    @GetMapping("/api/version")
+    public String getVersion() {
+        if(bucket.tryConsume(1)) {
+            final String version = getClass().getPackage().getImplementationVersion();
+            return version;
+        }
+        throw new RateLimitException();
+    }
+
 }
