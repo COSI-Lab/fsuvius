@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-import edu.clarkson.cosi.fsuvius.error.NotFoundException;
 import edu.clarkson.cosi.fsuvius.FsuviusMap;
 import edu.clarkson.cosi.fsuvius.util.Log;
 import edu.clarkson.cosi.fsuvius.user.User;
@@ -175,7 +174,7 @@ public class DatabaseController {
      * @return The loaded bytes
      */
 
-    private synchronized byte[] loadBytesFromFile(String filename) throws IOException, NotFoundException {
+    private synchronized byte[] loadBytesFromFile(String filename) throws IOException {
         try {
             File f = new File(filename);
             FileInputStream fis = new FileInputStream(f);
@@ -185,7 +184,9 @@ public class DatabaseController {
             return fb;
         } catch(FileNotFoundException e) {
             log.print(1, "File \"" + filename + "\" not found.");
-            throw new NotFoundException();
+            byte[] fb = Base64.getDecoder().decode(FsuviusMap.DEFAULT_PHOTO.split(",")[1]);
+            log.print("Sent default photo.");
+            return fb;
         }
     }
 
