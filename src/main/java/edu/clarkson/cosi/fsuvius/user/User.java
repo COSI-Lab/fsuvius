@@ -155,7 +155,8 @@ public class User {
      * Sets this User's fx list.
      * @param balance this User's fx list
      */
-    public void setBalance(List<String> fx) {
+    public void setFx(List<String> fx) {
+        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
         this.fx = fx;
     }
 
