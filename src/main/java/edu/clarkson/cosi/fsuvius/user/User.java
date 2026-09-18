@@ -58,6 +58,36 @@ public class User {
     }
 
     /**
+     * Constructs a User with the given name, balance, and lastActive time.
+     * @param name The User's name
+     * @param balance The User's balance
+     * @param lastActive The last time this user was active
+     */
+    public User(String name, float balance, long lastActive) {
+        this.id = generateID();
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+        this.balance = balance;
+        this.lastActive = lastActive;
+        this.fx = new ArrayList<>();
+    }
+
+    /**
+     * Constructs a User with the given name, balance, and lastActive time.
+     * @param name The User's name
+     * @param balance The User's balance
+     * @param lastActive The last time this user was active
+     * @param fx The fx list for this user
+     */
+    public User(String name, float balance, long lastActive, List<String> fx) {
+        this.id = generateID();
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+        this.balance = balance;
+        this.lastActive = lastActive;
+        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
+        this.fx = fx;
+    }
+
+    /**
      * Constructs a User from a list of lines.
      * @param lines Lines to read user parameters from
      * @throws IOException If parameters are not valid
@@ -184,7 +214,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.balance, this.lastActive);
+        return Objects.hash(this.id, this.name, this.balance, this.lastActive, this.fx);
     }
 
     @Override
