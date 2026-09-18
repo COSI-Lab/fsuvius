@@ -31,6 +31,38 @@
     text-decoration: underline;
 }
 
+/* animations */
+
+@keyframes wiggle {
+    0% { transform: rotate(1deg); }
+   50% { transform: rotate(-1deg); }
+  100% { transform: rotate(1deg); }
+}
+
+.fx-wiggle {
+    animation: wiggle 1s infinite;
+}
+
+@keyframes shimmy {
+      0% { transform: skew(5deg); }
+     50% { transform: skew(-5deg);}
+    100% { transform: skew(5deg); }
+}
+
+.fx-shimmy {
+    animation: wiggle 1s infinite;
+}
+
+@keyframes breathe {
+    0% { transform: scale(103%)}
+    50% { transform: scale(100%)}
+    100% { transform: scale(103%)}
+}
+
+.fx-breathe {
+    animation: breathe 1s infinite;
+}
+
 /* various pride flags from https://cesque.com/gaydient/ */
 
 .fx-pride-agender .user_name {
