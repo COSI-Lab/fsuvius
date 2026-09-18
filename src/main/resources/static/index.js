@@ -69,7 +69,8 @@ function handle_balance_change(id, offset) {
             "id": `${id}`,
             "name": `${data.name}`,
             "balance": `${new_balance}`,
-            "lastActive": Date.now()
+            "lastActive": Date.now(),
+            "fx": data.fx
         }
 
         /* Put user with new parameters */
