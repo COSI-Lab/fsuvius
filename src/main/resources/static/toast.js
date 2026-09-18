@@ -4,7 +4,7 @@ var toast_timeout;
 function show_toast(message) {
     clearTimeout(toast_timeout);
     var td = document.getElementById("TOAST_MESSAGE");
-    td.innerHTML = message;
+    td.innerHTML = td.dataset[message];
     td.className = "show";
     toast_timeout = setTimeout(hide_toast, 3000);
 }
@@ -13,7 +13,7 @@ function show_toast(message) {
 function show_error(message) {
     clearTimeout(toast_timeout);
     var td = document.getElementById("TOAST_MESSAGE");
-    td.innerHTML = message;
+    td.innerHTML = td.dataset[message];
     td.className = "show error";
     toast_timeout = setTimeout(hide_toast, 3000);
 }

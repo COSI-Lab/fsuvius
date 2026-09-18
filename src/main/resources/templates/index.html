@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Mount Fsuvius</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <noscript><h1>You need to enable Javascript to use Mount Fsuvius!</h1></noscript>
+
+        <div class="content_container">
+            <div style="display: flex;">
+                <img class="logo" src="media/logo.png" alt="Mount Fsuvius">
+                <textarea id="NEWS" oninput="storeNews()"></textarea>
+            </div>
+            <p><i th:text="#{tagline}">The Sierra Mist Edition</i></p>
+
+            <div class="spacer"></div>
+
+            <div id="USER_LIST"></div>
+
+            <div class="spacer"></div>
+
+            <input class="name_field" id="CREATE_FIELD" th:placeholder="#{user.placeholder}">
+            <button onclick="handle_create()" th:text="#{user.create}">Create User</button>
+            <button onclick="display_list(refresh=true)" th:text="#{user.refresh}">Refresh List</button>
+            <button id="SHOW_HIDDEN" onclick="toggleInactiveUsers()" th:text="#{user.hidden.show}" th:data-show="#{user.hidden.show}" th:data-hide="#{user.hidden.hide}">Show Hidden Users</button>
+            <button onclick="location.href='/about.html'" type="button" th:text="#{about}">About</button>
+        </div>
+
+        <div id="TOAST_MESSAGE"
+             th:data-missingusername="#{toast.error.missingusername}"
+             th:data-createduser="#{toast.createduser}"
+             th:data-forbidden="#{toast.error.forbidden}"
+             th:data-badrequest="#{toast.error.badrequest}"
+             th:data-unknownusererror="#{toast.error.user}"
+             th:data-savechanges="#{toast.savechanges}"
+             th:data-changessaved="#{toast.changessaved}"
+             th:data-noparameters="#{toast.error.noparameters}"
+             th:data-refresh="#{toast.refresh}"
+             th:data-refreshdone="#{toast.refreshdone}"
+             th:data-listuserserror="#{toast.error.listusers}"
+        ></div>
+    </body>
+
+    <div style="display: none;">
+
+        <div id="defaultUser" class="userpreview_container">
+            <img class="userpreview_photo" loading="lazy" src="" id="userpreview_photo">
+            <div class="userpreview_content">
+                <h2 class="user_name" id="user_name"></h2>
+                <h3 class="user_balance" id="user_balance"></h3>
+                <h3 class="user_currency">FSU</h3>
+                <button id="buttonPlus1">+1</button>
+                <button id="buttonMinus1">-1</button>
+                <button id="buttonDollar">+$</button>
+                <a id="buttonEdit"><button th:text="#{edit}">Edit</button></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="display: none;" id="prompt-lang" th:data-dollaramount="#{prompt.dollaramount}"></div>
+
+    <script src="toast.js"></script>
+    <script src="index.js"></script>
+</html>

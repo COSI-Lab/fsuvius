@@ -31,14 +31,14 @@ function handle_display() {
         document.getElementById("USER_PHOTO").src = PHOTO_URL;
     }).catch(error => {
         console.log(error);
-        show_error("Couldn't fetch user. See console for error details.");
+        show_error("fetchusererror");
     });
 }
 
 /* Save changes to this user */
 function handle_save() {
     console.log(`Saving changes to user "${USER_URL}"`);
-    show_toast("Saving your changes...");
+    show_toast("savechanges");
     let new_name = document.getElementById("USER_NAME").value;
     let new_balance = document.getElementById("USER_BALANCE").value;
     let new_user = {
@@ -60,11 +60,11 @@ function handle_save() {
     }).catch(error => {
         console.log(error);
         if(error.message === "403") {
-            show_error("Forbidden. (Can't edit outside of the labs)");
+            show_error("forbidden");
         } else if(error.message === "400") {
-            show_error("Bad request. (Invalid name or balance)");
+            show_error("badrequest");
         } else {
-            show_error("Couldn't save changes. See console for error details.");
+            show_error("saveerror");
         }
     });
 }
@@ -72,8 +72,10 @@ function handle_save() {
 /* Handle deleting this user */
 function handle_delete() {
     console.log(`Handling deletion of user ${USER_ID}`);
-    show_toast("Deleting user...");
-    if(window.confirm("Are you sure you want to delete this user?")) {
+    show_toast("deletinguser");
+    const promptText = document.getElementById("prompt-lang").dataset["deleteconfirm"];
+
+    if(window.confirm(promptText)) {
         fetch((USER_URL), {
             method: "DELETE",
         }).then(async response => {
@@ -82,13 +84,13 @@ function handle_delete() {
         }).catch(error => {
             console.log(error);
             if(error.message === "403") {
-                show_error("Can't edit outside of the labs.");
+                show_error("forbidden");
             } else {
-                show_error("Couldn't delete user. See console for error details.");
+                show_error("deleteerror");
             }
         });
     } else {
-        show_toast("Deletion cancelled.");
+        show_toast("deletecancel");
     }
 }
 
@@ -96,7 +98,7 @@ function handle_delete() {
 function handle_upload_photo(input) {
     console.log("Handling upload of user photo...");
     if(input.files[0].size < MAX_UPLOAD_SIZE) {
-        show_toast("Uploading photo...");
+        show_toast("uploadphoto");
         const fr = new FileReader();
         fr.addEventListener("load", function(event) {
             fetch(PHOTO_URL, {
@@ -109,20 +111,20 @@ function handle_upload_photo(input) {
                 if(!response.ok) {
                     if(!response.ok) { throw new Error(response.status); }
                 }
-                show_toast("Photo uploaded.");
+                show_toast("uploadedphoto");
                 document.getElementById("USER_PHOTO").src = event.target.result;
             }).catch(error => {
                 console.log(error);
                 if(error.message === "403") {
-                    show_error("Can't edit outside of the labs.");
+                    show_error("forbidden");
                 } else {
-                    show_error("Something went wrong uploading your photo.");
+                    show_error("uploaderror");
                 }
             });
         });
         fr.readAsDataURL(input.files[0]);
     } else {
-        show_error("Your photo is too large!");
+        show_error("toobig");
     }
 }
 

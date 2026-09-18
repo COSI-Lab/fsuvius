@@ -18,7 +18,7 @@ function display_bank_balance() {
         const data = await response.text();
         console.log("[DEBUG] Processing user:");
         console.log(data);
-        var bank_balance_HTML = `<h2>Bank balance: ${data} FSU</h2>`
+        var bank_balance_HTML = `${data} FSU`
         document.getElementById("BANK_BALANCE").innerHTML = bank_balance_HTML;
     }).catch(error => {
         document.getElementById("BANK_BALANCE").innerHTML = "<p>Sorry, something went wrong with displaying the bank balance. Check the console for more info.</p>";
@@ -41,7 +41,7 @@ function display_version() {
         const data = await response.text();
         console.log("[DEBUG] Processing user:");
         console.log(data);
-        var bank_balance_HTML = `<p>Version ${data}</p>`
+        var bank_balance_HTML = `${data}`
         document.getElementById("VERSION").innerHTML = bank_balance_HTML;
     }).catch(error => {
         document.getElementById("VERSION").innerHTML = "<p>Unable to get version string.</p>";

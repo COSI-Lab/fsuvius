@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mount Fsuvius</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="content_container">
+            <img class="logo" src="media/logo.png" alt="Mount Fsuvius">
+            <p><i th:text="#{tagline}">The Sierra Mist Edition</i></p>
+
+            <div class="spacer"></div>
+
+            <h2><span th:text="#{balance}">Bank balance: </span><span id="BANK_BALANCE"></span></h2>
+
+            <p><span th:text="#{version}"></span><span id="VERSION"></span></p>
+            <button onclick="location.href='/index.html'" type="button" style="float:right" th:text="#{home}">Home</button>
+            <p><span th:text="#{updates}">Check for updates at </span><a href="https://git.cosi.clarkson.edu/cosi-meta/fsuvius">https://git.cosi.clarkson.edu/cosi-meta/fsuvius</a></p>
+        </div>
+    </body>
+
+    <script src="about.js"></script>
+</html>

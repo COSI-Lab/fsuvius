@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mount Fsuvius</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <noscript><h1>You need to enable Javascript to use Mount Fsuvius!</h1></noscript>
+
+        <div class="content_container">
+            <h1 th:text="#{editor.title}">Edit User</h1>
+            <p th:text="#{editor.photo}">Photo</p>
+            <img id="USER_PHOTO" class="userpreview_photo">
+            <p th:text="#{editor.upload}">Upload an image (Max size: 1MB)</p>
+            <input type="file" id="PHOTO_UPLOADER" accept="image/png, image/jpeg", onchange="handle_upload_photo(this)">
+
+            <div class="spacer"></div>
+
+            <div class="name_label" th:text="#{editor.name}">Name</div>
+            <div class="balance_label" th:text="#{editor.balance}">Balance</div><br>
+
+            <input class="name_field" id="USER_NAME" th:placeholder="#{editor.placeholder.name}" maxlength="30">
+            <input class="balance_field" id="USER_BALANCE" th:placeholder="#{editor.placeholder.balance}" maxlength="20">
+            
+            <div class="spacer"></div>
+            
+            <button onclick="handle_save()" th:text="#{editor.save}">Save Edits</button>
+            
+            <button onclick="handle_delete()" th:text="#{editor.delete}">Delete User</button>
+        </div>
+
+        <div class="" id="TOAST_MESSAGE"
+             th:data-deletinguser="#{toast.deletinguser}"
+             th:data-forbidden="#{toast.error.forbidden}"
+             th:data-deleteerror="#{toast.error.delete}"
+             th:data-deletecancel="#{toast.deletecancel}"
+             th:data-uploadphoto="#{toast.uploadphoto}"
+             th:data-uploadedphoto="#{toast.uploadedphoto}"
+             th:data-uploaderror="#{toast.error.upload}"
+             th:data-toobig="#{toast.error.toobig}"
+             th:data-saveerror="#{toast.error.save}"
+             th:data-fetchusererror="#{toast.error.fetchuser}"
+             th:data-savechanges="#{toast.savechanges}"
+             th:data-badrequest="#{toast.error.badrequest}"
+        ></div>
+    </body>
+
+    <div style="display: none;" id="prompt-lang" th:data-deleteconfirm="#{prompt.deleteconfirm}"></div>
+
+    <script src="toast.js"></script>
+    <script src="editor.js"></script>
+</html>

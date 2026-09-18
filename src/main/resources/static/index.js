@@ -11,7 +11,7 @@ const PHOTO_URL = "api/photos/"
 function handle_create() {
     let new_name = document.getElementById("CREATE_FIELD").value;
     if(new_name.length < 1) {
-        show_error("Please type a username to create.");
+        show_error("missingusername");
         return; 
     }
     console.log("Handling creation of new user...");
@@ -26,15 +26,15 @@ function handle_create() {
         if(!response.ok) { throw new Error(response.status); }
         document.getElementById("CREATE_FIELD").value = "";
         display_list();
-        show_toast("Created user.");
+        show_toast("createduser");
     }).catch(error => {
         console.log(error);
         if(error.message === "403") {
-            show_error("Forbidden. (Can't edit outside of the labs)");
+            show_error("forbidden");
         } else if(error.message === "400") {
-            show_error("Bad request. (Invalid name or balance)");
+            show_error("badrequest");
         } else {
-            show_error("Failed to create user. See console for error details.");
+            show_error("unknownusererror");
         }
     });
 }
@@ -52,7 +52,7 @@ function handle_minus(id) {
 /* Change a user's balance */
 function handle_balance_change(id, offset) {
     console.log(`Handling balance update for user ${id}`);
-    show_toast("Saving your changes...");
+    show_toast("savechanges");
     /* Get current user parameters */
     fetch(USER_URL + id, {
         method: "GET",
@@ -87,25 +87,25 @@ function handle_balance_change(id, offset) {
             //console.log("[DEBUG] Response:");
             //console.log(data);
             document.getElementById(`USER_BALANCE_${id}`).innerHTML = `${data.balance}`;
-            show_toast("Changes saved.");
+            show_toast("changessaved");
         }).catch(error => {
             console.log(error);
             if(error.message === "403") {
-                show_error("Can't edit outside of the labs.");
+                show_error("forbidden");
             } else {
-                show_error("Couldn't save changes. See console for error details.");
+                show_error("unknownusererror");
             }
         });
     }).catch(error => {
         console.log(error);
-        show_error("Couldn't get user parameters. See console for error details.");
+        show_error("noparameters");
     });
 }
 
 /* Display list of all users */
 function display_list(refresh=false) {
     console.log("Handling DISPLAY users...");
-    if(refresh) { show_toast("Refreshing list of users..."); }
+    if(refresh) { show_toast("refresh"); }
     fetch(USERS_URL, {
         method: "GET",
         headers: {
@@ -127,10 +127,10 @@ function display_list(refresh=false) {
             user_list_html += getUserHTML(user);
         }
         document.getElementById("USER_LIST").innerHTML = user_list_html;
-        if(refresh) { show_toast("Refreshed list of users."); }
+        if(refresh) { show_toast("refreshdone"); }
     }).catch(error => {
         console.log(error);
-        show_error("Couldn't display list of users. See console for error details.");
+        show_error("listuserserror");
     });
 }
 
@@ -142,32 +142,48 @@ function getUserHTML(user) {
     // user becomes invisible after 30 days
     const visible = (now - lastActive) < 2.592e+9
 
-    return `
-    <div class="userpreview_container ${visible ? "" : "user_inactive"}" id="USER_${user.id}">
-        <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
-        <div class="userpreview_content">
-            <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
-            <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</h3>
-            <h3 class="user_currency">FSU</h3>
-            <button onclick="handle_plus('${user.id}')">+1</button>
-            <button onclick="handle_minus('${user.id}')">-1</button>
-            <button onclick="easyDeposit('${user.id}')">+$</button>
-            <a href="editor.html?id=${user.id}"><button>Edit</button></a>
-        </div>
-    </div>
-    `
+    var userHTML = document.getElementById("defaultUser").cloneNode(true);
+    if (!visible) userHTML.setAttribute("class", "userpreview_container user_inactive");
+
+    userHTML.setAttribute("id", `USER_${user.id}`);
+
+    userHTML.querySelector('#userpreview_photo').setAttribute("src", `${PHOTO_URL}${user.id}`);
+
+    var nameElement = userHTML.querySelector('#user_name');
+    nameElement.setAttribute("id", `USER_NAME_${user.id}`);
+    nameElement.innerHTML = `${user.name}`;
+
+    var balanceElement = userHTML.querySelector('#user_balance');
+    balanceElement.setAttribute("id", `USER_BALANCE_${user.id}`);
+    balanceElement.innerHTML = `${user.balance}`;
+
+    var buttonPlus1 = userHTML.querySelector('#buttonPlus1');
+    buttonPlus1.setAttribute("onclick",`handle_plus('${user.id}')`)
+
+    var buttonMinus1 = userHTML.querySelector('#buttonMinus1');
+    buttonMinus1.setAttribute("onclick",`handle_minus('${user.id}')`)
+
+    var buttonDollar = userHTML.querySelector('#buttonDollar');
+    buttonDollar.setAttribute("onclick",`easyDeposit('${user.id}')`)
+
+    var buttonEdit = userHTML.querySelector('#buttonEdit');
+    buttonEdit.setAttribute("href",`editor.html?id=${user.id}`)
+
+    return userHTML.outerHTML;
 }
 
 function toggleInactiveUsers() {
     const currentDisplay = getComputedStyle(document.documentElement).getPropertyValue('--display-inactive') == "grid";
     document.documentElement.style.setProperty('--display-inactive', currentDisplay ? "none" : "grid" );
-    document.getElementById("SHOW_HIDDEN").textContent= currentDisplay ? "Show Hidden Users" : "Hide Inactive Users";
+    var hiddenButton = document.getElementById("SHOW_HIDDEN");
+    hiddenButton.textContent= currentDisplay ? hiddenButton.dataset["show"] : hiddenButton.dataset["hide"];
     display_list();
 }
 
 function easyDeposit(id) {
+    const promptText = document.getElementById("prompt-lang").dataset["dollaramount"];
     try {
-        const depositDollars = prompt("Please enter a dollar ammount");
+        const depositDollars = prompt(promptText);
         if (depositDollars == null || depositDollars == "") {
             show_toast("Balance not changed.");
             return;
