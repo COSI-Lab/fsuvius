@@ -19,6 +19,7 @@ public class User {
     private String name;
     private float balance;
     private long lastActive;
+    private List<String> fx;
 
     /**
      * Constructs a User with the name "" and a balance of 0.
@@ -28,6 +29,7 @@ public class User {
         this.name = "";
         this.balance = 0.0F;
         this.lastActive = System.currentTimeMillis();
+        this.fx = new ArrayList<>();
     }
 
     /**
@@ -39,6 +41,7 @@ public class User {
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = 0.0F;
         this.lastActive = System.currentTimeMillis();
+        this.fx = new ArrayList<>();
     }
 
     /**
@@ -51,6 +54,37 @@ public class User {
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
         this.lastActive = System.currentTimeMillis();
+        this.fx = new ArrayList<>();
+    }
+
+    /**
+     * Constructs a User with the given name, balance, and lastActive time.
+     * @param name The User's name
+     * @param balance The User's balance
+     * @param lastActive The last time this user was active
+     */
+    public User(String name, float balance, long lastActive) {
+        this.id = generateID();
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+        this.balance = balance;
+        this.lastActive = lastActive;
+        this.fx = new ArrayList<>();
+    }
+
+    /**
+     * Constructs a User with the given name, balance, and lastActive time.
+     * @param name The User's name
+     * @param balance The User's balance
+     * @param lastActive The last time this user was active
+     * @param fx The fx list for this user
+     */
+    public User(String name, float balance, long lastActive, List<String> fx) {
+        this.id = generateID();
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+        this.balance = balance;
+        this.lastActive = lastActive;
+        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
+        this.fx = fx;
     }
 
     /**
@@ -69,12 +103,17 @@ public class User {
             throw new IOException("Failed to read user (Bad balance). Lines:\n" + Arrays.toString(lines.toArray()));
         }
 
-        // handle lastActive separately because it's a new schema
+        // new (optional) schema separately
         try {
             this.lastActive = (Long.parseLong(lines.get(3).split("lastActive=", 2)[1]));
         } catch(IndexOutOfBoundsException e) {
             this.lastActive = 0;
-            throw new IOException("User did not have lastActive property!");
+        }
+
+        try {
+            this.fx = Arrays.asList(lines.get(4).split("profileFx=", 2)[1].split(";"));
+        } catch(IndexOutOfBoundsException e) {
+            this.fx = new ArrayList<>();
         }
     }
 
@@ -111,6 +150,14 @@ public class User {
     }
 
     /**
+     * Returns this User's fx list.
+     * @return this User's fx list
+     */
+    public List<String> getFx() {
+        return this.fx;
+    }
+
+    /**
      * Sets this User's ID.
      * @param id this User's ID
      */
@@ -132,6 +179,15 @@ public class User {
      */
     public void setBalance(float balance) {
         this.balance = balance;
+    }
+
+    /**
+     * Sets this User's fx list.
+     * @param balance this User's fx list
+     */
+    public void setFx(List<String> fx) {
+        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
+        this.fx = fx;
     }
 
     /**
@@ -158,11 +214,11 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.balance, this.lastActive);
+        return Objects.hash(this.id, this.name, this.balance, this.lastActive, this.fx);
     }
 
     @Override
     public String toString() {
-        return String.format("id=%s\nname=%s\nbalance=%s\nlastActive=%s\n\n", this.id, this.name, this.balance, this.lastActive);
+        return String.format("id=%s\nname=%s\nbalance=%s\nlastActive=%s\nprofileFx=%s\n\n", this.id, this.name, this.balance, this.lastActive, String.join(";",this.fx));
     }
 }

@@ -159,6 +159,10 @@ button:hover {
     display: var(--display-inactive);
 }
 
+.user_name {
+    width: fit-content;
+}
+
 /* ===== Toast messages ===== */
 
 #TOAST_MESSAGE {

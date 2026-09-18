@@ -13,6 +13,9 @@ const USER_ID = params.get("id");
 /* Max photo upload size */
 const MAX_UPLOAD_SIZE = 1024 * 1024;
 
+/* Use a global to store fx for now */
+var FX;
+
 /* Update fields with this user's data (including photo) */
 function handle_display() {
     console.log(`Handling DISPLAY user ${USER_ID}`)
@@ -29,6 +32,7 @@ function handle_display() {
         document.getElementById("USER_NAME").value = data.name;
         document.getElementById("USER_BALANCE").value = data.balance;
         document.getElementById("USER_PHOTO").src = PHOTO_URL;
+        FX = data.fx;
     }).catch(error => {
         console.log(error);
         show_error("Couldn't fetch user. See console for error details.");
@@ -45,7 +49,8 @@ function handle_save() {
         "id": `${USER_ID}`,
         "name": `${new_name}`,
         "balance": `${new_balance}`,
-        "lastActive": Date.now()
+        "lastActive": Date.now(),
+        "fx": FX
     }
     fetch((USER_URL), {
         method: "PUT",
