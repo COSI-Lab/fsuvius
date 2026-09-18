@@ -148,3 +148,10 @@
     background-clip: text !important;
     background: linear-gradient(to right, rgb(85, 205, 252), rgb(179, 157, 233), rgb(247, 168, 184), rgb(246, 216, 221), rgb(255, 255, 255));
 }
+
+/* forbidden effect */
+
+.fx-cheesed .user_name:after {
+    color: yellow;
+    content: " 🧀";
+}
