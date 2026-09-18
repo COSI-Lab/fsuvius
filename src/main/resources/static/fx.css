@@ -17,6 +17,20 @@
     );
 }
 
+/* basic text effects */
+
+.fx-bold .user_name {
+    font-weight: bold;
+}
+
+.fx-italic .user_name {
+    font-style: italic;
+}
+
+.fx-underline .user_name {
+    text-decoration: underline;
+}
+
 /* various pride flags from https://cesque.com/gaydient/ */
 
 .fx-pride-agender .user_name {
