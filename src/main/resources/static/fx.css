@@ -50,7 +50,7 @@
 }
 
 .fx-shimmy {
-    animation: wiggle 1s infinite;
+    animation: shimmy 1s infinite;
 }
 
 @keyframes breathe {
