@@ -143,8 +143,8 @@ function getUserHTML(user) {
     // user becomes invisible after 30 days
     const visible = (now - lastActive) < 2.592e+9
 
-    // handle fx classes
-    const safeFx = user.fx.filter((c) => c.startsWith("fx"));
+    // handle fx classes (must start with fx, must not contain " or space to prevent escape)
+    const safeFx = user.fx.filter((c) => c.startsWith("fx") && !c.includes("\"") && !c.includes(" "));
     const fxClass = safeFx.join(" ");
 
     return `
