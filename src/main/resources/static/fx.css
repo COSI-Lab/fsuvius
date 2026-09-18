@@ -21,10 +21,6 @@
 
 /* basic text effects */
 
-.fx-bold .user_name {
-    font-weight: bold;
-}
-
 .fx-italic .user_name {
     font-style: italic;
 }
@@ -63,6 +59,37 @@
 
 .fx-breathe {
     animation: breathe 1s infinite;
+}
+
+@keyframes bgscroll {
+    0%{background-position: -100% 50%}
+    100%{background-position: 100% 50%}
+}
+
+.fx-bgscroll .user_name {
+    background-size: 500% 100%;
+    animation: bgscroll 5s ease infinite;
+
+}
+
+/* other css effects */
+
+.fx-shadow .user_name {
+    filter: drop-shadow(0 0 1px black);
+
+}
+
+.fx-blur {
+    filter: blur(10px);
+}
+
+.fx-redact {
+    background: black;
+    
+}
+
+.fx-redact * {
+    visibility: hidden;
 }
 
 /* various pride flags from https://cesque.com/gaydient/ */
