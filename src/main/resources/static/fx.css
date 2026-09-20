@@ -83,13 +83,17 @@
     filter: blur(10px);
 }
 
-.fx-redact {
+
+.fx-redact .user_name,
+.fx-redact .user_balance,
+.fx-redact .user_currency,
+.fx-redact button {
     background: black;
     
 }
 
-.fx-redact * {
-    visibility: hidden;
+.fx-redact .userpreview_photo {
+    filter: brightness(0) 
 }
 
 /* various pride flags from https://cesque.com/gaydient/ */
