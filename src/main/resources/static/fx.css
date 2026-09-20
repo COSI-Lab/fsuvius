@@ -67,9 +67,8 @@
 }
 
 .fx-bgscroll .user_name {
-    background-size: 500% 100%;
+    background-size: 500% 100% !important;
     animation: bgscroll 5s ease infinite;
-
 }
 
 /* other css effects */
