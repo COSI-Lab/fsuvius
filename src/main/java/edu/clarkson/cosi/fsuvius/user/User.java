@@ -12,9 +12,6 @@ import edu.clarkson.cosi.fsuvius.FsuviusMap;
  */
 @SuppressWarnings("unused")
 public class User {
-    /* Regex used to remove unsafe characters from strings */
-    private final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'#$%^*()/_+-]";
-
     private String id;
     private String name;
     private float balance;
@@ -83,8 +80,28 @@ public class User {
         this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
         this.balance = balance;
         this.lastActive = lastActive;
-        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
+        for (int i = 0; i < fx.size(); i++) {
+            fx.set(i, fx.get(i).replaceAll(FsuviusMap.SANITIZER_REGEX, ""));
+        }
         this.fx = fx;
+    }
+
+    /**
+     * Constructs a User with the given name, balance, and lastActive time.
+     * @param name The User's name
+     * @param balance The User's balance
+     * @param lastActive The last time this user was active
+     * @param fx The fx list for this user
+     */
+    public User(String name, float balance, long lastActive, String[] fx) {
+        this.id = generateID();
+        this.name = name.replaceAll(FsuviusMap.SANITIZER_REGEX,"");
+        this.balance = balance;
+        this.lastActive = lastActive;
+        for (int i = 0; i < fx.length; i++) {
+            fx[i] = fx[i].replaceAll(FsuviusMap.SANITIZER_REGEX, "");
+        }
+        this.fx = Arrays.asList(fx);
     }
 
     /**
@@ -182,11 +199,15 @@ public class User {
     }
 
     /**
+
+    /**
      * Sets this User's fx list.
      * @param balance this User's fx list
      */
     public void setFx(List<String> fx) {
-        fx.forEach(f -> f.replaceAll(FsuviusMap.SANITIZER_REGEX,""));
+        for (int i = 0; i < fx.size(); i++) {
+            fx.set(i, fx.get(i).replaceAll(FsuviusMap.SANITIZER_REGEX, ""));
+        }
         this.fx = fx;
     }
 
@@ -209,7 +230,8 @@ public class User {
         return Objects.equals(this.id, ((User) other).getID()) &&
                 Objects.equals(this.name, ((User) other).getName()) &&
                 Objects.equals(this.balance, ((User) other).getBalance()) &&
-                Objects.equals(this.lastActive, ((User) other).getLastActive());
+                Objects.equals(this.lastActive, ((User) other).getLastActive()) &&
+                Objects.equals(this.fx, ((User) other).getFx());
     }
 
     @Override

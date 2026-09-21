@@ -115,6 +115,8 @@ public class FsuviusController {
             log.print(1, "Edit request from " + IPFilter.getAddress(request) + " filtered.");
             throw new ForbiddenException(); // reject requests from outside the labs
         }
+        log.print(newUser.getName());
+        log.print(String.join(" ",newUser.getFx()));
         if(newUser.getName().isEmpty()) {
             throw new BadRequestException(); // reject requests for empty names
         }
