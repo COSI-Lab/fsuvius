@@ -143,15 +143,19 @@ function getUserHTML(user) {
     // user becomes invisible after 30 days
     const visible = (now - lastActive) < 2.592e+9
 
-    // handle fx classes (must start with fx, must not contain " or space to prevent escape)
-    const safeFx = user.fx.filter((c) => c.startsWith("fx") && !c.includes("\"") && !c.includes(" "));
+    // handle fx classes (must start with fx, must not contain ", \, or space to prevent escape)
+    const safeFx = user.fx.filter((c) => c.startsWith("fx") && !c.includes("\"") && !c.includes(" ") && !c.includes("\\"));
     const fxClass = safeFx.join(" ");
+
+    // handle font face (must start with font:, must not contain " or \, may contain ')
+    const safeFont = user.fx.filter((c) => c.startsWith("font-family:") && !c.includes("\"") && !c.includes("\\"));
+    const fontFace = safeFont.length > 0 ? `style="${safeFont[0]}"` : "";
 
     return `
     <div class="userpreview_container ${visible ? "" : "user_inactive"} ${fxClass}" id="USER_${user.id}">
         <img class="userpreview_photo" loading="lazy" src="${PHOTO_URL}${user.id}">
         <div class="userpreview_content">
-            <h2 class="user_name" id="USER_NAME_${user.id}">${user.name}</h2>
+            <h2 class="user_name" ${fontFace} id="USER_NAME_${user.id}">${user.name}</h2>
             <h3 class="user_balance" id="USER_BALANCE_${user.id}">${user.balance}</h3>
             <h3 class="user_currency">FSU</h3>
             <button onclick="handle_plus('${user.id}')">+1</button>

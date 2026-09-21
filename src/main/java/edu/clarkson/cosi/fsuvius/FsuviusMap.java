@@ -28,7 +28,7 @@ public class FsuviusMap {
     /**
      * Regex used to remove unsafe characters from strings
      */
-    public static final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'\"#$%^*()/_+-]";
+    public static final String SANITIZER_REGEX = "[^a-zA-Z0-9¿-ÿ° !.,?:;'#$%^*()/_+-]";
 
     /**
      * The default photo for new users as base64.
