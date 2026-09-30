@@ -147,8 +147,8 @@ function getUserHTML(user) {
     const safeFx = user.fx.filter((c) => c.startsWith("fx") && !c.includes("\"") && !c.includes(" ") && !c.includes("\\"));
     const fxClass = safeFx.join(" ");
 
-    // handle font face (must start with font:, must not contain " or \, may contain ')
-    const safeFont = user.fx.filter((c) => c.startsWith("font-family:") && !c.includes("\"") && !c.includes("\\"));
+    // handle font face (must start with font-family:, must not contain ", ;, or \, may contain ')
+    const safeFont = user.fx.filter((c) => c.startsWith("font-family:") && !c.includes("\"") && !c.includes("\\") && !c.includes(";"));
     const fontFace = safeFont.length > 0 ? `style="${safeFont[0]}"` : "";
 
     return `
