@@ -73,7 +73,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`fsuvius2.cosi.clarkson.edu`)
+      match: Host(`fsuvius.cosi.clarkson.edu`)
       services:
         - name: fsuvius
           port: 80
@@ -89,7 +89,7 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: Host(`fsuvius2.cosi.clarkson.edu`)
+  - match: Host(`fsuvius.cosi.clarkson.edu`)
     kind: Rule
     middlewares:
     - name: https-redirect
